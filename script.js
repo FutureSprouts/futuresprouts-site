@@ -1,10 +1,10 @@
 /* =========================================================
-   FutureSprouts script.js — CLEAN STABLE BUILD
+   FutureSprouts script.js — CLEAN STABLE BUILD (FULL REPLACE)
    - Header/Footer injection (single source of truth)
-   - GA4 global + conversion events
-   - Microsoft Clarity (optional)
-   - Simple privacy banner (non-annoying, US-focused)
-   ========================================================= */
+   - Optional analytics consent banner (GA4 + Clarity)
+   - Theme system: system/light/dark
+   - Mini-cart preview (stable) + cart badge
+========================================================= */
 
 (function () {
   const cfg = window.FS_CONFIG || {};
@@ -16,10 +16,10 @@
   const GA_ID = "G-98E3F7D54Q";
   const CONSENT_KEY = "fs_consent_v1"; // "granted" | "denied"
   const analyticsCfg = (cfg.analytics || {});
-  const ENABLE_GA = analyticsCfg.ga4 !== false;            // default true
-  const ENABLE_CLARITY = analyticsCfg.clarity === true;    // default false unless set true
+  const ENABLE_GA = analyticsCfg.ga4 !== false;              // default true
+  const ENABLE_CLARITY = analyticsCfg.clarity === true;      // default false unless set true
   const CLARITY_ID = String(analyticsCfg.clarityId || "").trim();
-  const SHOW_BANNER = analyticsCfg.consentBanner !== false; // default true
+  const SHOW_BANNER = analyticsCfg.consentBanner !== false;  // default true
 
   function getConsent() {
     const v = localStorage.getItem(CONSENT_KEY);
@@ -29,12 +29,9 @@
     localStorage.setItem(CONSENT_KEY, v);
   }
 
-  // ---------------------------
-  // Load GA4 (only if allowed)
-  // ---------------------------
   function loadGA() {
     if (!ENABLE_GA) return;
-    if (window.gtag) return; // prevent double load
+    if (window.gtag) return;
 
     const s = document.createElement("script");
     s.async = true;
@@ -49,9 +46,6 @@
     gtag("config", GA_ID, { anonymize_ip: true });
   }
 
-  // ---------------------------
-  // Load Microsoft Clarity (only if allowed)
-  // ---------------------------
   function loadClarity() {
     if (!ENABLE_CLARITY) return;
     if (!CLARITY_ID) return;
@@ -64,89 +58,44 @@
     })(window, document, "clarity", "script", CLARITY_ID);
   }
 
-  // ---------------------------
-  // Simple privacy banner
-  // ---------------------------
   function ensureBannerStylesOnce() {
     if (document.getElementById("fs-consent-styles")) return;
     const style = document.createElement("style");
     style.id = "fs-consent-styles";
     style.textContent = `
-      .fs-consent {
-        position: fixed;
-        left: 16px;
-        right: 16px;
-        bottom: 16px;
-        z-index: 9999;
-        max-width: 920px;
-        margin: 0 auto;
-        border-radius: 16px;
-        padding: 12px 14px;
-        box-shadow: 0 12px 40px rgba(0,0,0,.25);
-        border: 1px solid rgba(255,255,255,.12);
-        background: rgba(20,20,20,.92);
-        color: #fff;
-        backdrop-filter: blur(10px);
+      .fs-consent{
+        position:fixed; left:16px; right:16px; bottom:16px;
+        z-index:9999; max-width:920px; margin:0 auto;
+        border-radius:16px; padding:12px 14px;
+        box-shadow:0 12px 40px rgba(0,0,0,.25);
+        border:1px solid rgba(255,255,255,.12);
+        background:rgba(20,20,20,.92);
+        color:#fff; backdrop-filter:blur(10px);
       }
-      [data-theme="light"] .fs-consent {
-        background: rgba(255,255,255,.96);
-        color: #111;
-        border-color: rgba(0,0,0,.08);
+      [data-theme="light"] .fs-consent{
+        background:rgba(255,255,255,.96);
+        color:#111;
+        border-color:rgba(0,0,0,.08);
       }
-      .fs-consent-row {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
+      .fs-consent-row{ display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+      .fs-consent p{ margin:0; font-size:14px; line-height:1.25; opacity:.95; }
+      .fs-consent .fs-consent-actions{ display:flex; gap:10px; align-items:center; }
+      .fs-consent a{ color:inherit; text-decoration:underline; opacity:.9; }
+      .fs-consent button{
+        border:none; border-radius:999px; padding:8px 12px; cursor:pointer;
+        font-weight:700; font-size:14px;
       }
-      .fs-consent p {
-        margin: 0;
-        font-size: 14px;
-        line-height: 1.25;
-        opacity: .95;
-      }
-      .fs-consent .fs-consent-actions {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
-      .fs-consent a {
-        color: inherit;
-        text-decoration: underline;
-        opacity: .9;
-      }
-      .fs-consent button {
-        border: none;
-        border-radius: 999px;
-        padding: 8px 12px;
-        cursor: pointer;
-        font-weight: 700;
-        font-size: 14px;
-      }
-      .fs-consent .ok {
-        background: #fff;
-        color: #111;
-      }
-      [data-theme="light"] .fs-consent .ok {
-        background: #111;
-        color: #fff;
-      }
-      .fs-consent .no {
-        background: transparent;
-        color: inherit;
-        border: 1px solid rgba(255,255,255,.22);
-      }
-      [data-theme="light"] .fs-consent .no {
-        border-color: rgba(0,0,0,.18);
-      }
+      .fs-consent .ok{ background:#fff; color:#111; }
+      [data-theme="light"] .fs-consent .ok{ background:#111; color:#fff; }
+      .fs-consent .no{ background:transparent; color:inherit; border:1px solid rgba(255,255,255,.22); }
+      [data-theme="light"] .fs-consent .no{ border-color:rgba(0,0,0,.18); }
     `;
     document.head.appendChild(style);
   }
 
   function showConsentBanner() {
     if (!SHOW_BANNER) return;
-    if (getConsent() !== null) return; // already decided
+    if (getConsent() !== null) return;
 
     ensureBannerStylesOnce();
 
@@ -171,7 +120,6 @@
     ok.addEventListener("click", () => {
       setConsent("granted");
       banner.remove();
-      // load analytics after consent
       loadGA();
       loadClarity();
       fireGAEvent("consent_granted");
@@ -180,39 +128,26 @@
     no.addEventListener("click", () => {
       setConsent("denied");
       banner.remove();
-      // do not load analytics
     });
 
     document.body.appendChild(banner);
   }
 
-  // ---------------------------
-  // GA helper (safe)
-  // ---------------------------
   function fireGAEvent(name, params) {
-    try {
-      if (window.gtag) window.gtag("event", name, params || {});
-    } catch {}
+    try { if (window.gtag) window.gtag("event", name, params || {}); } catch {}
   }
 
-  // ---------------------------
-  // Decide whether to load analytics now
-  // US-mostly: if you want “not annoying”, we load after OK only.
-  // If you’d prefer auto-load and banner is just informational, tell me.
-  // ---------------------------
   const consent = getConsent();
   if (consent === "granted") {
     loadGA();
     loadClarity();
   } else if (consent === null) {
-    // show banner; do not load analytics yet
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", showConsentBanner);
     } else {
       showConsentBanner();
     }
   }
-  // consent denied => do nothing
 
   // ---------------------------
   // Keys
@@ -284,7 +219,7 @@
   }
 
   // ---------------------------
-  // Local analytics store (kept; useful for admin/debug)
+  // Local analytics store (optional)
   // ---------------------------
   function logEvent(type, data) {
     const store = loadJson(ANALYTICS_KEY, { events: [] });
@@ -293,9 +228,7 @@
     saveJson(ANALYTICS_KEY, store);
   }
 
-  // page view (local)
   try { logEvent("page_view", { path: location.pathname }); } catch {}
-  // page view (GA)
   fireGAEvent("page_view_fs", { page_path: location.pathname });
 
   // ---------------------------
@@ -331,23 +264,10 @@
   }
 
   // ---------------------------
-  // Header/Footer injection (single)
+  // Header/Footer injection
   // ---------------------------
   function headerHtml() {
     const name = cfg.siteName || "FutureSprouts";
-
-    const orgLd = {
-      "@context": "https://schema.org",
-      "@type": "NonprofitOrganization",
-      "name": name,
-      "email": cfg.contactEmail || "info@futuresprouts.org",
-      "url": cfg.siteUrl || "",
-      "sameAs": [
-        (cfg.socials && cfg.socials.instagram) || "",
-        (cfg.socials && cfg.socials.tiktok) || "",
-        (cfg.socials && cfg.socials.youtube) || ""
-      ].filter(Boolean)
-    };
 
     return `
 <header class="navbar">
@@ -369,21 +289,22 @@
       <a href="services.html">Services</a>
       <a href="events.html">Events</a>
       <a href="impact.html">Impact</a>
-      <a href="get-involved.html">Get Involved</a>
+      <a href="get-involved.html" data-track="get_involved">Get Involved</a>
       <a href="donate.html" class="donate-btn" data-track="donate">Donate</a>
       <a href="contact.html" data-track="contact">Contact</a>
 
-      <a href="cart.html" class="cart-link" aria-label="View cart" data-track="cart_open">
-        <span class="cart-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
-            <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
-            <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
-          </svg>
-        </span>
-
-        <span class="cart-badge" id="cartBadge">0</span>
+      <div class="cart-wrap" aria-label="Cart">
+        <a href="cart.html" class="cart-link" aria-label="View cart" data-track="cart_open">
+          <span class="cart-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
+              <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
+              <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </a>
 
         <div class="mini-cart" id="miniCart" aria-label="Cart preview">
           <div class="mini-cart-header">
@@ -395,7 +316,7 @@
             <a class="btn primary mini-cart-btn" href="cart.html">View Cart</a>
           </div>
         </div>
-      </a>
+      </div>
     </nav>
   </div>
 
@@ -414,17 +335,15 @@
       <span class="cart-badge" id="cartBadgeMobile">0</span>
     </a>
   </div>
-
-  <script type="application/ld+json">${JSON.stringify(orgLd)}</script>
 </header>`;
   }
 
   function footerHtml() {
     const email = cfg.contactEmail || "info@futuresprouts.org";
     const site = escapeHtml(cfg.siteName || "FutureSprouts");
-    const ig = (cfg.socials && cfg.socials.instagram) || "#";
-    const tt = (cfg.socials && cfg.socials.tiktok) || "#";
-    const yt = (cfg.socials && cfg.socials.youtube) || "#";
+
+    // until you have socials, don’t output fake links
+    const socials = [];
 
     return `
 <footer class="footer">
@@ -438,17 +357,17 @@
     <div>
       <h3>Quick Links</h3>
       <p><a href="services.html">Services</a></p>
-      <p><a href="cart.html">Cart</a></p>
       <p><a href="events.html">Events</a></p>
       <p><a href="donate.html" data-track="donate">Donate</a></p>
-      <p><a href="wishlist.html">Wishlist</a></p>
+      <p><a href="get-involved.html" data-track="get_involved">Get Involved</a></p>
+      <p><a href="contact.html" data-track="contact">Contact</a></p>
     </div>
 
     <div>
       <h3>Legal</h3>
       <p><a href="privacy.html">Privacy Policy</a></p>
       <p><a href="terms.html">Terms of Service</a></p>
-      <p style="margin-top:10px;"><a href="contact.html" data-track="contact">Contact</a></p>
+      <p style="margin-top:10px;"><a href="transparency.html">Transparency</a></p>
     </div>
   </div>
 
@@ -456,28 +375,21 @@
     <div class="footer-copy">© 2026 ${site}</div>
 
     <div class="footer-actions">
-      <div class="footer-theme">
+      <div class="theme-wrap" aria-label="Theme">
         <span class="small">Theme</span>
-        <select id="themeToggle" class="theme-select" aria-label="Theme">
+        <select id="fsThemeSelect" class="fs-theme-select" aria-label="Theme">
           <option value="system">System</option>
           <option value="light">Light</option>
           <option value="dark">Dark</option>
         </select>
       </div>
 
-      <div class="footer-socials">
-        <a href="${ig}" target="_blank" rel="noopener" data-track="outbound">Instagram</a>
-        <span aria-hidden="true">·</span>
-        <a href="${tt}" target="_blank" rel="noopener" data-track="outbound">TikTok</a>
-        <span aria-hidden="true">·</span>
-        <a href="${yt}" target="_blank" rel="noopener" data-track="outbound">YouTube</a>
-      </div>
+      ${socials.length ? `<div class="footer-socials">${socials.join(" ")}</div>` : ``}
     </div>
   </div>
 </footer>`;
   }
 
-  // Inject ONLY if slots exist
   const headerSlot = document.getElementById("siteHeader");
   if (headerSlot) headerSlot.outerHTML = headerHtml();
 
@@ -485,7 +397,7 @@
   if (footerSlot) footerSlot.outerHTML = footerHtml();
 
   // ---------------------------
-  // Theme: system/light/dark (footer dropdown)
+  // Theme: system/light/dark
   // ---------------------------
   const media = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
 
@@ -495,18 +407,16 @@
   }
 
   function applyTheme(pref) {
-    if (pref === "dark") {
-      root.setAttribute("data-theme", "dark");
-    } else if (pref === "light") {
-      root.setAttribute("data-theme", "light");
-    } else {
+    if (pref === "dark") root.setAttribute("data-theme", "dark");
+    else if (pref === "light") root.setAttribute("data-theme", "light");
+    else {
       const sysDark = media ? media.matches : false;
       root.setAttribute("data-theme", sysDark ? "dark" : "light");
     }
   }
 
   function syncThemeUI() {
-    const select = document.getElementById("themeToggle");
+    const select = document.getElementById("fsThemeSelect");
     if (!select) return;
 
     const pref = getThemePref();
@@ -557,7 +467,7 @@
   });
 
   // ---------------------------
-  // Conversion tracking (delegated)
+  // Click tracking (delegated)
   // ---------------------------
   function trackClick(e) {
     const a = e.target.closest ? e.target.closest("a") : null;
@@ -565,8 +475,6 @@
 
     const href = (a.getAttribute("href") || "").trim();
     const track = (a.getAttribute("data-track") || "").trim();
-
-    // Outbound
     const isExternal = /^https?:\/\//i.test(href) && !href.includes(location.host);
 
     if (track === "donate" || /donate\.html$/i.test(href)) {
@@ -594,7 +502,7 @@
       fireGAEvent("cart_open", { link_url: href });
       return;
     }
-    if (track === "outbound" || isExternal) {
+    if (isExternal) {
       logEvent("outbound_click", { href });
       fireGAEvent("outbound_click", { link_url: href });
       return;
@@ -623,7 +531,6 @@
   function countUp(el, target) {
     const duration = 900;
     const startTime = performance.now();
-
     function step(now) {
       const progress = Math.min((now - startTime) / duration, 1);
       const value = Math.floor(target * progress);
@@ -640,12 +547,10 @@
         const el = entry.target;
         const target = parseInt(el.getAttribute("data-count") || "0", 10);
         if (!Number.isFinite(target) || target <= 0) return;
-
         if (entry.isIntersecting) countUp(el, target);
         else el.textContent = "0+";
       });
     }, { threshold: 0.45 });
-
     statNums.forEach(el => statObs.observe(el));
   }
 
@@ -682,7 +587,7 @@
   }
 
   // ---------------------------
-  // Cart storage helpers
+  // Cart helpers
   // ---------------------------
   function loadCart() { return loadJson(CART_KEY, []); }
 
@@ -773,7 +678,7 @@
   });
 
   // ---------------------------
-  // Cart operations (unchanged)
+  // Cart operations
   // ---------------------------
   function cartAddOrUpdate(id, name, meta, qtyDelta, constraints) {
     const cart = loadCart();
@@ -832,7 +737,6 @@
     return true;
   }
 
-  // Expose helpers
   window.FS_CART = {
     loadCart,
     saveCart,
@@ -850,7 +754,6 @@
 
   // ---------------------------
   // Cart page rendering + Formspree submit
-  // (Your existing logic can stay; add GA events around submits)
   // ---------------------------
   const cartList = document.querySelector("#cartList");
   const cartEmpty = document.querySelector("#cartEmpty");
@@ -972,9 +875,6 @@
 
   if (cartList) renderCart();
 
-  // ---------------------------
-  // Formspree submit tracking (keeps your current endpoint)
-  // ---------------------------
   function getLockoutUntil() {
     const raw = localStorage.getItem(LOCKOUT_KEY);
     if (!raw) return null;
@@ -1078,5 +978,4 @@ ${cartToText(cart)}`
       }
     });
   }
-
 })();
