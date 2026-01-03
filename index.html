@@ -10,12 +10,10 @@
   <meta property="og:title" content="FutureSprouts" />
   <meta property="og:description" content="Youth-led sustainable farming education + environmental action." />
   <meta property="og:type" content="website" />
-  <!-- FIX: correct folder + correct case -->
-  <meta property="og:image" content="futuresprouts-website/Images/og-image.png" />
+  <meta property="og:image" content="images/og-image.png" />
 
-  <!-- FIX: point to files inside futuresprouts-website -->
-  <link rel="stylesheet" href="futuresprouts-website/style.css" />
-  <script src="futuresprouts-website/config.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
 
   <!-- Organization Schema -->
   <script type="application/ld+json">
@@ -36,17 +34,16 @@
   <div id="siteHeader"></div>
 
   <div class="container mobile-menu">
-    <!-- FIX: all nav links need the folder prefix -->
-    <a href="futuresprouts-website/about.html">About</a>
-    <a href="futuresprouts-website/programs.html">Programs</a>
-    <a href="futuresprouts-website/services.html">Services</a>
-    <a href="futuresprouts-website/events.html">Events</a>
-    <a href="futuresprouts-website/impact.html">Impact</a>
-    <a href="futuresprouts-website/get-involved.html">Get Involved</a>
-    <a href="futuresprouts-website/contact.html">Contact</a>
-    <a href="futuresprouts-website/donate.html" class="donate-btn">Donate</a>
+    <a href="about.html">About</a>
+    <a href="programs.html">Programs</a>
+    <a href="services.html">Services</a>
+    <a href="events.html">Events</a>
+    <a href="impact.html">Impact</a>
+    <a href="get-involved.html">Get Involved</a>
+    <a href="contact.html">Contact</a>
+    <a href="donate.html" class="donate-btn">Donate</a>
 
-    <a href="futuresprouts-website/cart.html" class="cart-link mobile-cart-link" aria-label="View cart">
+    <a href="cart.html" class="cart-link mobile-cart-link" aria-label="View cart">
       <span class="cart-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="18" height="18" role="img" focusable="false">
           <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
@@ -69,8 +66,8 @@
         built to scale from local communities to broader impact.
       </p>
       <div class="hero-cta">
-        <a class="btn primary" href="futuresprouts-website/get-involved.html">Get Involved</a>
-        <a class="btn secondary" href="futuresprouts-website/programs.html">Explore Programs</a>
+        <a class="btn primary" href="get-involved.html">Get Involved</a>
+        <a class="btn secondary" href="programs.html">Explore Programs</a>
       </div>
     </div>
   </section>
@@ -120,7 +117,7 @@
   <!-- Injected footer (from script.js) -->
   <div id="siteFooter"></div>
 
-  <!-- FIX: load script from folder -->
-  <script src="futuresprouts-website/script.js"></script>
+  <!-- Load script LAST so it can inject header/footer -->
+  <script src="script.js"></script>
 </body>
 </html>
