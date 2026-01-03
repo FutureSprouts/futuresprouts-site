@@ -1,33 +1,218 @@
-/* ================================
-   Google Analytics 4 (Global)
-   ================================ */
-(function () {
-  const GA_ID = "G-98E3F7D54Q"; // your real ID
+/* =========================================================
+   FutureSprouts script.js — CLEAN STABLE BUILD
+   - Header/Footer injection (single source of truth)
+   - GA4 global + conversion events
+   - Microsoft Clarity (optional)
+   - Simple privacy banner (non-annoying, US-focused)
+   ========================================================= */
 
-  // Prevent double-loading
-  if (window.gtag) return;
-
-  // Load GA script
-  const s = document.createElement("script");
-  s.async = true;
-  s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
-  document.head.appendChild(s);
-
-  // Initialize GA
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  window.gtag = gtag;
-
-  gtag("js", new Date());
-  gtag("config", GA_ID, {
-    anonymize_ip: true
-  });
-})();
-
-// script.js — FULL REPLACEMENT (STABLE + FIXED)
 (function () {
   const cfg = window.FS_CONFIG || {};
   const root = document.documentElement;
+
+  // ---------------------------
+  // Analytics/consent toggles
+  // ---------------------------
+  const GA_ID = "G-98E3F7D54Q";
+  const CONSENT_KEY = "fs_consent_v1"; // "granted" | "denied"
+  const analyticsCfg = (cfg.analytics || {});
+  const ENABLE_GA = analyticsCfg.ga4 !== false;            // default true
+  const ENABLE_CLARITY = analyticsCfg.clarity === true;    // default false unless set true
+  const CLARITY_ID = String(analyticsCfg.clarityId || "").trim();
+  const SHOW_BANNER = analyticsCfg.consentBanner !== false; // default true
+
+  function getConsent() {
+    const v = localStorage.getItem(CONSENT_KEY);
+    return (v === "granted" || v === "denied") ? v : null;
+  }
+  function setConsent(v) {
+    localStorage.setItem(CONSENT_KEY, v);
+  }
+
+  // ---------------------------
+  // Load GA4 (only if allowed)
+  // ---------------------------
+  function loadGA() {
+    if (!ENABLE_GA) return;
+    if (window.gtag) return; // prevent double load
+
+    const s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_ID);
+    document.head.appendChild(s);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+
+    gtag("js", new Date());
+    gtag("config", GA_ID, { anonymize_ip: true });
+  }
+
+  // ---------------------------
+  // Load Microsoft Clarity (only if allowed)
+  // ---------------------------
+  function loadClarity() {
+    if (!ENABLE_CLARITY) return;
+    if (!CLARITY_ID) return;
+    if (window.clarity) return;
+
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", CLARITY_ID);
+  }
+
+  // ---------------------------
+  // Simple privacy banner
+  // ---------------------------
+  function ensureBannerStylesOnce() {
+    if (document.getElementById("fs-consent-styles")) return;
+    const style = document.createElement("style");
+    style.id = "fs-consent-styles";
+    style.textContent = `
+      .fs-consent {
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        z-index: 9999;
+        max-width: 920px;
+        margin: 0 auto;
+        border-radius: 16px;
+        padding: 12px 14px;
+        box-shadow: 0 12px 40px rgba(0,0,0,.25);
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(20,20,20,.92);
+        color: #fff;
+        backdrop-filter: blur(10px);
+      }
+      [data-theme="light"] .fs-consent {
+        background: rgba(255,255,255,.96);
+        color: #111;
+        border-color: rgba(0,0,0,.08);
+      }
+      .fs-consent-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .fs-consent p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.25;
+        opacity: .95;
+      }
+      .fs-consent .fs-consent-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .fs-consent a {
+        color: inherit;
+        text-decoration: underline;
+        opacity: .9;
+      }
+      .fs-consent button {
+        border: none;
+        border-radius: 999px;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .fs-consent .ok {
+        background: #fff;
+        color: #111;
+      }
+      [data-theme="light"] .fs-consent .ok {
+        background: #111;
+        color: #fff;
+      }
+      .fs-consent .no {
+        background: transparent;
+        color: inherit;
+        border: 1px solid rgba(255,255,255,.22);
+      }
+      [data-theme="light"] .fs-consent .no {
+        border-color: rgba(0,0,0,.18);
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function showConsentBanner() {
+    if (!SHOW_BANNER) return;
+    if (getConsent() !== null) return; // already decided
+
+    ensureBannerStylesOnce();
+
+    const banner = document.createElement("div");
+    banner.className = "fs-consent";
+    banner.innerHTML = `
+      <div class="fs-consent-row" role="dialog" aria-live="polite" aria-label="Privacy notice">
+        <p>
+          We use privacy-friendly analytics to understand site traffic and improve FutureSprouts.
+          <a href="privacy.html">Learn more</a>.
+        </p>
+        <div class="fs-consent-actions">
+          <button class="no" type="button">No thanks</button>
+          <button class="ok" type="button">OK</button>
+        </div>
+      </div>
+    `;
+
+    const ok = banner.querySelector(".ok");
+    const no = banner.querySelector(".no");
+
+    ok.addEventListener("click", () => {
+      setConsent("granted");
+      banner.remove();
+      // load analytics after consent
+      loadGA();
+      loadClarity();
+      fireGAEvent("consent_granted");
+    });
+
+    no.addEventListener("click", () => {
+      setConsent("denied");
+      banner.remove();
+      // do not load analytics
+    });
+
+    document.body.appendChild(banner);
+  }
+
+  // ---------------------------
+  // GA helper (safe)
+  // ---------------------------
+  function fireGAEvent(name, params) {
+    try {
+      if (window.gtag) window.gtag("event", name, params || {});
+    } catch {}
+  }
+
+  // ---------------------------
+  // Decide whether to load analytics now
+  // US-mostly: if you want “not annoying”, we load after OK only.
+  // If you’d prefer auto-load and banner is just informational, tell me.
+  // ---------------------------
+  const consent = getConsent();
+  if (consent === "granted") {
+    loadGA();
+    loadClarity();
+  } else if (consent === null) {
+    // show banner; do not load analytics yet
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", showConsentBanner);
+    } else {
+      showConsentBanner();
+    }
+  }
+  // consent denied => do nothing
 
   // ---------------------------
   // Keys
@@ -36,8 +221,6 @@
   const ANALYTICS_KEY = "fs_analytics_v1";
   const INVENTORY_KEY = "fs_inventory_v1";
   const LOCKOUT_KEY = "fs_order_lockout_until";
-
-  // Theme preference: "system" | "light" | "dark"
   const THEME_PREF_KEY = "fs_theme_pref";
 
   // ---------------------------
@@ -101,7 +284,7 @@
   }
 
   // ---------------------------
-  // Analytics (localStorage)
+  // Local analytics store (kept; useful for admin/debug)
   // ---------------------------
   function logEvent(type, data) {
     const store = loadJson(ANALYTICS_KEY, { events: [] });
@@ -110,11 +293,13 @@
     saveJson(ANALYTICS_KEY, store);
   }
 
-  // safe page-view
+  // page view (local)
   try { logEvent("page_view", { path: location.pathname }); } catch {}
+  // page view (GA)
+  fireGAEvent("page_view_fs", { page_path: location.pathname });
 
   // ---------------------------
-  // Inventory (Admin-lite) — single source of truth
+  // Inventory
   // ---------------------------
   const defaultInv = {
     updatedAt: nowIso(),
@@ -146,8 +331,7 @@
   }
 
   // ---------------------------
-  // Header/Footer injection
-  // IMPORTANT: only inject if slots exist
+  // Header/Footer injection (single)
   // ---------------------------
   function headerHtml() {
     const name = cfg.siteName || "FutureSprouts";
@@ -186,10 +370,10 @@
       <a href="events.html">Events</a>
       <a href="impact.html">Impact</a>
       <a href="get-involved.html">Get Involved</a>
-      <a href="donate.html" class="donate-btn">Donate</a>
-      <a href="contact.html">Contact</a>
+      <a href="donate.html" class="donate-btn" data-track="donate">Donate</a>
+      <a href="contact.html" data-track="contact">Contact</a>
 
-      <a href="cart.html" class="cart-link" aria-label="View cart">
+      <a href="cart.html" class="cart-link" aria-label="View cart" data-track="cart_open">
         <span class="cart-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
             <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
@@ -221,11 +405,11 @@
     <a href="services.html">Services</a>
     <a href="events.html">Events</a>
     <a href="impact.html">Impact</a>
-    <a href="get-involved.html">Get Involved</a>
-    <a href="contact.html">Contact</a>
-    <a href="donate.html" class="donate-btn">Donate</a>
+    <a href="get-involved.html" data-track="get_involved">Get Involved</a>
+    <a href="contact.html" data-track="contact">Contact</a>
+    <a href="donate.html" class="donate-btn" data-track="donate">Donate</a>
 
-    <a href="cart.html" class="cart-link" aria-label="View cart">
+    <a href="cart.html" class="cart-link" aria-label="View cart" data-track="cart_open">
       <span style="font-weight:700;">Cart</span>
       <span class="cart-badge" id="cartBadgeMobile">0</span>
     </a>
@@ -248,7 +432,7 @@
     <div>
       <h3>${site}</h3>
       <p>Youth-led sustainable farming education and environmental stewardship.</p>
-      <p style="margin-top:10px;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
+      <p style="margin-top:10px;"><a href="mailto:${escapeHtml(email)}" data-track="email_click">${escapeHtml(email)}</a></p>
     </div>
 
     <div>
@@ -256,7 +440,7 @@
       <p><a href="services.html">Services</a></p>
       <p><a href="cart.html">Cart</a></p>
       <p><a href="events.html">Events</a></p>
-      <p><a href="donate.html">Donate</a></p>
+      <p><a href="donate.html" data-track="donate">Donate</a></p>
       <p><a href="wishlist.html">Wishlist</a></p>
     </div>
 
@@ -264,7 +448,7 @@
       <h3>Legal</h3>
       <p><a href="privacy.html">Privacy Policy</a></p>
       <p><a href="terms.html">Terms of Service</a></p>
-      <p style="margin-top:10px;"><a href="contact.html">Contact</a></p>
+      <p style="margin-top:10px;"><a href="contact.html" data-track="contact">Contact</a></p>
     </div>
   </div>
 
@@ -282,11 +466,11 @@
       </div>
 
       <div class="footer-socials">
-        <a href="${ig}" target="_blank" rel="noopener">Instagram</a>
+        <a href="${ig}" target="_blank" rel="noopener" data-track="outbound">Instagram</a>
         <span aria-hidden="true">·</span>
-        <a href="${tt}" target="_blank" rel="noopener">TikTok</a>
+        <a href="${tt}" target="_blank" rel="noopener" data-track="outbound">TikTok</a>
         <span aria-hidden="true">·</span>
-        <a href="${yt}" target="_blank" rel="noopener">YouTube</a>
+        <a href="${yt}" target="_blank" rel="noopener" data-track="outbound">YouTube</a>
       </div>
     </div>
   </div>
@@ -316,7 +500,6 @@
     } else if (pref === "light") {
       root.setAttribute("data-theme", "light");
     } else {
-      // system
       const sysDark = media ? media.matches : false;
       root.setAttribute("data-theme", sysDark ? "dark" : "light");
     }
@@ -328,8 +511,6 @@
 
     const pref = getThemePref();
     select.value = pref;
-
-    // apply immediately
     applyTheme(pref);
 
     select.onchange = () => {
@@ -337,14 +518,13 @@
       localStorage.setItem(THEME_PREF_KEY, next);
       applyTheme(next);
       logEvent("theme_change", { pref: next });
+      fireGAEvent("theme_change", { pref: next });
     };
   }
 
-  // initial
   applyTheme(getThemePref());
   syncThemeUI();
 
-  // if system theme changes while user is on "system"
   if (media && typeof media.addEventListener === "function") {
     media.addEventListener("change", () => {
       if (getThemePref() === "system") applyTheme("system");
@@ -377,7 +557,54 @@
   });
 
   // ---------------------------
-  // Scroll reveal (resets)
+  // Conversion tracking (delegated)
+  // ---------------------------
+  function trackClick(e) {
+    const a = e.target.closest ? e.target.closest("a") : null;
+    if (!a) return;
+
+    const href = (a.getAttribute("href") || "").trim();
+    const track = (a.getAttribute("data-track") || "").trim();
+
+    // Outbound
+    const isExternal = /^https?:\/\//i.test(href) && !href.includes(location.host);
+
+    if (track === "donate" || /donate\.html$/i.test(href)) {
+      logEvent("donate_click", { href });
+      fireGAEvent("donate_click", { link_url: href });
+      return;
+    }
+    if (track === "get_involved" || /get-involved\.html$/i.test(href)) {
+      logEvent("get_involved_click", { href });
+      fireGAEvent("get_involved_click", { link_url: href });
+      return;
+    }
+    if (track === "contact" || /contact\.html$/i.test(href)) {
+      logEvent("contact_click", { href });
+      fireGAEvent("contact_click", { link_url: href });
+      return;
+    }
+    if (track === "email_click" || href.startsWith("mailto:")) {
+      logEvent("email_click", { href });
+      fireGAEvent("email_click", { link_url: href });
+      return;
+    }
+    if (track === "cart_open" || /cart\.html$/i.test(href)) {
+      logEvent("cart_open", { href });
+      fireGAEvent("cart_open", { link_url: href });
+      return;
+    }
+    if (track === "outbound" || isExternal) {
+      logEvent("outbound_click", { href });
+      fireGAEvent("outbound_click", { link_url: href });
+      return;
+    }
+  }
+
+  document.addEventListener("click", trackClick, { capture: true });
+
+  // ---------------------------
+  // Scroll reveal
   // ---------------------------
   const reveals = document.querySelectorAll(".reveal");
   if (reveals.length && "IntersectionObserver" in window) {
@@ -391,8 +618,7 @@
   }
 
   // ---------------------------
-  // Impact numbers (Count-up stats) — FIX for “stuck at 0”
-  // Elements should look like: <span data-count="1200">0+</span>
+  // Impact numbers count-up
   // ---------------------------
   function countUp(el, target) {
     const duration = 900;
@@ -456,7 +682,7 @@
   }
 
   // ---------------------------
-  // Cart: storage helpers
+  // Cart storage helpers
   // ---------------------------
   function loadCart() { return loadJson(CART_KEY, []); }
 
@@ -503,9 +729,12 @@
       [b1, b2].forEach(b => {
         if (!b) return;
         b.classList.remove("pop");
-        void b.offsetWidth; // restart animation
+        void b.offsetWidth;
         b.classList.add("pop");
       });
+
+      logEvent("cart_add", { total: newTotal });
+      fireGAEvent("cart_add", { total: newTotal });
     }
     lastCartTotal = newTotal;
   }
@@ -544,7 +773,7 @@
   });
 
   // ---------------------------
-  // Cart operations
+  // Cart operations (unchanged)
   // ---------------------------
   function cartAddOrUpdate(id, name, meta, qtyDelta, constraints) {
     const cart = loadCart();
@@ -552,7 +781,6 @@
     const currentQty = idx >= 0 ? cart[idx].qty : 0;
     const nextQty = Math.max(0, currentQty + qtyDelta);
 
-    // constraints
     if (constraints) {
       if (constraints.maxPerItem != null && nextQty > constraints.maxPerItem) {
         showModal("Limit reached", `You can only request up to ${constraints.maxPerItem} of this item per order.`);
@@ -582,6 +810,7 @@
 
     saveCart(cart);
     try { logEvent("cart_update", { id, qty: nextQty }); } catch {}
+    fireGAEvent("cart_update", { id, qty: nextQty });
     return true;
   }
 
@@ -589,6 +818,7 @@
     const cart = loadCart().filter(x => x.id !== id);
     saveCart(cart);
     try { logEvent("cart_remove", { id }); } catch {}
+    fireGAEvent("cart_remove", { id });
   }
 
   function cartUpdateMeta(id, newMeta) {
@@ -598,36 +828,29 @@
     cart[idx].meta = { ...(cart[idx].meta || {}), ...(newMeta || {}) };
     saveCart(cart);
     try { logEvent("cart_meta_update", { id }); } catch {}
+    fireGAEvent("cart_meta_update", { id });
     return true;
   }
 
-  // ---------------------------
   // Expose helpers
-  // ---------------------------
   window.FS_CART = {
-    // cart
     loadCart,
     saveCart,
     cartAddOrUpdate,
     cartRemove,
     cartUpdateMeta,
-
-    // ui
     showModal,
-
-    // inventory
     loadInventory,
     saveInventory,
     getInventoryStatus,
-
-    // analytics + utils
     logEvent,
     loadJson,
     saveJson
   };
 
   // ---------------------------
-  // Cart page rendering (if cart.html present)
+  // Cart page rendering + Formspree submit
+  // (Your existing logic can stay; add GA events around submits)
   // ---------------------------
   const cartList = document.querySelector("#cartList");
   const cartEmpty = document.querySelector("#cartEmpty");
@@ -698,7 +921,6 @@
 </div>`;
     }).join("");
 
-    // qty buttons
     cartList.querySelectorAll("[data-dec]").forEach(btn => {
       btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-dec");
@@ -721,7 +943,6 @@
       });
     });
 
-    // remove
     cartList.querySelectorAll("[data-remove]").forEach(btn => {
       btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-remove");
@@ -730,7 +951,6 @@
       });
     });
 
-    // meta editors
     cartList.querySelectorAll("[data-meta-broch]").forEach(inp => {
       inp.addEventListener("change", () => {
         const id = inp.getAttribute("data-meta-broch");
@@ -753,7 +973,7 @@
   if (cartList) renderCart();
 
   // ---------------------------
-  // Order lockouts + validation + submit (Formspree)
+  // Formspree submit tracking (keeps your current endpoint)
   // ---------------------------
   function getLockoutUntil() {
     const raw = localStorage.getItem(LOCKOUT_KEY);
@@ -817,321 +1037,46 @@
         return;
       }
 
-      const payload = {
-        email,
-        name: formData.get("name") || "",
-        organization: formData.get("organization") || "",
-        address1: formData.get("address1") || "",
-        city: formData.get("city") || "",
-        state,
-        zip,
-        location: `${formData.get("address1") || ""}, ${formData.get("city") || ""}, ${state} ${zip}`.replace(/\s+/g, " ").trim(),
-        notes: formData.get("notes") || "",
-        order_summary: cartToText(cart)
-      };
-
       try { logEvent("order_submit_attempt", { items: cart.length }); } catch {}
+      fireGAEvent("order_submit_attempt", { items: cart.length });
 
       try {
         const res = await fetch("https://formspree.io/f/mdakervk", {
           method: "POST",
           headers: { "Accept": "application/json", "Content-Type": "application/json" },
           body: JSON.stringify({
-            email: payload.email,
+            email,
             message:
 `SERVICE REQUEST (FutureSprouts)
 
-Name: ${payload.name}
-Email: ${payload.email}
-Organization: ${payload.organization}
-Address: ${payload.location}
+Email: ${email}
 
 Order:
-${payload.order_summary}
-
-Notes:
-${payload.notes}`
+${cartToText(cart)}`
           })
         });
 
         if (!res.ok) {
           showModal("Error", "Something went wrong submitting the request. Please try again or email info@futuresprouts.org.");
           try { logEvent("order_submit_error", { status: res.status }); } catch {}
+          fireGAEvent("order_submit_error", { status: res.status });
           return;
         }
 
-        // success
         saveCart([]);
         renderCart();
         cartForm.reset();
-
-        // lockout: 6 hours
         setLockoutHours(6);
 
         showModal("Request sent", "Thanks! Your request was sent. We’ll follow up by email.");
         try { logEvent("order_submit_success", {}); } catch {}
+        fireGAEvent("order_submit_success", {});
       } catch {
         showModal("Error", "Network error. Please try again or email info@futuresprouts.org.");
         try { logEvent("order_submit_error", { status: "network" }); } catch {}
+        fireGAEvent("order_submit_error", { status: "network" });
       }
     });
   }
 
 })();
-const select = document.getElementById("theme-select");
-select.value = document.documentElement.dataset.theme || "light";
-
-select.addEventListener("change", () => {
-  const theme = select.value;
-  document.documentElement.dataset.theme = theme;
-  localStorage.setItem("theme", theme);
-});
-(function () {
-  // ---------------------------
-  // Theme UI Injection (Footer)
-  // ---------------------------
-
-  const THEME_KEY = "fs_theme"; // change if you already use a key
-  const THEME_ATTR = "data-theme";
-
-  function getSavedTheme() {
-    const t = localStorage.getItem(THEME_KEY);
-    return (t === "dark" || t === "light") ? t : null;
-  }
-
-  function setTheme(theme) {
-    document.documentElement.setAttribute(THEME_ATTR, theme);
-    localStorage.setItem(THEME_KEY, theme);
-  }
-
-  function ensureThemeInitialized() {
-    // If already set in HTML, respect it
-    const existing = document.documentElement.getAttribute(THEME_ATTR);
-    if (existing === "dark" || existing === "light") return;
-
-    // Otherwise use saved theme, fallback to light
-    setTheme(getSavedTheme() || "light");
-  }
-
-  function injectThemeStylesOnce() {
-    if (document.getElementById("fs-theme-pill-styles")) return;
-
-    const style = document.createElement("style");
-    style.id = "fs-theme-pill-styles";
-    style.textContent = `
-      .footer-bottom-right {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-
-      .theme-pill {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 14px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.25);
-        background: rgba(255,255,255,0.06);
-        font-size: 14px;
-      }
-
-      .theme-label {
-        opacity: 0.85;
-        white-space: nowrap;
-      }
-
-      .theme-pill select {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        border: none;
-        background: transparent;
-        color: inherit;
-        font-size: 14px;
-        font-weight: 500;
-        padding-right: 18px;
-        cursor: pointer;
-        line-height: 1;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right center;
-      }
-
-      .theme-pill select:focus { outline: none; }
-
-      /* Light theme variant */
-      [data-theme="light"] .theme-pill {
-        background: rgba(0,0,0,0.05);
-        border-color: rgba(0,0,0,0.2);
-        color: #000;
-      }
-
-      [data-theme="light"] .theme-pill select {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='black' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  function buildThemePill() {
-    const pill = document.createElement("div");
-    pill.className = "theme-pill";
-    pill.setAttribute("data-fs-theme-pill", "1");
-
-    const label = document.createElement("span");
-    label.className = "theme-label";
-    label.textContent = "Theme";
-
-    const select = document.createElement("select");
-    select.id = "theme-select";
-    select.setAttribute("aria-label", "Theme selector");
-
-    const optLight = document.createElement("option");
-    optLight.value = "light";
-    optLight.textContent = "Light";
-
-    const optDark = document.createElement("option");
-    optDark.value = "dark";
-    optDark.textContent = "Dark";
-
-    select.appendChild(optLight);
-    select.appendChild(optDark);
-
-    // Set current
-    const current = document.documentElement.getAttribute(THEME_ATTR) || "light";
-    select.value = (current === "dark") ? "dark" : "light";
-
-    select.addEventListener("change", () => {
-      setTheme(select.value);
-    });
-
-    pill.appendChild(label);
-    pill.appendChild(select);
-
-    return pill;
-  }
-
-  function injectThemePillIntoFooter() {
-    const footer = document.querySelector("footer");
-    if (!footer) return;
-
-    // Don't inject twice
-    if (footer.querySelector('[data-fs-theme-pill="1"]')) return;
-
-    // Try to find your bottom-right container; fall back to something sane
-    let right = footer.querySelector(".footer-bottom-right");
-
-    // If it doesn't exist, try to locate a socials container and use its parent
-    if (!right) {
-      const socials = footer.querySelector(".socials");
-      if (socials && socials.parentElement) {
-        right = socials.parentElement;
-        right.classList.add("footer-bottom-right");
-      }
-    }
-
-    // If still not found, create a container at the end of footer
-    if (!right) {
-      right = document.createElement("div");
-      right.className = "footer-bottom-right";
-      footer.appendChild(right);
-    }
-
-    // Insert theme pill before socials if socials exists, otherwise append
-    const socials = right.querySelector(".socials") || footer.querySelector(".socials");
-    const pill = buildThemePill();
-
-    if (socials && socials.parentElement === right) {
-      right.insertBefore(pill, socials);
-    } else {
-      right.appendChild(pill);
-    }
-  }
-
-  function initFooterThemeInjection() {
-    ensureThemeInitialized();
-    injectThemeStylesOnce();
-    injectThemePillIntoFooter();
-
-    // If your footer is injected later by JS, try again a few times
-    let tries = 0;
-    const timer = setInterval(() => {
-      tries += 1;
-      injectThemePillIntoFooter();
-      const footer = document.querySelector("footer");
-      if ((footer && footer.querySelector('[data-fs-theme-pill="1"]')) || tries >= 20) {
-        clearInterval(timer);
-      }
-    }, 250);
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initFooterThemeInjection);
-  } else {
-    initFooterThemeInjection();
-  }
-})();
-(function () {
-  // ---------------------------
-  // Footer Injection
-  // ---------------------------
-
-  function buildFooterHTML() {
-    return `
-      <footer class="site-footer">
-        <div class="footer-top">
-          <div class="footer-brand">
-            <strong>FUTURESPROUTS</strong>
-            <p>Youth-led sustainable farming education and environmental stewardship.</p>
-            <a href="mailto:info@futuresprouts.org">info@futuresprouts.org</a>
-          </div>
-
-          <div class="footer-links">
-            <h4>Quick Links</h4>
-            <a href="/services">Services</a>
-            <a href="/cart">Cart</a>
-            <a href="/events">Events</a>
-            <a href="/donate">Donate</a>
-            <a href="/wishlist">Wishlist</a>
-          </div>
-
-          <div class="footer-links">
-            <h4>Legal</h4>
-            <a href="/privacy">Privacy Policy</a>
-            <a href="/terms">Terms of Service</a>
-            <a href="/contact">Contact</a>
-          </div>
-        </div>
-
-        <div class="footer-bottom">
-          <span>© ${new Date().getFullYear()} FutureSprouts</span>
-
-          <div class="footer-bottom-right">
-            <!-- Theme pill injected separately -->
-            <div class="socials">
-              <a href="#">Instagram</a> ·
-              <a href="#">TikTok</a> ·
-              <a href="#">YouTube</a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    `;
-  }
-
-  function injectFooter() {
-    const mount = document.getElementById("siteFooter");
-    if (!mount || mount.dataset.injected) return;
-
-    mount.innerHTML = buildFooterHTML();
-    mount.dataset.injected = "true";
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", injectFooter);
-  } else {
-    injectFooter();
-  }
-})();
-
