@@ -34,4 +34,12 @@ window.FS_CONFIG.analytics = {
   clarityId: "uvqgowa5qp",
   consentBanner: true
 };
+window.FS_CONFIG = {
+  socials: {
+    instagram: "https://instagram.com/____",
+    tiktok: "https://www.tiktok.com/@____",
+    youtube: "https://www.youtube.com/@____"
+  }
+};
+
 
