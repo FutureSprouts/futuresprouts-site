@@ -27,3 +27,13 @@ window.FS_CONFIG = {
 };
 window.FS_CONFIG = window.FS_CONFIG || {};
 window.FS_CONFIG.googlePlacesKey = "PASTE_YOUR_KEY_HERE";
+// config.js
+window.FS_CONFIG = {
+  socials: {
+    instagram: "https://www.instagram.com/futuresprouts",
+    x: "https://x.com/futuresprouts",        // formerly Twitter
+    linkedin: "https://www.linkedin.com/company/futuresprouts",
+    youtube: "https://www.youtube.com/@futuresprouts",
+    facebook: "https://www.facebook.com/futuresprouts"
+  }
+};
