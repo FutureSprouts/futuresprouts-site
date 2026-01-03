@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Seed Packets | FutureSprouts Services</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Request seed packets and brochures." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- Injected header (from script.js) -->
+  <div id="siteHeader"></div>
+
+  <div class="container mobile-menu">
+    <a href="about.html">About</a>
+    <a href="programs.html">Programs</a>
+    <a href="services.html">Services</a>
+    <a href="events.html">Events</a>
+    <a href="impact.html">Impact</a>
+    <a href="get-involved.html">Get Involved</a>
+    <a href="contact.html">Contact</a>
+    <a href="donate.html" class="donate-btn">Donate</a>
+
+    <a href="cart.html" class="cart-link mobile-cart-link" aria-label="View cart">
+      <span class="cart-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" role="img" focusable="false">
+          <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
+          <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
+        </svg>
+      </span>
+      <span style="font-weight:800;">Cart</span>
+      <span class="cart-badge" id="cartBadgeMobile">0</span>
+    </a>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="kicker reveal">Services • Seed Packets</div>
+      <h2 class="reveal">Choose seed types and quantities.</h2>
+      <p class="reveal">For each seed type, select how many brochures and seed packets you want, then add to cart.</p>
+
+      <div class="grid cols-3">
+        <!-- TOMATO -->
+        <div class="card reveal" id="cardTomato">
+          <img class="shop-img" src="https://images.unsplash.com/photo-1567306301408-9b74779a11af?auto=format&fit=crop&w=1600&q=80" alt="Tomato seed package">
+          <div class="shop-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div class="pill">Seed Package</div>
+              <span class="badge ok" id="badgeTomato">Available</span>
+            </div>
+
+            <h3 style="margin-top:10px;">Tomato Package</h3>
+            <p class="small" id="descTomato" data-base="Includes tomato seed packets + basic planting guide.">
+              Includes tomato seed packets + basic planting guide.
+            </p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div>
+                <strong>Brochures</strong>
+                <div class="small">Info handouts</div>
+              </div>
+              <div class="qty">
+                <button type="button" data-broch-dec="tomato">−</button>
+                <span id="tomatoBroch">0</span>
+                <button type="button" data-broch-inc="tomato">+</button>
+              </div>
+            </div>
+
+            <div class="qty-row">
+              <div>
+                <strong>Seed packets</strong>
+                <div class="small">Tomato packets</div>
+              </div>
+              <div class="qty">
+                <button type="button" data-pack-dec="tomato">−</button>
+                <span id="tomatoPack">0</span>
+                <button type="button" data-pack-inc="tomato">+</button>
+              </div>
+            </div>
+
+            <div style="margin-top:14px;">
+              <button class="btn primary" type="button" data-add="seed-tomato" id="addTomato">Add to cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CORN -->
+        <div class="card reveal" id="cardCorn">
+          <img class="shop-img" src="https://images.unsplash.com/photo-1509223197845-458d87318791?auto=format&fit=crop&w=1600&q=80" alt="Corn seed package">
+          <div class="shop-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div class="pill">Seed Package</div>
+              <span class="badge ok" id="badgeCorn">Available</span>
+            </div>
+
+            <h3 style="margin-top:10px;">Corn Package</h3>
+            <p class="small" id="descCorn" data-base="Includes corn seed packets + simple growing instructions.">
+              Includes corn seed packets + simple growing instructions.
+            </p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div><strong>Brochures</strong><div class="small">Info handouts</div></div>
+              <div class="qty">
+                <button type="button" data-broch-dec="corn">−</button>
+                <span id="cornBroch">0</span>
+                <button type="button" data-broch-inc="corn">+</button>
+              </div>
+            </div>
+
+            <div class="qty-row">
+              <div><strong>Seed packets</strong><div class="small">Corn packets</div></div>
+              <div class="qty">
+                <button type="button" data-pack-dec="corn">−</button>
+                <span id="cornPack">0</span>
+                <button type="button" data-pack-inc="corn">+</button>
+              </div>
+            </div>
+
+            <div style="margin-top:14px;">
+              <button class="btn primary" type="button" data-add="seed-corn" id="addCorn">Add to cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MULTI -->
+        <div class="card reveal" id="cardMulti">
+          <img class="shop-img" src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1600&q=80" alt="Mixed seeds">
+          <div class="shop-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div class="pill">Seed Package</div>
+              <span class="badge ok" id="badgeMulti">Available</span>
+            </div>
+
+            <h3 style="margin-top:10px;">Multi-Seed Package</h3>
+            <p class="small" id="descMulti" data-base="Mixed seed variety (great for classrooms and starter gardens).">
+              Mixed seed variety (great for classrooms and starter gardens).
+            </p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div><strong>Brochures</strong><div class="small">Info handouts</div></div>
+              <div class="qty">
+                <button type="button" data-broch-dec="multi">−</button>
+                <span id="multiBroch">0</span>
+                <button type="button" data-broch-inc="multi">+</button>
+              </div>
+            </div>
+
+            <div class="qty-row">
+              <div><strong>Seed packets</strong><div class="small">Mixed packets</div></div>
+              <div class="qty">
+                <button type="button" data-pack-dec="multi">−</button>
+                <span id="multiPack">0</span>
+                <button type="button" data-pack-inc="multi">+</button>
+              </div>
+            </div>
+
+            <div style="margin-top:14px;">
+              <button class="btn primary" type="button" data-add="seed-multi" id="addMulti">Add to cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice reveal">
+        After adding items, click the cart icon in the top-right and submit your request.
+      </div>
+    </div>
+  </section>
+
+  <!-- Injected footer (from script.js) -->
+  <div id="siteFooter"></div>
+
+  <!-- IMPORTANT: script.js must load BEFORE this page script -->
+  <script src="script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const state = {
+        tomato: { brochures: 0, packets: 0 },
+        corn:   { brochures: 0, packets: 0 },
+        multi:  { brochures: 0, packets: 0 }
+      };
+
+      function clamp(n) { return Math.max(0, Math.min(200, n)); }
+
+      function render() {
+        document.getElementById("tomatoBroch").textContent = state.tomato.brochures;
+        document.getElementById("tomatoPack").textContent  = state.tomato.packets;
+
+        document.getElementById("cornBroch").textContent = state.corn.brochures;
+        document.getElementById("cornPack").textContent  = state.corn.packets;
+
+        document.getElementById("multiBroch").textContent = state.multi.brochures;
+        document.getElementById("multiPack").textContent  = state.multi.packets;
+      }
+
+      function bindQty(type) {
+        document.querySelectorAll(`[data-broch-inc="${type}"]`).forEach(b => b.onclick = () => { state[type].brochures = clamp(state[type].brochures + 1); render(); });
+        document.querySelectorAll(`[data-broch-dec="${type}"]`).forEach(b => b.onclick = () => { state[type].brochures = clamp(state[type].brochures - 1); render(); });
+        document.querySelectorAll(`[data-pack-inc="${type}"]`).forEach(b => b.onclick = () => { state[type].packets = clamp(state[type].packets + 1); render(); });
+        document.querySelectorAll(`[data-pack-dec="${type}"]`).forEach(b => b.onclick = () => { state[type].packets = clamp(state[type].packets - 1); render(); });
+      }
+
+      ["tomato", "corn", "multi"].forEach(bindQty);
+      render();
+
+      function uniqueId(baseId) {
+        return `${baseId}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      }
+
+      function readItemStatus(itemKey) {
+        const fallback = { label: "Available", tone: "ok", remaining: null, out: false };
+        if (!window.FS_CART || typeof window.FS_CART.loadInventory !== "function") return fallback;
+
+        const inv = window.FS_CART.loadInventory();
+        const items = (inv && inv.items) || {};
+        const it = items[itemKey];
+        if (!it) return fallback;
+
+        const availableFlag = (it.available !== false);
+        const remaining = (typeof it.remaining === "number") ? it.remaining : null;
+        const availableNow = availableFlag && (remaining == null || remaining > 0);
+
+        if (!availableNow) return { label: "Out of stock", tone: "danger", remaining: 0, out: true };
+        if (remaining != null && remaining <= 10) return { label: "Limited", tone: "warn", remaining, out: false };
+        return { label: "Available", tone: "ok", remaining, out: false };
+      }
+
+      function setSeedUI(seedKey, itemKey, badgeId, descId, addBtnId, cardId) {
+        const st = readItemStatus(itemKey);
+
+        const badge = document.getElementById(badgeId);
+        const desc = document.getElementById(descId);
+        const addBtn = document.getElementById(addBtnId);
+        const card = document.getElementById(cardId);
+
+        if (badge) {
+          badge.textContent = st.label;
+          badge.classList.remove("ok","warn","danger");
+          badge.classList.add(st.tone);
+        }
+
+        if (desc) {
+          const base = desc.getAttribute("data-base") || desc.textContent;
+          desc.setAttribute("data-base", base);
+          if (st.label === "Limited" && typeof st.remaining === "number") {
+            desc.textContent = `${base} • Remaining: ${st.remaining}`;
+          } else {
+            desc.textContent = base;
+          }
+        }
+
+        const disable = st.out === true;
+
+        document.querySelectorAll(
+          `[data-broch-inc="${seedKey}"],[data-broch-dec="${seedKey}"],[data-pack-inc="${seedKey}"],[data-pack-dec="${seedKey}"]`
+        ).forEach(btn => {
+          btn.disabled = disable;
+          btn.style.opacity = disable ? "0.55" : "";
+          btn.style.cursor = disable ? "not-allowed" : "";
+        });
+
+        if (addBtn) {
+          addBtn.disabled = disable;
+          addBtn.style.opacity = disable ? "0.55" : "";
+          addBtn.style.cursor = disable ? "not-allowed" : "";
+          addBtn.textContent = disable ? "Out of stock" : "Add to cart";
+        }
+
+        if (card && disable) card.style.opacity = "0.72";
+
+        return st;
+      }
+
+      const statusTomato = setSeedUI("tomato","seed-tomato","badgeTomato","descTomato","addTomato","cardTomato");
+      const statusCorn   = setSeedUI("corn","seed-corn","badgeCorn","descCorn","addCorn","cardCorn");
+      const statusMulti  = setSeedUI("multi","seed-multi","badgeMulti","descMulti","addMulti","cardMulti");
+
+      document.querySelectorAll("[data-add]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          if (!window.FS_CART || typeof window.FS_CART.cartAddOrUpdate !== "function") {
+            alert("Cart system not loaded. Make sure script.js is loading without errors (check DevTools Console).");
+            return;
+          }
+
+          const baseId = btn.getAttribute("data-add");
+          const map = {
+            "seed-tomato": { key: "tomato", name: "Seed Packets — Tomato", status: statusTomato },
+            "seed-corn":   { key: "corn",   name: "Seed Packets — Corn", status: statusCorn },
+            "seed-multi":  { key: "multi",  name: "Seed Packets — Multi-Seed", status: statusMulti }
+          };
+
+          const info = map[baseId];
+          if (!info) {
+            window.FS_CART.showModal("Error", "Unknown seed type. Please refresh the page.");
+            return;
+          }
+
+          if (info.status && info.status.out) {
+            window.FS_CART.showModal("Out of stock", "This item is currently unavailable. Please check back later.");
+            return;
+          }
+
+          const s = state[info.key];
+          if ((s.brochures + s.packets) === 0) {
+            window.FS_CART.showModal("Nothing selected", "Choose at least 1 brochure or 1 seed packet before adding to cart.");
+            return;
+          }
+
+          const id = uniqueId(baseId);
+
+          window.FS_CART.cartAddOrUpdate(
+            id,
+            info.name,
+            { brochures: s.brochures, packets: s.packets, seedType: info.key, baseId: baseId },
+            1,
+            null
+          );
+
+          state[info.key].brochures = 0;
+          state[info.key].packets = 0;
+          render();
+
+          window.FS_CART.showModal("Added to cart", "Item added. Click the cart icon in the top-right to submit your request.");
+        });
+      });
+    });
+  </script>
+</body>
+</html>

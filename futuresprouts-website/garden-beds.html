@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Garden Beds | FutureSprouts Services</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Request garden beds (2x4 or 4x4). Max 4 beds per order." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- Injected header (from script.js) -->
+  <div id="siteHeader"></div>
+
+  <div class="container mobile-menu">
+    <a href="about.html">About</a>
+    <a href="programs.html">Programs</a>
+    <a href="services.html">Services</a>
+    <a href="events.html">Events</a>
+    <a href="impact.html">Impact</a>
+    <a href="get-involved.html">Get Involved</a>
+    <a href="contact.html">Contact</a>
+    <a href="donate.html" class="donate-btn">Donate</a>
+
+    <a href="cart.html" class="cart-link mobile-cart-link" aria-label="View cart">
+      <span class="cart-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" role="img" focusable="false">
+          <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
+          <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
+        </svg>
+      </span>
+      <span style="font-weight:800;">Cart</span>
+      <span class="cart-badge" id="cartBadgeMobile">0</span>
+    </a>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="kicker reveal">Services • Garden Beds</div>
+      <h2 class="reveal">Request raised garden beds.</h2>
+      <p class="reveal">Choose a size and add it to your cart.</p>
+
+      <div class="rulebox reveal">
+        Abuse prevention rule: <strong>Max 4 total garden beds per order</strong> (any combination of sizes).
+      </div>
+
+      <div class="grid cols-2">
+        <!-- 2x4 -->
+        <div class="card reveal">
+          <img class="shop-img" src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=1600&q=80" alt="2x4 garden bed">
+          <div class="shop-body">
+            <div class="pill">Garden Bed</div>
+            <h3>2×4 Bed</h3>
+            <p class="small">Compact bed for schools and small spaces.</p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div><strong>Quantity</strong><div class="small">Up to 4 total beds across both sizes</div></div>
+              <div class="qty">
+                <button type="button" data-bed-dec="bed-2x4">−</button>
+                <span id="bed2x4Qty">0</span>
+                <button type="button" data-bed-inc="bed-2x4">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4x4 -->
+        <div class="card reveal">
+          <img class="shop-img" src="https://images.unsplash.com/photo-1523413453475-4b9d83f86a9b?auto=format&fit=crop&w=1600&q=80" alt="4x4 garden bed">
+          <div class="shop-body">
+            <div class="pill">Garden Bed</div>
+            <h3>4×4 Bed</h3>
+            <p class="small">Larger bed suitable for class projects and community gardens.</p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div><strong>Quantity</strong><div class="small">Up to 4 total beds across both sizes</div></div>
+              <div class="qty">
+                <button type="button" data-bed-dec="bed-4x4">−</button>
+                <span id="bed4x4Qty">0</span>
+                <button type="button" data-bed-inc="bed-4x4">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-actions reveal">
+        <a class="btn outline" href="services.html">Back to Services</a>
+        <a class="btn primary" href="cart.html">View Cart</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Injected footer (from script.js) -->
+  <div id="siteFooter"></div>
+
+  <script src="script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      function readyCart() {
+        return window.FS_CART && typeof window.FS_CART.loadCart === "function" && typeof window.FS_CART.cartAddOrUpdate === "function";
+      }
+
+      function getQty(id){
+        const cart = window.FS_CART.loadCart();
+        const item = cart.find(x => x.id === id);
+        return item ? item.qty : 0;
+      }
+
+      function render(){
+        document.getElementById("bed2x4Qty").textContent = getQty("bed-2x4");
+        document.getElementById("bed4x4Qty").textContent = getQty("bed-4x4");
+      }
+
+      function inc(id, name){
+        window.FS_CART.cartAddOrUpdate(id, name, {}, +1, { bedMaxTotal: 4 });
+        render();
+      }
+
+      function dec(id, name){
+        window.FS_CART.cartAddOrUpdate(id, name, {}, -1, { bedMaxTotal: 4 });
+        render();
+      }
+
+      function bind(){
+        document.querySelectorAll("[data-bed-inc='bed-2x4']").forEach(b => b.onclick = () => inc("bed-2x4","Garden Bed — 2×4"));
+        document.querySelectorAll("[data-bed-dec='bed-2x4']").forEach(b => b.onclick = () => dec("bed-2x4","Garden Bed — 2×4"));
+
+        document.querySelectorAll("[data-bed-inc='bed-4x4']").forEach(b => b.onclick = () => inc("bed-4x4","Garden Bed — 4×4"));
+        document.querySelectorAll("[data-bed-dec='bed-4x4']").forEach(b => b.onclick = () => dec("bed-4x4","Garden Bed — 4×4"));
+
+        render();
+      }
+
+      // If script.js initializes FS_CART slightly later, wait briefly
+      if (readyCart()) bind();
+      else {
+        const t0 = Date.now();
+        const timer = setInterval(() => {
+          if (readyCart() || Date.now() - t0 > 1500) {
+            clearInterval(timer);
+            if (readyCart()) bind();
+          }
+        }, 50);
+      }
+    });
+  </script>
+
+</body>
+</html>

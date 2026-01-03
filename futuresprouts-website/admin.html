@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin | FutureSprouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Admin dashboard (local device)." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- Injected header (from script.js) -->
+  <div id="siteHeader"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="kicker reveal">Admin</div>
+      <h2 class="reveal">Operations dashboard (local)</h2>
+      <p class="reveal small">
+        Inventory + volunteer hours + certificate generator. Data is stored in <strong>your browser</strong> (localStorage).
+      </p>
+
+      <div class="tabs reveal" style="margin-top:14px;">
+        <button class="tab-btn active" data-tab="inventory" type="button">Inventory</button>
+        <button class="tab-btn" data-tab="hours" type="button">Volunteer Hours</button>
+        <button class="tab-btn" data-tab="certs" type="button">Certificates</button>
+        <button class="tab-btn" data-tab="exports" type="button">Export / Reset</button>
+      </div>
+
+      <!-- INVENTORY -->
+      <div id="tab-inventory" class="card reveal" style="margin-top:14px;">
+        <h3>Inventory / Availability</h3>
+        <p class="small">Use this to toggle availability and set remaining counts.</p>
+        <div class="small" id="invUpdated"></div>
+
+        <div style="margin-top:12px; overflow:auto;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Item key</th>
+                <th>Available</th>
+                <th>Remaining</th>
+                <th>Note</th>
+                <th>Save</th>
+              </tr>
+            </thead>
+            <tbody id="invTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- HOURS -->
+      <div id="tab-hours" class="card reveal" style="margin-top:14px; display:none;">
+        <h3>Volunteer Hours</h3>
+        <p class="small">Track volunteer hours for certificates and impact reporting.</p>
+
+        <div class="form-grid cols-2" style="margin-top:12px;">
+          <div>
+            <label>Volunteer name</label>
+            <input id="vhName" placeholder="Jane Doe" />
+          </div>
+          <div>
+            <label>Email (optional)</label>
+            <input id="vhEmail" type="email" placeholder="jane@example.com" />
+          </div>
+        </div>
+
+        <div class="form-grid cols-2" style="margin-top:10px;">
+          <div>
+            <label>Hours</label>
+            <input id="vhHours" type="number" min="0" step="0.5" placeholder="2.5" />
+          </div>
+          <div>
+            <label>Event / description</label>
+            <input id="vhEvent" placeholder="Park cleanup — West Chester" />
+          </div>
+        </div>
+
+        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn primary" id="vhAdd" type="button">Add hours</button>
+          <button class="btn outline" id="vhClear" type="button">Clear all</button>
+        </div>
+
+        <div style="margin-top:16px; overflow:auto;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Hours</th>
+                <th>Event</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody id="vhTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CERTS -->
+      <div id="tab-certs" class="card reveal" style="margin-top:14px; display:none;">
+        <h3>Volunteer Certificate (Printable)</h3>
+        <p class="small">Generates a printable certificate page in your browser.</p>
+
+        <div class="form-grid cols-2" style="margin-top:12px;">
+          <div>
+            <label>Volunteer name</label>
+            <input id="certName" placeholder="Jane Doe" />
+          </div>
+          <div>
+            <label>Total hours</label>
+            <input id="certHours" type="number" min="0" step="0.5" placeholder="10" />
+          </div>
+        </div>
+
+        <div class="form-grid cols-2" style="margin-top:10px;">
+          <div>
+            <label>Program / service type</label>
+            <input id="certProgram" placeholder="Environmental stewardship" />
+          </div>
+          <div>
+            <label>Date</label>
+            <input id="certDate" placeholder="2026-03-10" />
+          </div>
+        </div>
+
+        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn primary" id="certGenerate" type="button">Generate certificate</button>
+          <button class="btn outline" id="certPrint" type="button">Print</button>
+        </div>
+
+        <div class="card" style="margin-top:14px;" id="certPreview">
+          <h3 style="margin-top:0;">Certificate Preview</h3>
+          <p class="small">Placeholder until generated.</p>
+        </div>
+      </div>
+
+      <!-- EXPORTS -->
+      <div id="tab-exports" class="card reveal" style="margin-top:14px; display:none;">
+        <h3>Export / Reset</h3>
+        <p class="small">Export local admin data or reset your local dashboards.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+          <button class="btn outline" id="exportInv" type="button">Export inventory JSON</button>
+          <button class="btn outline" id="exportHours" type="button">Export hours JSON</button>
+          <button class="btn outline" id="exportAnalytics" type="button">Export analytics JSON</button>
+          <button class="btn danger" id="resetAll" type="button">Reset ALL local admin data</button>
+        </div>
+        <pre class="card" id="exportOut" style="margin-top:12px; overflow:auto; white-space:pre-wrap;"></pre>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Injected footer (from script.js) -->
+  <div id="siteFooter"></div>
+
+  <script src="script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      function readyCart() {
+        return window.FS_CART
+          && typeof window.FS_CART.loadInventory === "function"
+          && typeof window.FS_CART.saveInventory === "function"
+          && typeof window.FS_CART.showModal === "function";
+      }
+
+      function bootAdmin() {
+        // Tabs
+        const tabs = document.querySelectorAll("[data-tab]");
+        const panels = {
+          inventory: document.getElementById("tab-inventory"),
+          hours: document.getElementById("tab-hours"),
+          certs: document.getElementById("tab-certs"),
+          exports: document.getElementById("tab-exports"),
+        };
+
+        tabs.forEach(btn => {
+          btn.addEventListener("click", () => {
+            tabs.forEach(b => b.classList.toggle("active", b === btn));
+            Object.keys(panels).forEach(k => panels[k].style.display = (btn.dataset.tab === k) ? "block" : "none");
+          });
+        });
+
+        // Inventory table
+        function renderInventory(){
+          const inv = window.FS_CART.loadInventory();
+          document.getElementById("invUpdated").textContent = "Last updated: " + (inv.updatedAt || "");
+          const tbody = document.getElementById("invTable");
+          const keys = Object.keys(inv.items || {}).sort();
+
+          tbody.innerHTML = keys.map(k => {
+            const it = inv.items[k];
+            return `
+              <tr>
+                <td><strong>${k}</strong></td>
+                <td>
+                  <select data-inv-avail="${k}">
+                    <option value="true" ${it.available ? "selected":""}>true</option>
+                    <option value="false" ${!it.available ? "selected":""}>false</option>
+                  </select>
+                </td>
+                <td><input type="number" min="0" value="${it.remaining ?? 0}" data-inv-rem="${k}"></td>
+                <td><input value="${(it.note||"")}" data-inv-note="${k}"></td>
+                <td><button class="btn outline" type="button" data-inv-save="${k}">Save</button></td>
+              </tr>
+            `;
+          }).join("");
+
+          tbody.querySelectorAll("[data-inv-save]").forEach(btn => {
+            btn.addEventListener("click", () => {
+              const k = btn.getAttribute("data-inv-save");
+              const avail = document.querySelector(`[data-inv-avail="${k}"]`).value === "true";
+              const rem = parseInt(document.querySelector(`[data-inv-rem="${k}"]`).value || "0", 10);
+              const note = document.querySelector(`[data-inv-note="${k}"]`).value || "";
+
+              const inv2 = window.FS_CART.loadInventory();
+              inv2.items[k] = { available: avail, remaining: rem, note };
+              window.FS_CART.saveInventory(inv2);
+              window.FS_CART.showModal("Saved", `Updated inventory for ${k}.`);
+              renderInventory();
+            });
+          });
+        }
+        renderInventory();
+
+        // Volunteer hours
+        const HOURS_KEY = "fs_vol_hours_v1";
+        function loadHours(){ return JSON.parse(localStorage.getItem(HOURS_KEY) || "[]"); }
+        function saveHours(h){ localStorage.setItem(HOURS_KEY, JSON.stringify(h)); }
+
+        function renderHours(){
+          const rows = loadHours();
+          const tb = document.getElementById("vhTable");
+          tb.innerHTML = rows.map((r, idx) => `
+            <tr>
+              <td>${r.date}</td>
+              <td><strong>${r.name}</strong></td>
+              <td>${r.hours}</td>
+              <td>${r.event}</td>
+              <td><button class="btn outline" type="button" data-vh-del="${idx}">Remove</button></td>
+            </tr>
+          `).join("");
+
+          tb.querySelectorAll("[data-vh-del]").forEach(b => {
+            b.addEventListener("click", () => {
+              const i = parseInt(b.getAttribute("data-vh-del"), 10);
+              const rows2 = loadHours();
+              rows2.splice(i,1);
+              saveHours(rows2);
+              renderHours();
+            });
+          });
+        }
+        renderHours();
+
+        document.getElementById("vhAdd").addEventListener("click", () => {
+          const name = document.getElementById("vhName").value.trim();
+          const email = document.getElementById("vhEmail").value.trim();
+          const hours = parseFloat(document.getElementById("vhHours").value || "0");
+          const event = document.getElementById("vhEvent").value.trim();
+
+          if (!name || !hours || hours <= 0){
+            window.FS_CART.showModal("Missing info", "Enter a volunteer name and a positive number of hours.");
+            return;
+          }
+
+          const rows = loadHours();
+          rows.unshift({ date: new Date().toISOString().slice(0,10), name, email, hours, event });
+          saveHours(rows);
+          renderHours();
+          window.FS_CART.showModal("Saved", "Volunteer hours added.");
+        });
+
+        document.getElementById("vhClear").addEventListener("click", () => {
+          saveHours([]);
+          renderHours();
+          window.FS_CART.showModal("Cleared", "All volunteer hours cleared.");
+        });
+
+        // Certificates
+        function certHtml(name, hours, program, date){
+          const org = (window.FS_CONFIG && window.FS_CONFIG.siteName) || "FutureSprouts";
+          return `
+            <div style="text-align:center; padding:18px;">
+              <div class="kicker">Certificate of Service</div>
+              <h2 style="margin-top:10px;">This certifies that</h2>
+              <h1 style="margin:10px 0;">${name}</h1>
+              <p style="font-weight:800;">completed <strong>${hours}</strong> volunteer hour(s)</p>
+              <p class="small" style="margin-top:6px;">Program: ${program}</p>
+              <div class="divider"></div>
+              <p class="small">Issued by ${org} on ${date}</p>
+            </div>
+          `;
+        }
+
+        document.getElementById("certGenerate").addEventListener("click", () => {
+          const name = document.getElementById("certName").value.trim() || "Volunteer Name";
+          const hours = document.getElementById("certHours").value || "0";
+          const program = document.getElementById("certProgram").value.trim() || "Community Service";
+          const date = document.getElementById("certDate").value.trim() || new Date().toISOString().slice(0,10);
+          document.getElementById("certPreview").innerHTML = certHtml(name, hours, program, date);
+        });
+
+        document.getElementById("certPrint").addEventListener("click", () => window.print());
+
+        // Export / Reset
+        const exportOut = document.getElementById("exportOut");
+        function downloadText(filename, text){
+          const blob = new Blob([text], {type:"application/json"});
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = filename;
+          a.click();
+          URL.revokeObjectURL(a.href);
+        }
+
+        document.getElementById("exportInv").addEventListener("click", () => {
+          const inv = window.FS_CART.loadInventory();
+          const text = JSON.stringify(inv, null, 2);
+          exportOut.textContent = text;
+          downloadText("inventory.json", text);
+        });
+
+        document.getElementById("exportHours").addEventListener("click", () => {
+          const h = JSON.parse(localStorage.getItem("fs_vol_hours_v1") || "[]");
+          const text = JSON.stringify(h, null, 2);
+          exportOut.textContent = text;
+          downloadText("hours.json", text);
+        });
+
+        document.getElementById("exportAnalytics").addEventListener("click", () => {
+          const a = JSON.parse(localStorage.getItem("fs_analytics_v1") || '{"events":[]}');
+          const text = JSON.stringify(a, null, 2);
+          exportOut.textContent = text;
+          downloadText("analytics.json", text);
+        });
+
+        document.getElementById("resetAll").addEventListener("click", () => {
+          localStorage.removeItem("fs_inventory_v1");
+          localStorage.removeItem("fs_vol_hours_v1");
+          localStorage.removeItem("fs_analytics_v1");
+          window.FS_CART.showModal("Reset", "Local admin data reset.");
+          exportOut.textContent = "";
+          renderInventory();
+          renderHours();
+        });
+      }
+
+      // Wait briefly for FS_CART if script.js initializes it after load
+      if (readyCart()) bootAdmin();
+      else {
+        const t0 = Date.now();
+        const timer = setInterval(() => {
+          if (readyCart() || Date.now() - t0 > 1500) {
+            clearInterval(timer);
+            if (readyCart()) bootAdmin();
+          }
+        }, 50);
+      }
+    });
+  </script>
+
+</body>
+</html>
