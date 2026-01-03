@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Seasonal Guides | FutureSprouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Seasonal growing guides." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+</head> <body> <header class="navbar">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html" aria-label="FutureSprouts Home">
+      <div class="brand-badge"><img src="images/logo.png" alt="FutureSprouts logo"></div>
+      <div>FutureSprouts</div>
+    </a>
+
+    <div class="nav-right">
+      <button id="themeToggle" class="icon-btn" type="button">Dark</button>
+      <button class="hamburger icon-btn" aria-expanded="false" aria-label="Open menu" type="button">Menu</button>
+    </div>
+
+   <nav class="nav-links" aria-label="Primary">
+  <a href="about.html">About</a>
+  <a href="programs.html">Programs</a>
+  <a href="services.html">Services</a>
+  <a href="events.html">Events</a>
+  <a href="impact.html">Impact</a>
+  <a href="get-involved.html">Get Involved</a>
+  <a href="donate.html" class="donate-btn">Donate</a>
+  <a href="contact.html">Contact</a>
+
+  <a href="cart.html" class="cart-link" aria-label="View cart">
+    <span class="cart-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
+        <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
+        <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
+      </svg>
+    </span>
+
+    <span class="cart-badge" id="cartBadge">0</span>
+
+    <!-- Mini cart preview -->
+    <div class="mini-cart" id="miniCart" aria-label="Cart preview">
+      <div class="mini-cart-header">
+        <strong>Cart</strong>
+        <span class="small" id="miniCartCount">0 items</span>
+      </div>
+      <div class="mini-cart-items" id="miniCartItems"></div>
+      <div class="mini-cart-footer">
+        <span class="btn primary mini-cart-btn">View Cart</span>
+      </div>
+    </div>
+  </a>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="kicker reveal">Guides</div>
+    <h2 class="reveal">Seasonal growing guides</h2>
+    <p class="reveal small">Placeholder text: Add region-specific info later (PA, Mid-Atlantic, etc.).</p>
+
+    <div class="grid cols-2" style="margin-top:14px;">
+      <div class="card reveal">
+        <div class="pill">Spring</div>
+        <h3>Starting Seeds Indoors</h3>
+        <p class="small">Placeholder: timelines, light, watering, hardening off.</p>
+      </div>
+      <div class="card reveal">
+        <div class="pill">Summer</div>
+        <h3>Watering & Pest Prevention</h3>
+        <p class="small">Placeholder: mulch, drip, safe pest control options.</p>
+      </div>
+      <div class="card reveal">
+        <div class="pill">Fall</div>
+        <h3>Harvest & Soil Health</h3>
+        <p class="small">Placeholder: cover crops, composting, bed cleanup.</p>
+      </div>
+      <div class="card reveal">
+        <div class="pill">Winter</div>
+        <h3>Planning & Classroom Projects</h3>
+        <p class="small">Placeholder: journaling, experiments, hydroponics basics.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="siteFooter"></div>
+<script src="script.js"></script>
+</body>
+</html>

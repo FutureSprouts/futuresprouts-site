@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Get Involved | FutureSprouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Volunteer, partner with schools, RSVP to events, and join the newsletter." />
+
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- Injected header (from script.js) -->
+  <div id="siteHeader"></div>
+
+  <!-- HERO (tighter bottom padding to reduce the big gap) -->
+  <section class="section section-tight">
+    <div class="container">
+      <div class="kicker reveal">Get involved</div>
+      <h2 class="reveal">Pick one: volunteer, school partnership, materials, newsletter, RSVP.</h2>
+      <p class="reveal">
+        For quick questions, email <a href="mailto:info@futuresprouts.org">info@futuresprouts.org</a>.
+        For requests, use the forms below so we can respond faster.
+      </p>
+    </div>
+  </section>
+
+  <!-- FORMS -->
+  <section class="section alt">
+    <div class="container">
+
+      <div class="grid cols-2">
+        <!-- VOLUNTEER SIGNUP -->
+        <div class="card reveal">
+          <div class="pill">Volunteer</div>
+          <h3>Volunteer signup</h3>
+          <p class="small">Cleanups, seed packing, school demos, event help.</p>
+
+          <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
+            <input type="hidden" name="_subject" value="Volunteer Signup - FutureSprouts">
+            <div class="form-row">
+              <input class="input" type="text" name="name" placeholder="Full name" required>
+              <input class="input" type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="form-row">
+              <input class="input" type="text" name="city" placeholder="City/Town">
+              <input class="input" type="text" name="availability" placeholder="Availability (weekends, after school, etc.)">
+            </div>
+            <textarea name="message" placeholder="Anything else? Skills, interests, etc."></textarea>
+            <button class="btn primary" type="submit">Submit</button>
+          </form>
+        </div>
+
+        <!-- SCHOOL PARTNERSHIP -->
+        <div class="card reveal">
+          <div class="pill">Schools</div>
+          <h3>School partnership request</h3>
+          <p class="small">Request a demo, seed kits, or a sustainability day.</p>
+
+          <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
+            <input type="hidden" name="_subject" value="School Partnership Request - FutureSprouts">
+            <div class="form-row">
+              <input class="input" type="text" name="contact_name" placeholder="Your name" required>
+              <input class="input" type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="form-row">
+              <input class="input" type="text" name="school" placeholder="School/Organization name" required>
+              <input class="input" type="text" name="location" placeholder="City/State" required>
+            </div>
+            <textarea name="message" placeholder="What do you want to host? Dates/grades/estimated students?"></textarea>
+            <button class="btn primary" type="submit">Request</button>
+          </form>
+        </div>
+
+        <!-- MATERIAL REQUEST / DONATION -->
+        <div class="card reveal">
+          <div class="pill">Materials</div>
+          <h3>Materials request / offer</h3>
+          <p class="small">Seeds, tools, gloves, bags, soil, lumber, etc.</p>
+
+          <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
+            <input type="hidden" name="_subject" value="Materials - FutureSprouts">
+            <div class="form-row">
+              <input class="input" type="text" name="name" placeholder="Name" required>
+              <input class="input" type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="form-row">
+              <select name="type" class="input" required>
+                <option value="">I want to…</option>
+                <option>Offer materials</option>
+                <option>Request materials</option>
+              </select>
+              <input class="input" type="text" name="location" placeholder="Location (for pickup/shipping)">
+            </div>
+            <textarea name="message" placeholder="List items and quantities. Include timing if urgent."></textarea>
+            <button class="btn primary" type="submit">Send</button>
+          </form>
+        </div>
+
+        <!-- NEWSLETTER -->
+        <div class="card reveal">
+          <div class="pill">Newsletter</div>
+          <h3>Newsletter signup</h3>
+          <p class="small">Monthly updates: events, impact, ways to help.</p>
+
+          <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
+            <input type="hidden" name="_subject" value="Newsletter Signup - FutureSprouts">
+            <div class="form-row">
+              <input class="input" type="text" name="name" placeholder="Name (optional)">
+              <input class="input" type="email" name="email" placeholder="Email" required>
+            </div>
+            <button class="btn primary" type="submit">Join</button>
+          </form>
+
+          <div class="notice" style="margin-top:12px;">
+            Later, we can switch this to Mailchimp or Beehiiv for automated newsletters.
+          </div>
+        </div>
+
+        <!-- EVENT RSVP (full width) -->
+        <div class="card reveal" style="grid-column: 1 / -1;">
+          <div class="pill">RSVP</div>
+          <h3>Event RSVP</h3>
+          <p class="small">RSVP for upcoming events (we’ll follow up with exact location + details).</p>
+
+          <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
+            <input type="hidden" name="_subject" value="Event RSVP - FutureSprouts">
+            <div class="form-row">
+              <input class="input" type="text" name="name" placeholder="Full name" required>
+              <input class="input" type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="form-row">
+              <select name="event" class="input" required>
+                <option value="">Select event</option>
+                <option>Community Cleanup (TBD)</option>
+                <option>School Demo: Seed Starting (TBD)</option>
+              </select>
+              <input class="input" type="number" name="party_size" min="1" max="20" placeholder="Party size (1-20)">
+            </div>
+            <textarea name="message" placeholder="Any notes? (needs, questions, etc.)"></textarea>
+            <button class="btn primary" type="submit">RSVP</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="notice reveal">
+        Form submissions go to your Formspree inbox and/or email.
+        If Formspree asks you to confirm/activate the form, do it once and you’re set.
+      </div>
+    </div>
+  </section>
+
+  <!-- Injected footer (from script.js) -->
+  <div id="siteFooter"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
