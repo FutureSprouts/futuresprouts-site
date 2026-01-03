@@ -21,12 +21,6 @@ window.FS_CONFIG = {
     tiktok: "#",
     youtube: "#"
   },
-
-  // Your canonical site URL (update once live)
-  canonicalBase: "https://futuresprouts.org"
-};
-window.FS_CONFIG = window.FS_CONFIG || {};
-window.FS_CONFIG.googlePlacesKey = "PASTE_YOUR_KEY_HERE";
 // config.js
 window.FS_CONFIG = {
   socials: {
@@ -37,3 +31,24 @@ window.FS_CONFIG = {
     facebook: "https://www.facebook.com/futuresprouts"
   }
 };
+  // Your canonical site URL (update once live)
+  canonicalBase: "https://futuresprouts.org"
+};
+window.FS_CONFIG = window.FS_CONFIG || {};
+window.FS_CONFIG.googlePlacesKey = "PASTE_YOUR_KEY_HERE";
+
+(function attachSocialLinks() {
+  const cfg = window.FS_CONFIG;
+  if (!cfg || !cfg.socials) return;
+
+  document.querySelectorAll("[data-social]").forEach(el => {
+    const key = el.getAttribute("data-social");
+    const url = cfg.socials[key];
+    if (!url) return;
+
+    el.setAttribute("href", url);
+    el.setAttribute("target", "_blank");
+    el.setAttribute("rel", "noopener noreferrer");
+  });
+})();
+
