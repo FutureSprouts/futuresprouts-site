@@ -1,3 +1,29 @@
+/* ================================
+   Google Analytics 4 (Global)
+   ================================ */
+(function () {
+  const GA_ID = "G-98E3F7D54Q"; // your real ID
+
+  // Prevent double-loading
+  if (window.gtag) return;
+
+  // Load GA script
+  const s = document.createElement("script");
+  s.async = true;
+  s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+  document.head.appendChild(s);
+
+  // Initialize GA
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag = gtag;
+
+  gtag("js", new Date());
+  gtag("config", GA_ID, {
+    anonymize_ip: true
+  });
+})();
+
 // script.js — FULL REPLACEMENT (STABLE + FIXED)
 (function () {
   const cfg = window.FS_CONFIG || {};
@@ -1108,3 +1134,4 @@ select.addEventListener("change", () => {
     injectFooter();
   }
 })();
+
