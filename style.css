@@ -945,11 +945,3 @@ textarea{ min-height: 140px; resize: vertical; }
   background: var(--card);
 }
 
-.theme-select {
-  border: none;
-  background: transparent;
-  font-weight: 700;
-  color: var(--text);
-  cursor: pointer;
-  outline: none;
-}
