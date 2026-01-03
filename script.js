@@ -123,23 +123,23 @@
   // Header/Footer injection
   // IMPORTANT: only inject if slots exist
   // ---------------------------
-  function headerHtml() {
-    const name = cfg.siteName || "FutureSprouts";
+ function headerHtml() {
+  const name = cfg.siteName || "FutureSprouts";
 
-    const orgLd = {
-      "@context": "https://schema.org",
-      "@type": "NonprofitOrganization",
-      "name": name,
-      "email": cfg.contactEmail || "info@futuresprouts.org",
-      "url": cfg.siteUrl || "",
-      "sameAs": [
-        (cfg.socials && cfg.socials.instagram) || "",
-        (cfg.socials && cfg.socials.tiktok) || "",
-        (cfg.socials && cfg.socials.youtube) || ""
-      ].filter(Boolean)
-    };
+  const orgLd = {
+    "@context": "https://schema.org",
+    "@type": "NonprofitOrganization",
+    "name": name,
+    "email": cfg.contactEmail || "info@futuresprouts.org",
+    "url": cfg.siteUrl || "",
+    "sameAs": [
+      (cfg.socials && cfg.socials.instagram) || "",
+      (cfg.socials && cfg.socials.tiktok) || "",
+      (cfg.socials && cfg.socials.youtube) || ""
+    ].filter(Boolean)
+  };
 
-    return `
+  return `
 <header class="navbar">
   <div class="container nav-inner">
     <a class="brand" href="index.html" aria-label="${escapeHtml(name)} Home">
@@ -163,21 +163,22 @@
       <a href="donate.html" class="donate-btn">Donate</a>
       <a href="contact.html">Contact</a>
 
-      <a href="cart.html" class="cart-link" aria-label="View cart">
-        <span class="cart-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
-            <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
-            <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
-          </svg>
-        </span>
-
-        <span class="cart-badge" id="cartBadge">0</span>
+      <div class="cart-wrap">
+        <a href="cart.html" class="cart-link" aria-label="View cart">
+          <span class="cart-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
+              <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
+              <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </a>
 
         <div class="mini-cart" id="miniCart" aria-label="Cart preview">
           <div class="mini-cart-header">
-            <strong>Cart</strong>
+            <strong>Cart Preview</strong>
             <span class="small" id="miniCartCount">0 items</span>
           </div>
           <div class="mini-cart-items" id="miniCartItems"></div>
@@ -185,7 +186,7 @@
             <a class="btn primary mini-cart-btn" href="cart.html">View Cart</a>
           </div>
         </div>
-      </a>
+      </div>
     </nav>
   </div>
 
@@ -207,16 +208,16 @@
 
   <script type="application/ld+json">${JSON.stringify(orgLd)}</script>
 </header>`;
-  }
+}
 
-  function footerHtml() {
-    const email = cfg.contactEmail || "info@futuresprouts.org";
-    const site = escapeHtml(cfg.siteName || "FutureSprouts");
-    const ig = (cfg.socials && cfg.socials.instagram) || "#";
-    const tt = (cfg.socials && cfg.socials.tiktok) || "#";
-    const yt = (cfg.socials && cfg.socials.youtube) || "#";
+function footerHtml() {
+  const email = cfg.contactEmail || "info@futuresprouts.org";
+  const site = escapeHtml(cfg.siteName || "FutureSprouts");
+  const ig = (cfg.socials && cfg.socials.instagram) || "#";
+  const tt = (cfg.socials && cfg.socials.tiktok) || "#";
+  const yt = (cfg.socials && cfg.socials.youtube) || "#";
 
-    return `
+  return `
 <footer class="footer">
   <div class="container footer-grid">
     <div>
@@ -246,8 +247,8 @@
     <div class="footer-copy">© 2026 ${site}</div>
 
     <div class="footer-actions">
-      <div class="footer-theme">
-        <span class="small">Theme</span>
+      <div class="theme-wrap">
+        <label for="themeToggle" class="small" style="font-weight:800; cursor:pointer;">Theme:</label>
         <select id="themeToggle" class="theme-select" aria-label="Theme">
           <option value="system">System</option>
           <option value="light">Light</option>
@@ -265,7 +266,7 @@
     </div>
   </div>
 </footer>`;
-  }
+}
 
   // Inject ONLY if slots exist
   const headerSlot = document.getElementById("siteHeader");
@@ -1152,4 +1153,5 @@ select.addEventListener("change", () => {
   });
 
 })();
+
 
