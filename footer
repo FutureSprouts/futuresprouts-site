@@ -227,8 +227,10 @@ p a:hover{ opacity: .85; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 12px;
+  padding: 10px 10px;
   border-radius: 12px;
+  border: none;
+  background: transparent;
 }
 .cart-link:hover{
   background: color-mix(in oklab, var(--green) 14%, transparent);
@@ -795,6 +797,17 @@ textarea{ min-height: 140px; resize: vertical; }
   .footer-bottom{ flex-direction: column; align-items: flex-start; }
   .footer-actions{ width: 100%; justify-content: flex-start; }
 }
+/* Footer: unbold everything by default */
+.footer, .footer *{
+  font-weight: 400 !important;
+}
+
+/* Keep headings visually distinct but NOT bold */
+.footer h3{
+  font-weight: 500 !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
 
 /* =========================
    REVEAL ANIMATIONS
@@ -956,3 +969,4 @@ footer a strong,
   outline: 3px solid #ffd54f;
   outline-offset: 2px;
 }
+
