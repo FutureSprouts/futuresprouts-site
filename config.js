@@ -27,3 +27,11 @@ window.FS_CONFIG = {
 };
 window.FS_CONFIG = window.FS_CONFIG || {};
 window.FS_CONFIG.googlePlacesKey = "PASTE_YOUR_KEY_HERE";
+window.FS_CONFIG = window.FS_CONFIG || {};
+window.FS_CONFIG.analytics = {
+  ga4: true,
+  clarity: true,
+  clarityId: "uvqgowa5qp",
+  consentBanner: true
+};
+
