@@ -1,3 +1,9 @@
+/* =========================================
+   FutureSprouts — Clean Style.css (FULL REPLACE)
+   - Stable header/footer injection
+   - Clean theme system (light/dark via data-theme)
+   - Working mini-cart preview + badge
+========================================= */
 
 /* =========================
    RESET
@@ -12,7 +18,6 @@ input, textarea, select { font: inherit; }
    THEME VARIABLES
 ========================= */
 :root{
-  /* Light */
   --bg: #FAF7F2;
   --bg2: #F1ECE3;
   --card: #FFFFFF;
@@ -40,7 +45,6 @@ input, textarea, select { font: inherit; }
   --lh: 1.65;
 }
 
-/* Dark */
 :root[data-theme="dark"]{
   --bg: #0F1210;
   --bg2: #151A16;
@@ -89,12 +93,33 @@ p{ font-size: var(--p); color: var(--muted); }
   color: var(--muted);
 }
 
-/* Make inline links readable in body text */
 p a{
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 p a:hover{ opacity: .85; }
+
+/* =========================
+   SKIP LINK (hidden unless keyboard tab)
+========================= */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateY(-200%);
+  background: #000;
+  color: #fff;
+  padding: 10px 16px;
+  z-index: 10000;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 0 0 8px 0;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid #ffd54f;
+  outline-offset: 2px;
+}
 
 /* =========================
    NAV / HEADER
@@ -108,8 +133,7 @@ p a:hover{ opacity: .85; }
   border-bottom: 1px solid var(--border);
 }
 
-/* Important for mini-cart positioning */
-.navbar, .nav-inner, .nav-links{ overflow: visible; }
+.navbar, .nav-inner, .nav-links, .nav-right { overflow: visible; }
 
 .nav-inner{
   display: flex;
@@ -212,20 +236,31 @@ p a:hover{ opacity: .85; }
 }
 
 /* =========================
-   CART ICON + BADGE + MINI CART
+   CART ICON + BADGE + MINI CART (FIXED)
 ========================= */
+.cart-wrap{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* cart button */
 .cart-link{
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 10px;
+  padding: 10px 12px;
   border-radius: 12px;
-  border: none;
-  background: transparent;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 92%, transparent);
 }
 .cart-link:hover{
   background: color-mix(in oklab, var(--green) 14%, transparent);
+}
+.cart-link:focus-visible{
+  outline: 3px solid color-mix(in oklab, var(--green) 55%, transparent);
+  outline-offset: 3px;
 }
 
 .cart-icon{
@@ -261,7 +296,7 @@ p a:hover{ opacity: .85; }
 }
 .cart-badge.pop{ animation: badgePop 360ms cubic-bezier(.2,.9,.2,1); }
 
-/* Mini cart */
+/* mini cart dropdown */
 .mini-cart{
   position: absolute;
   right: 0;
@@ -276,10 +311,10 @@ p a:hover{ opacity: .85; }
   z-index: 9999;
 }
 
-/* Show on hover, focus, or JS .open */
-.cart-link:hover .mini-cart,
-.cart-link:focus-within .mini-cart,
-.cart-link.open .mini-cart{
+/* show dropdown on hover or keyboard focus */
+.cart-wrap:hover .mini-cart,
+.cart-wrap:focus-within .mini-cart,
+.cart-wrap.open .mini-cart{
   display: block;
 }
 
@@ -505,27 +540,10 @@ p a:hover{ opacity: .85; }
 }
 
 /* =========================
-   FORMS (rounded like Get Involved)
+   FORMS
 ========================= */
 .form{ margin-top: 18px; display: grid; gap: 12px; max-width: 760px; }
 .form-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-/* Fix inputs overflowing out of cards (grid min-width issue) */
-.form { width: 100%; }
-.form-row{
-  width: 100%;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); /* key fix */
-}
-
-/* Allow grid children to actually shrink */
-.form-row > *{ min-width: 0; }
-
-/* Extra safety: inputs can shrink inside the grid cell */
-.form-row input,
-.form-row select,
-.form-row textarea{
-  min-width: 0;
-  width: 100%;
-}
 
 input, textarea, select,
 .input{
@@ -549,7 +567,6 @@ input:focus, textarea:focus, select:focus{
 
 textarea{ min-height: 140px; resize: vertical; }
 
-/* For your cart.html */
 .form-grid{ display: grid; gap: 14px; }
 .form-grid.cols-2{ grid-template-columns: 1fr 1fr; }
 
@@ -681,23 +698,8 @@ textarea{ min-height: 140px; resize: vertical; }
 }
 .table tr:last-child td{ border-bottom:none; }
 
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--text) 4%, transparent);
-  font-weight: 900;
-  font-size: 12px;
-}
-.badge.ok{ border-color: color-mix(in oklab, var(--green) 40%, var(--border)); }
-.badge.warn{ border-color: color-mix(in oklab, var(--warn) 55%, var(--border)); }
-.badge.danger{ border-color: color-mix(in oklab, var(--danger) 55%, var(--border)); }
-
 /* =========================
-   FOOTER + THEME SELECT (nice pill)
+   FOOTER + THEME SELECT (pill)
 ========================= */
 .footer{
   padding: 36px 0;
@@ -718,7 +720,7 @@ textarea{ min-height: 140px; resize: vertical; }
 
 .footer a{
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 400;
 }
 .footer a:hover{ color: var(--text); }
 
@@ -749,7 +751,6 @@ textarea{ min-height: 140px; resize: vertical; }
   gap: 8px;
 }
 
-/* Theme label + select pill */
 .footer-actions .theme-wrap{
   display: inline-flex;
   align-items: center;
@@ -759,9 +760,9 @@ textarea{ min-height: 140px; resize: vertical; }
   background: color-mix(in oklab, var(--card) 88%, transparent);
   border-radius: 999px;
   color: var(--text);
+  position: relative;
 }
 
-/* Your JS should use: <select id="fsThemeSelect" class="fs-theme-select"> */
 #fsThemeSelect,
 .fs-theme-select{
   appearance: none;
@@ -771,16 +772,13 @@ textarea{ min-height: 140px; resize: vertical; }
   background: transparent;
   color: var(--text);
   font-weight: 900;
-  padding: 0 18px 0 0; /* space for arrow */
+  padding: 0 18px 0 0;
   cursor: pointer;
   outline: none;
   line-height: 1;
 }
 
 /* Custom arrow */
-.footer-actions .theme-wrap{
-  position: relative;
-}
 .footer-actions .theme-wrap::after{
   content: "";
   position: absolute;
@@ -794,28 +792,10 @@ textarea{ min-height: 140px; resize: vertical; }
   pointer-events: none;
 }
 
-/* Fix dropdown options readability (prevents white-on-white weirdness) */
 #fsThemeSelect option,
 .fs-theme-select option{
   color: #111;
   background: #fff;
-}
-
-/* Mobile footer */
-@media (max-width: 700px){
-  .footer-bottom{ flex-direction: column; align-items: flex-start; }
-  .footer-actions{ width: 100%; justify-content: flex-start; }
-}
-/* Footer: unbold everything by default */
-.footer, .footer *{
-  font-weight: 400 !important;
-}
-
-/* Keep headings visually distinct but NOT bold */
-.footer h3{
-  font-weight: 500 !important;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 /* =========================
@@ -887,96 +867,3 @@ textarea{ min-height: 140px; resize: vertical; }
   .mobile-menu.show{ display: block; }
   .hero{ min-height: 70vh; }
 }
-/* Footer link weight (Quick Links + Legal) */
-footer a,
-.footer a {
-  font-weight: 400;            /* normal */
-}
-
-/* If your links are wrapped in <strong> or similar */
-footer a strong,
-.footer a strong {
-  font-weight: 400;
-}
-.theme-pill {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 8px 14px;
-  border-radius: 999px;
-
-  border: 1px solid rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.06);
-
-  font-size: 14px;
-}
-
-/* "Theme" text */
-.theme-label {
-  opacity: 0.85;
-  white-space: nowrap;
-}
-
-/* The select itself */
-.theme-pill select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  border: none;
-  background: transparent;
-  color: inherit;
-
-  font-size: 14px;
-  font-weight: 500;
-
-  padding-right: 18px;
-  cursor: pointer;
-}
-
-/* Custom arrow */
-.theme-pill select {
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right center;
-}
-
-/* Focus */
-.theme-pill select:focus {
-  outline: none;
-}
-
-/* Light theme */
-[data-theme="light"] .theme-pill {
-  background: rgba(0,0,0,0.05);
-  border-color: rgba(0,0,0,0.2);
-}
-
-[data-theme="light"] .theme-pill select {
-  color: #000;
-}
-/* Skip to content — fully hidden by default */
-.skip-link {
-  position: fixed;
-  top: 0;
-  left: 0;
-  transform: translateY(-200%);
-  background: #000;
-  color: #fff;
-  padding: 10px 16px;
-  z-index: 10000;
-  text-decoration: none;
-  font-weight: 700;
-  border-radius: 0 0 8px 0;
-}
-
-/* ONLY show when keyboard users tab to it */
-.skip-link:focus-visible {
-  transform: translateY(0);
-  outline: 3px solid #ffd54f;
-  outline-offset: 2px;
-}
-
-
