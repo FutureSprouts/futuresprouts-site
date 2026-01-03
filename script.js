@@ -508,6 +508,11 @@ ${cartToText(cart)}`
     initMobileMenu();
     highlightActiveNav();
     updateCartBadge();
+    
+    // Small delay to ensure footer is rendered
+    setTimeout(() => {
+      initTheme();
+    }, 100);
   }
 
   if (document.readyState === "loading") {
@@ -830,32 +835,41 @@ ${cartToText(cart)}`
   function applyTheme(pref) {
     if (pref === "dark") {
       root.setAttribute("data-theme", "dark");
+      document.body.setAttribute("data-theme", "dark");
     } else if (pref === "light") {
       root.setAttribute("data-theme", "light");
+      document.body.setAttribute("data-theme", "light");
     } else {
       const sysDark = media ? media.matches : false;
-      root.setAttribute("data-theme", sysDark ? "dark" : "light");
+      const theme = sysDark ? "dark" : "light";
+      root.setAttribute("data-theme", theme);
+      document.body.setAttribute("data-theme", theme);
     }
   }
 
   function initTheme() {
     const select = document.getElementById("fsThemeSelect");
-    if (!select) return;
+    if (!select) {
+      console.log("Theme select not found - will retry after injection");
+      return;
+    }
 
     const pref = getThemePref();
     select.value = pref;
     applyTheme(pref);
 
-    select.onchange = () => {
+    select.addEventListener("change", () => {
       const next = select.value;
       localStorage.setItem(THEME_PREF_KEY, next);
       applyTheme(next);
       logEvent("theme_change", { pref: next });
       fireGAEvent("theme_change", { pref: next });
-    };
+    });
+
+    console.log("Theme initialized:", pref);
   }
 
-  // Apply theme immediately on load
+  // Apply theme immediately on load (before footer is injected)
   applyTheme(getThemePref());
 
   if (media && typeof media.addEventListener === "function") {
