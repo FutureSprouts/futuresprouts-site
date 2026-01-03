@@ -41,13 +41,13 @@
   <link rel="stylesheet" href="style.css" />
   <script src="config.js"></script>
 
-  <!-- Structured Data: Nonprofit + Website -->
+  <!-- Structured Data: Organization + Website + WebPage -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "NonprofitOrganization",
+        "@type": "Organization",
         "@id": "https://futuresprouts.org/#organization",
         "name": "FutureSprouts",
         "url": "https://futuresprouts.org/",
@@ -74,14 +74,7 @@
         "@id": "https://futuresprouts.org/#website",
         "url": "https://futuresprouts.org/",
         "name": "FutureSprouts",
-        "publisher": {
-          "@id": "https://futuresprouts.org/#organization"
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://futuresprouts.org/search.html?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
+        "publisher": { "@id": "https://futuresprouts.org/#organization" }
       },
       {
         "@type": "WebPage",
