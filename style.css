@@ -1,11 +1,3 @@
-fix the issue for me: fix css: /* =========================================
-   FutureSprouts — Clean Style.css (FULL REPLACE)
-   - No duplicates
-   - Stable header/footer injection
-   - Clean theme system (light/dark via data-theme)
-   - Nice footer theme select styling
-   - Working mini-cart preview
-========================================= */
 
 /* =========================
    RESET
@@ -986,4 +978,5 @@ footer a strong,
   outline: 3px solid #ffd54f;
   outline-offset: 2px;
 }
+
 
