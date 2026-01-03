@@ -27,7 +27,7 @@ input, textarea, select { font: inherit; }
 
   --text: #181818;
   --muted: #5A5A5A;
-  --border: rgba(0,0,0,0.10);
+  --border: rgba(0,0,0,0.18);
 
   --green: #2F6F4E;
   --greenDark: #1F4D36;
@@ -970,6 +970,7 @@ footer a strong,
   transform: translateY(-1px);
   box-shadow: var(--shadow);
 }
+
 
 
 
