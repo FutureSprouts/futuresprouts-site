@@ -1108,3 +1108,48 @@ select.addEventListener("change", () => {
     injectFooter();
   }
 })();
+/* ===============================
+   Social Links Auto-Injection
+   Injects social icons into all footers
+================================ */
+
+(function injectSocials() {
+  const cfg = window.FS_CONFIG;
+  if (!cfg || !cfg.socials) return;
+
+  const ICONS = {
+    instagram: "icons/instagram.svg",
+    x: "icons/x.svg",
+    linkedin: "icons/linkedin.svg",
+    youtube: "icons/youtube.svg",
+    facebook: "icons/facebook.svg"
+  };
+
+  // HTML template
+  function buildSocialHTML() {
+    return Object.entries(cfg.socials)
+      .filter(([key, url]) => url && ICONS[key])
+      .map(([key, url]) => `
+        <a
+          href="${url}"
+          data-social="${key}"
+          aria-label="${key}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src="${ICONS[key]}" alt="">
+        </a>
+      `)
+      .join("");
+  }
+
+  // Inject into every .footer-socials container
+  document.querySelectorAll(".footer-socials").forEach(container => {
+    if (container.dataset.injected === "true") return;
+
+    container.innerHTML = buildSocialHTML();
+    container.dataset.injected = "true";
+  });
+
+})();
+
