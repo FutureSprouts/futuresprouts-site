@@ -1,16 +1,14 @@
 /* =========================================
    FutureSprouts — Clean Style.css (FULL REPLACE)
-   - No duplicates
-   - Stable header/footer injection
-   - Clean theme system (light/dark via data-theme)
-   - Nice footer theme select styling
-   - Working mini-cart preview
+   - Light/Dark theme works if data-theme is on <html> OR <body>
+   - Mini-cart preview shows on hover (child OR sibling) + stays open when hovering dropdown
+   - Prevent dropdown clipping (overflow: visible on common wrappers)
 ========================================= */
 
 /* =========================
    RESET
 ========================= */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+*{ margin: 0; padding: 0; box-sizing: border-box; }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; }
@@ -27,7 +25,7 @@ input, textarea, select { font: inherit; }
 
   --text: #181818;
   --muted: #5A5A5A;
-  --border: rgba(0,0,0,0.18);
+  --border: rgba(0,0,0,0.10);
 
   --green: #2F6F4E;
   --greenDark: #1F4D36;
@@ -48,8 +46,9 @@ input, textarea, select { font: inherit; }
   --lh: 1.65;
 }
 
-/* Dark */
-:root[data-theme="dark"]{
+/* ✅ FIX: dark theme works whether JS sets data-theme on <html> or <body> */
+html[data-theme="dark"],
+body[data-theme="dark"]{
   --bg: #0F1210;
   --bg2: #151A16;
   --card: #101512;
@@ -97,12 +96,33 @@ p{ font-size: var(--p); color: var(--muted); }
   color: var(--muted);
 }
 
-/* Make inline links readable in body text */
 p a{
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 p a:hover{ opacity: .85; }
+
+/* =========================
+   SKIP LINK (hidden unless keyboard tab)
+========================= */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateY(-200%);
+  background: #000;
+  color: #fff;
+  padding: 10px 16px;
+  z-index: 10000;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 0 0 8px 0;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid #ffd54f;
+  outline-offset: 2px;
+}
 
 /* =========================
    NAV / HEADER
@@ -116,8 +136,8 @@ p a:hover{ opacity: .85; }
   border-bottom: 1px solid var(--border);
 }
 
-/* Important for mini-cart positioning */
-.navbar, .nav-inner, .nav-links{ overflow: visible; }
+/* ✅ FIX: prevent dropdown clipping */
+header, .navbar, .container, .nav-inner, .nav-links, .nav-right { overflow: visible; }
 
 .nav-inner{
   display: flex;
@@ -167,6 +187,7 @@ p a:hover{ opacity: .85; }
   border-radius: 14px;
   font-weight: 800;
   cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
 }
 .icon-btn:hover{
   transform: translateY(-1px);
@@ -220,8 +241,15 @@ p a:hover{ opacity: .85; }
 }
 
 /* =========================
-   CART ICON + BADGE + MINI CART
+   CART ICON + BADGE + MINI CART (FIXED)
 ========================= */
+.cart-wrap{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* cart button */
 .cart-link{
   position: relative;
   display: inline-flex;
@@ -229,9 +257,16 @@ p a:hover{ opacity: .85; }
   gap: 6px;
   padding: 10px 12px;
   border-radius: 12px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 92%, transparent);
+  transition: background .15s ease, box-shadow .15s ease, transform .15s ease, border-color .15s ease;
 }
 .cart-link:hover{
   background: color-mix(in oklab, var(--green) 14%, transparent);
+}
+.cart-link:focus-visible{
+  outline: 3px solid color-mix(in oklab, var(--green) 55%, transparent);
+  outline-offset: 3px;
 }
 
 .cart-icon{
@@ -267,7 +302,7 @@ p a:hover{ opacity: .85; }
 }
 .cart-badge.pop{ animation: badgePop 360ms cubic-bezier(.2,.9,.2,1); }
 
-/* Mini cart */
+/* mini cart dropdown */
 .mini-cart{
   position: absolute;
   right: 0;
@@ -282,10 +317,16 @@ p a:hover{ opacity: .85; }
   z-index: 9999;
 }
 
-/* Show on hover, focus, or JS .open */
-.cart-link:hover .mini-cart,
-.cart-link:focus-within .mini-cart,
-.cart-link.open .mini-cart{
+/* ✅ FIX: show dropdown if mini-cart is a child of cart-wrap */
+.cart-wrap:hover .mini-cart,
+.cart-wrap:focus-within .mini-cart,
+.cart-wrap.open .mini-cart{
+  display: block;
+}
+
+/* ✅ FIX: also works if mini-cart is a sibling placed right after .cart-link */
+.cart-link:hover + .mini-cart,
+.mini-cart:hover{
   display: block;
 }
 
@@ -384,6 +425,7 @@ p a:hover{ opacity: .85; }
   font-weight: 850;
   border: 1px solid transparent;
   cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
 }
 .btn.primary{
   background: var(--green);
@@ -503,6 +545,7 @@ p a:hover{ opacity: .85; }
   border-radius: 999px;
   font-weight: 850;
   cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
 .tag:hover{ background: color-mix(in oklab, var(--green) 10%, var(--card)); }
 .tag.active{
@@ -511,7 +554,7 @@ p a:hover{ opacity: .85; }
 }
 
 /* =========================
-   FORMS (rounded like Get Involved)
+   FORMS
 ========================= */
 .form{ margin-top: 18px; display: grid; gap: 12px; max-width: 760px; }
 .form-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -526,7 +569,7 @@ input, textarea, select,
   color: var(--text);
   font-size: 15px;
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background .15s ease, color .15s ease;
 }
 
 input::placeholder, textarea::placeholder{ color: var(--muted); }
@@ -538,7 +581,6 @@ input:focus, textarea:focus, select:focus{
 
 textarea{ min-height: 140px; resize: vertical; }
 
-/* For your cart.html */
 .form-grid{ display: grid; gap: 14px; }
 .form-grid.cols-2{ grid-template-columns: 1fr 1fr; }
 
@@ -574,6 +616,7 @@ textarea{ min-height: 140px; resize: vertical; }
   color: var(--text);
   font-weight: 900;
   cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
 }
 .qty button:hover{ box-shadow: var(--shadow); }
 .qty span{
@@ -612,6 +655,7 @@ textarea{ min-height: 140px; resize: vertical; }
   padding: 8px 10px;
   font-weight: 900;
   cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
 .trash-btn:hover{
   background: color-mix(in oklab, var(--danger) 18%, transparent);
@@ -643,6 +687,7 @@ textarea{ min-height: 140px; resize: vertical; }
   border-radius: 999px;
   font-weight: 900;
   cursor:pointer;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
 .tab-btn.active{
   background: color-mix(in oklab, var(--green) 14%, transparent);
@@ -670,23 +715,8 @@ textarea{ min-height: 140px; resize: vertical; }
 }
 .table tr:last-child td{ border-bottom:none; }
 
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--text) 4%, transparent);
-  font-weight: 900;
-  font-size: 12px;
-}
-.badge.ok{ border-color: color-mix(in oklab, var(--green) 40%, var(--border)); }
-.badge.warn{ border-color: color-mix(in oklab, var(--warn) 55%, var(--border)); }
-.badge.danger{ border-color: color-mix(in oklab, var(--danger) 55%, var(--border)); }
-
 /* =========================
-   FOOTER + THEME SELECT (nice pill)
+   FOOTER + THEME SELECT (pill)
 ========================= */
 .footer{
   padding: 36px 0;
@@ -707,7 +737,7 @@ textarea{ min-height: 140px; resize: vertical; }
 
 .footer a{
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 400;
 }
 .footer a:hover{ color: var(--text); }
 
@@ -738,7 +768,6 @@ textarea{ min-height: 140px; resize: vertical; }
   gap: 8px;
 }
 
-/* Theme label + select pill */
 .footer-actions .theme-wrap{
   display: inline-flex;
   align-items: center;
@@ -748,9 +777,9 @@ textarea{ min-height: 140px; resize: vertical; }
   background: color-mix(in oklab, var(--card) 88%, transparent);
   border-radius: 999px;
   color: var(--text);
+  position: relative;
 }
 
-/* Your JS should use: <select id="fsThemeSelect" class="fs-theme-select"> */
 #fsThemeSelect,
 .fs-theme-select{
   appearance: none;
@@ -760,16 +789,13 @@ textarea{ min-height: 140px; resize: vertical; }
   background: transparent;
   color: var(--text);
   font-weight: 900;
-  padding: 0 18px 0 0; /* space for arrow */
+  padding: 0 18px 0 0;
   cursor: pointer;
   outline: none;
   line-height: 1;
 }
 
 /* Custom arrow */
-.footer-actions .theme-wrap{
-  position: relative;
-}
 .footer-actions .theme-wrap::after{
   content: "";
   position: absolute;
@@ -783,17 +809,10 @@ textarea{ min-height: 140px; resize: vertical; }
   pointer-events: none;
 }
 
-/* Fix dropdown options readability (prevents white-on-white weirdness) */
 #fsThemeSelect option,
 .fs-theme-select option{
   color: #111;
   background: #fff;
-}
-
-/* Mobile footer */
-@media (max-width: 700px){
-  .footer-bottom{ flex-direction: column; align-items: flex-start; }
-  .footer-actions{ width: 100%; justify-content: flex-start; }
 }
 
 /* =========================
@@ -865,113 +884,3 @@ textarea{ min-height: 140px; resize: vertical; }
   .mobile-menu.show{ display: block; }
   .hero{ min-height: 70vh; }
 }
-/* Footer link weight (Quick Links + Legal) */
-footer a,
-.footer a {
-  font-weight: 400;            /* normal */
-}
-
-/* If your links are wrapped in <strong> or similar */
-footer a strong,
-.footer a strong {
-  font-weight: 400;
-}
-.theme-pill {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 8px 14px;
-  border-radius: 999px;
-
-  border: 1px solid rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.06);
-
-  font-size: 14px;
-}
-
-/* "Theme" text */
-.theme-label {
-  opacity: 0.85;
-  white-space: nowrap;
-}
-
-/* The select itself */
-.theme-pill select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  border: none;
-  background: transparent;
-  color: inherit;
-
-  font-size: 14px;
-  font-weight: 500;
-
-  padding-right: 18px;
-  cursor: pointer;
-}
-
-/* Custom arrow */
-.theme-pill select {
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right center;
-}
-
-/* Focus */
-.theme-pill select:focus {
-  outline: none;
-}
-
-/* Light theme */
-[data-theme="light"] .theme-pill {
-  background: rgba(0,0,0,0.05);
-  border-color: rgba(0,0,0,0.2);
-}
-
-[data-theme="light"] .theme-pill select {
-  color: #000;
-}
-/* Skip to content — fully hidden by default */
-.skip-link {
-  position: fixed;
-  top: 0;
-  left: 0;
-  transform: translateY(-200%);
-  background: #000;
-  color: #fff;
-  padding: 10px 16px;
-  z-index: 10000;
-  text-decoration: none;
-  font-weight: 700;
-  border-radius: 0 0 8px 0;
-}
-
-/* ONLY show when keyboard users tab to it */
-.skip-link:focus-visible {
-  transform: translateY(0);
-  outline: 3px solid #ffd54f;
-  outline-offset: 2px;
-}
-.icon-btn{
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  padding: 10px 12px;
-  border-radius: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
-}
-.icon-btn:hover{
-  transform: translateY(-1px);
-  box-shadow: var(--shadow);
-}
-
-
-
-
-
