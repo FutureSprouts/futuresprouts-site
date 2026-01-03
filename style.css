@@ -1,5 +1,5 @@
 /* =========================================
-   FutureSprouts â€” Clean Style.css (FULL REPLACE)
+   FutureSprouts — Clean Style.css (FULL REPLACE)
    - Light/Dark theme works if data-theme is on <html> OR <body>
    - Mini-cart preview shows on hover (child OR sibling) + stays open when hovering dropdown
    - Prevent dropdown clipping (overflow: visible on common wrappers)
@@ -46,7 +46,7 @@ input, textarea, select { font: inherit; }
   --lh: 1.65;
 }
 
-/* âœ… FIX: dark theme works whether JS sets data-theme on <html> or <body> */
+/* ✅ FIX: dark theme works whether JS sets data-theme on <html> or <body> */
 html[data-theme="dark"],
 body[data-theme="dark"]{
   --bg: #0F1210;
@@ -136,7 +136,7 @@ p a:hover{ opacity: .85; }
   border-bottom: 1px solid var(--border);
 }
 
-/* âœ… FIX: prevent dropdown clipping */
+/* ✅ FIX: prevent dropdown clipping */
 header, .navbar, .container, .nav-inner, .nav-links, .nav-right { overflow: visible; }
 
 .nav-inner{
@@ -317,14 +317,14 @@ header, .navbar, .container, .nav-inner, .nav-links, .nav-right { overflow: visi
   z-index: 9999;
 }
 
-/* âœ… FIX: show dropdown if mini-cart is a child of cart-wrap */
+/* ✅ FIX: show dropdown if mini-cart is a child of cart-wrap */
 .cart-wrap:hover .mini-cart,
 .cart-wrap:focus-within .mini-cart,
 .cart-wrap.open .mini-cart{
   display: block;
 }
 
-/* âœ… FIX: also works if mini-cart is a sibling placed right after .cart-link */
+/* ✅ FIX: also works if mini-cart is a sibling placed right after .cart-link */
 .cart-link:hover + .mini-cart,
 .mini-cart:hover{
   display: block;
