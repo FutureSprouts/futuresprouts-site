@@ -935,22 +935,26 @@ footer a strong,
 [data-theme="light"] .theme-pill select {
   color: #000;
 }
-/* Skip to content — accessible but invisible by default */
+/* Skip to content — hidden but discoverable */
 .skip-link {
-  position: absolute;
-  top: -40px;
+  position: fixed;
+  top: 0;
   left: 0;
+  transform: translateY(-120%);
   background: #000;
   color: #fff;
-  padding: 8px 12px;
-  z-index: 1000;
+  padding: 10px 16px;
+  z-index: 10000;
   text-decoration: none;
-  font-weight: 600;
-  border-radius: 0 0 6px 0;
+  font-weight: 700;
+  border-radius: 0 0 8px 0;
+  transition: transform 0.2s ease;
 }
 
-/* Reveal skip link when focused (keyboard users) */
+/* Make it VERY visible when focused */
 .skip-link:focus {
-  top: 0;
+  transform: translateY(0);
+  outline: 3px solid #ffd54f;
+  outline-offset: 2px;
 }
 
