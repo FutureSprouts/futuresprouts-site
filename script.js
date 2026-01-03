@@ -419,36 +419,49 @@
 </header>`;
   }
 
-  function footerHtml() {
-    const email = cfg.contactEmail || "info@futuresprouts.org";
-    const site = escapeHtml(cfg.siteName || "FutureSprouts");
-    const ig = (cfg.socials && cfg.socials.instagram) || "#";
-    const tt = (cfg.socials && cfg.socials.tiktok) || "#";
-    const yt = (cfg.socials && cfg.socials.youtube) || "#";
+function footerHtml() {
+  const email = cfg.contactEmail || "info@futuresprouts.org";
+  const site = escapeHtml(cfg.siteName || "FutureSprouts");
 
-    return `
+  const ig = (cfg.socials && cfg.socials.instagram) ? cfg.socials.instagram : "";
+  const tt = (cfg.socials && cfg.socials.tiktok) ? cfg.socials.tiktok : "";
+  const yt = (cfg.socials && cfg.socials.youtube) ? cfg.socials.youtube : "";
+
+  const socials = [
+    ig ? `<a href="${escapeHtml(ig)}" target="_blank" rel="noopener" data-track="outbound">Instagram</a>` : "",
+    tt ? `<a href="${escapeHtml(tt)}" target="_blank" rel="noopener" data-track="outbound">TikTok</a>` : "",
+    yt ? `<a href="${escapeHtml(yt)}" target="_blank" rel="noopener" data-track="outbound">YouTube</a>` : ""
+  ].filter(Boolean);
+
+  const socialsHtml = socials.length
+    ? `<div class="footer-socials">${socials.join(`<span aria-hidden="true">·</span>`)}</div>`
+    : "";
+
+  return `
 <footer class="footer">
   <div class="container footer-grid">
     <div>
       <h3>${site}</h3>
       <p>Youth-led sustainable farming education and environmental stewardship.</p>
-      <p style="margin-top:10px;"><a href="mailto:${escapeHtml(email)}" data-track="email_click">${escapeHtml(email)}</a></p>
+      <p style="margin-top:10px;">
+        <a href="mailto:${escapeHtml(email)}" data-track="email_click">${escapeHtml(email)}</a>
+      </p>
     </div>
 
     <div>
       <h3>Quick Links</h3>
       <p><a href="services.html">Services</a></p>
-      <p><a href="cart.html">Cart</a></p>
       <p><a href="events.html">Events</a></p>
       <p><a href="donate.html" data-track="donate">Donate</a></p>
-      <p><a href="wishlist.html">Wishlist</a></p>
+      <p><a href="get-involved.html" data-track="get_involved">Get Involved</a></p>
+      <p><a href="contact.html" data-track="contact">Contact</a></p>
     </div>
 
     <div>
       <h3>Legal</h3>
       <p><a href="privacy.html">Privacy Policy</a></p>
       <p><a href="terms.html">Terms of Service</a></p>
-      <p style="margin-top:10px;"><a href="contact.html" data-track="contact">Contact</a></p>
+      <p style="margin-top:10px;"><a href="transparency.html">Transparency</a></p>
     </div>
   </div>
 
@@ -456,26 +469,20 @@
     <div class="footer-copy">© 2026 ${site}</div>
 
     <div class="footer-actions">
-      <div class="footer-theme">
+      <div class="theme-wrap" aria-label="Theme">
         <span class="small">Theme</span>
-        <select id="themeToggle" class="theme-select" aria-label="Theme">
+        <select id="fsThemeSelect" class="fs-theme-select" aria-label="Theme">
           <option value="system">System</option>
           <option value="light">Light</option>
           <option value="dark">Dark</option>
         </select>
       </div>
 
-      <div class="footer-socials">
-        <a href="${ig}" target="_blank" rel="noopener" data-track="outbound">Instagram</a>
-        <span aria-hidden="true">·</span>
-        <a href="${tt}" target="_blank" rel="noopener" data-track="outbound">TikTok</a>
-        <span aria-hidden="true">·</span>
-        <a href="${yt}" target="_blank" rel="noopener" data-track="outbound">YouTube</a>
-      </div>
+      ${socialsHtml}
     </div>
   </div>
 </footer>`;
-  }
+}
 
   // Inject ONLY if slots exist
   const headerSlot = document.getElementById("siteHeader");
@@ -1080,3 +1087,4 @@ ${cartToText(cart)}`
   }
 
 })();
+
