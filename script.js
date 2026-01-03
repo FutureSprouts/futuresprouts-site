@@ -856,6 +856,8 @@ ${cartToText(cart)}`
 
     const pref = getThemePref();
     select.value = pref;
+    
+    // Force apply the theme after setting the select value
     applyTheme(pref);
 
     select.addEventListener("change", () => {
@@ -866,11 +868,13 @@ ${cartToText(cart)}`
       fireGAEvent("theme_change", { pref: next });
     });
 
-    console.log("Theme initialized:", pref);
+    console.log("Theme initialized:", pref, "Applied to html and body");
   }
 
   // Apply theme immediately on load (before footer is injected)
-  applyTheme(getThemePref());
+  const initialTheme = getThemePref();
+  console.log("Initial theme preference:", initialTheme);
+  applyTheme(initialTheme);
 
   if (media && typeof media.addEventListener === "function") {
     media.addEventListener("change", () => {
