@@ -1,8 +1,9 @@
 /* =========================================================
-   FutureSprouts script.js – FIXED VERSION
-   - Fixed theme toggle (was looking for #themeToggle, should be #fsThemeSelect)
-   - Fixed cart preview hover behavior
-   - Improved header/footer injection timing
+   FutureSprouts script.js â€” CLEAN STABLE BUILD
+   - Header/Footer injection (single source of truth)
+   - GA4 global + conversion events
+   - Microsoft Clarity (optional)
+   - Simple privacy banner (non-annoying, US-focused)
    ========================================================= */
 
 (function () {
@@ -13,12 +14,12 @@
   // Analytics/consent toggles
   // ---------------------------
   const GA_ID = "G-98E3F7D54Q";
-  const CONSENT_KEY = "fs_consent_v1";
+  const CONSENT_KEY = "fs_consent_v1"; // "granted" | "denied"
   const analyticsCfg = (cfg.analytics || {});
-  const ENABLE_GA = analyticsCfg.ga4 !== false;
-  const ENABLE_CLARITY = analyticsCfg.clarity === true;
+  const ENABLE_GA = analyticsCfg.ga4 !== false;            // default true
+  const ENABLE_CLARITY = analyticsCfg.clarity === true;    // default false unless set true
   const CLARITY_ID = String(analyticsCfg.clarityId || "").trim();
-  const SHOW_BANNER = analyticsCfg.consentBanner !== false;
+  const SHOW_BANNER = analyticsCfg.consentBanner !== false; // default true
 
   function getConsent() {
     const v = localStorage.getItem(CONSENT_KEY);
@@ -29,11 +30,11 @@
   }
 
   // ---------------------------
-  // Load GA4
+  // Load GA4 (only if allowed)
   // ---------------------------
   function loadGA() {
     if (!ENABLE_GA) return;
-    if (window.gtag) return;
+    if (window.gtag) return; // prevent double load
 
     const s = document.createElement("script");
     s.async = true;
@@ -49,7 +50,7 @@
   }
 
   // ---------------------------
-  // Load Microsoft Clarity
+  // Load Microsoft Clarity (only if allowed)
   // ---------------------------
   function loadClarity() {
     if (!ENABLE_CLARITY) return;
@@ -145,7 +146,7 @@
 
   function showConsentBanner() {
     if (!SHOW_BANNER) return;
-    if (getConsent() !== null) return;
+    if (getConsent() !== null) return; // already decided
 
     ensureBannerStylesOnce();
 
@@ -170,6 +171,7 @@
     ok.addEventListener("click", () => {
       setConsent("granted");
       banner.remove();
+      // load analytics after consent
       loadGA();
       loadClarity();
       fireGAEvent("consent_granted");
@@ -178,363 +180,39 @@
     no.addEventListener("click", () => {
       setConsent("denied");
       banner.remove();
+      // do not load analytics
     });
 
     document.body.appendChild(banner);
   }
 
   // ---------------------------
-  // GA helper
+  // GA helper (safe)
   // ---------------------------
   function fireGAEvent(name, params) {
-    try { lastCartTotal = loadCart().reduce((s, it) => s + (it.qty || 0), 0); }
-  catch { lastCartTotal = 0; }
-
-  window.addEventListener("storage", (e) => {
-    if (e.key === CART_KEY) updateCartBadge();
-  });
-
-  // ---------------------------
-  // Cart operations
-  // ---------------------------
-  function cartAddOrUpdate(id, name, meta, qtyDelta, constraints) {
-    const cart = loadCart();
-    const idx = cart.findIndex(x => x.id === id);
-    const currentQty = idx >= 0 ? cart[idx].qty : 0;
-    const nextQty = Math.max(0, currentQty + qtyDelta);
-
-    if (constraints) {
-      if (constraints.maxPerItem != null && nextQty > constraints.maxPerItem) {
-        showModal("Limit reached", `You can only request up to ${constraints.maxPerItem} of this item per order.`);
-        return false;
-      }
-      if (constraints.bedMaxTotal != null) {
-        const isBed = (id.startsWith("bed-") || (meta && meta.kind === "bed"));
-        if (isBed) {
-          const cartBeds = cart.filter(x => (x.id.startsWith("bed-") || (x.meta && x.meta.kind === "bed")));
-          const totalBeds = cartBeds.reduce((s, x) => s + (x.qty || 0), 0);
-          const nextTotalBeds = totalBeds - currentQty + nextQty;
-          if (nextTotalBeds > constraints.bedMaxTotal) {
-            showModal("Garden bed limit", "To prevent abuse, a maximum of 4 total garden beds can be requested per order (any combination).");
-            return false;
-          }
-        }
-      }
-    }
-
-    if (nextQty === 0) {
-      if (idx >= 0) cart.splice(idx, 1);
-    } else {
-      const item = { id, name, qty: nextQty, meta: meta || {} };
-      if (idx >= 0) cart[idx] = item;
-      else cart.push(item);
-    }
-
-    saveCart(cart);
-    try { logEvent("cart_update", { id, qty: nextQty }); } catch {}
-    fireGAEvent("cart_update", { id, qty: nextQty });
-    return true;
-  }
-
-  function cartRemove(id) {
-    const cart = loadCart().filter(x => x.id !== id);
-    saveCart(cart);
-    try { logEvent("cart_remove", { id }); } catch {}
-    fireGAEvent("cart_remove", { id });
-  }
-
-  function cartUpdateMeta(id, newMeta) {
-    const cart = loadCart();
-    const idx = cart.findIndex(x => x.id === id);
-    if (idx < 0) return false;
-    cart[idx].meta = { ...(cart[idx].meta || {}), ...(newMeta || {}) };
-    saveCart(cart);
-    try { logEvent("cart_meta_update", { id }); } catch {}
-    fireGAEvent("cart_meta_update", { id });
-    return true;
-  }
-
-  // Expose helpers
-  window.FS_CART = {
-    loadCart,
-    saveCart,
-    cartAddOrUpdate,
-    cartRemove,
-    cartUpdateMeta,
-    showModal,
-    loadInventory,
-    saveInventory,
-    getInventoryStatus,
-    logEvent,
-    loadJson,
-    saveJson
-  };
-
-  // ---------------------------
-  // Cart page rendering
-  // ---------------------------
-  const cartList = document.querySelector("#cartList");
-  const cartEmpty = document.querySelector("#cartEmpty");
-  const cartForm = document.querySelector("#cartForm");
-
-  function cartToText(cart) {
-    return cart.map(it => {
-      const meta = it.meta || {};
-      const lines = [`- ${it.name} (qty: ${it.qty})`];
-      if (meta.brochures != null) lines.push(`  brochures: ${meta.brochures}`);
-      if (meta.packets != null) lines.push(`  seed packets: ${meta.packets}`);
-      if (meta.size) lines.push(`  size: ${meta.size}`);
-      if (meta.notes) lines.push(`  notes: ${meta.notes}`);
-      if (meta.address1) lines.push(`  address1: ${meta.address1}`);
-      return lines.join("\n");
-    }).join("\n");
-  }
-
-  function renderCart() {
-    if (!cartList) return;
-    const cart = loadCart();
-
-    if (cart.length === 0) {
-      if (cartEmpty) cartEmpty.style.display = "block";
-      cartList.innerHTML = "";
-      return;
-    }
-    if (cartEmpty) cartEmpty.style.display = "none";
-
-    cartList.innerHTML = cart.map(it => {
-      const meta = it.meta || {};
-      const metaParts = [];
-      if (meta.brochures != null) metaParts.push(`Brochures: ${meta.brochures}`);
-      if (meta.packets != null) metaParts.push(`Seed packs: ${meta.packets}`);
-      if (meta.size) metaParts.push(`Size: ${meta.size}`);
-
-      const showMetaEditor = (meta.brochures != null || meta.packets != null);
-
-      return `
-<div class="cart-line">
-  <div style="flex:1;">
-    <strong>${escapeHtml(it.name)}</strong>
-    <div class="small">${escapeHtml(metaParts.join(" • "))}</div>
-
-    ${showMetaEditor ? `
-    <div class="meta-edit" aria-label="Edit item details">
-      ${meta.brochures != null ? `
-      <div class="mini-field">
-        <label>Brochures</label>
-        <input type="number" min="0" max="200" value="${meta.brochures}" data-meta-broch="${escapeHtml(it.id)}">
-      </div>` : ""}
-      ${meta.packets != null ? `
-      <div class="mini-field">
-        <label>Seed Packs</label>
-        <input type="number" min="0" max="200" value="${meta.packets}" data-meta-pack="${escapeHtml(it.id)}">
-      </div>` : ""}
-    </div>` : ""}
-  </div>
-
-  <div class="cart-actions">
-    <div class="qty" aria-label="Quantity controls">
-      <button type="button" data-dec="${escapeHtml(it.id)}">−</button>
-      <span>${it.qty}</span>
-      <button type="button" data-inc="${escapeHtml(it.id)}">+</button>
-    </div>
-    <button type="button" class="trash-btn" data-remove="${escapeHtml(it.id)}" aria-label="Remove item">🗑</button>
-  </div>
-</div>`;
-    }).join("");
-
-    cartList.querySelectorAll("[data-dec]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-dec");
-        const item = loadCart().find(x => x.id === id);
-        if (!item) return;
-        const constraints = { maxPerItem: item.id === "soil-kit-1" ? 1 : null, bedMaxTotal: 4 };
-        cartAddOrUpdate(item.id, item.name, item.meta, -1, constraints);
-        renderCart();
-      });
-    });
-
-    cartList.querySelectorAll("[data-inc]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-inc");
-        const item = loadCart().find(x => x.id === id);
-        if (!item) return;
-        const constraints = { maxPerItem: item.id === "soil-kit-1" ? 1 : null, bedMaxTotal: 4 };
-        cartAddOrUpdate(item.id, item.name, item.meta, +1, constraints);
-        renderCart();
-      });
-    });
-
-    cartList.querySelectorAll("[data-remove]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-remove");
-        cartRemove(id);
-        renderCart();
-      });
-    });
-
-    cartList.querySelectorAll("[data-meta-broch]").forEach(inp => {
-      inp.addEventListener("change", () => {
-        const id = inp.getAttribute("data-meta-broch");
-        const val = Math.max(0, Math.min(200, parseInt(inp.value || "0", 10)));
-        cartUpdateMeta(id, { brochures: val });
-        renderCart();
-      });
-    });
-
-    cartList.querySelectorAll("[data-meta-pack]").forEach(inp => {
-      inp.addEventListener("change", () => {
-        const id = inp.getAttribute("data-meta-pack");
-        const val = Math.max(0, Math.min(200, parseInt(inp.value || "0", 10)));
-        cartUpdateMeta(id, { packets: val });
-        renderCart();
-      });
-    });
-  }
-
-  if (cartList) renderCart();
-
-  // ---------------------------
-  // Formspree submit
-  // ---------------------------
-  function getLockoutUntil() {
-    const raw = localStorage.getItem(LOCKOUT_KEY);
-    if (!raw) return null;
-    const t = Date.parse(raw);
-    return Number.isFinite(t) ? t : null;
-  }
-
-  function setLockoutHours(hours) {
-    const until = Date.now() + hours * 60 * 60 * 1000;
-    localStorage.setItem(LOCKOUT_KEY, new Date(until).toISOString());
-  }
-
-  function validateUSState(state) {
-    const st = String(state || "").trim().toUpperCase();
-    const states = new Set([
-      "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD",
-      "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC",
-      "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC"
-    ]);
-    return states.has(st);
-  }
-
-  function validateZip(zip) {
-    return /^\d{5}(-\d{4})?$/.test(String(zip || "").trim());
-  }
-
-  if (cartForm) {
-    cartForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const lockUntil = getLockoutUntil();
-      if (lockUntil && Date.now() < lockUntil) {
-        const mins = Math.ceil((lockUntil - Date.now()) / 60000);
-        showModal("Please wait", `To prevent abuse, requests are limited. Try again in about ${mins} minute(s).`);
-        return;
-      }
-
-      const cart = loadCart();
-      if (cart.length === 0) {
-        showModal("Cart empty", "Add services first, then submit your request.");
-        return;
-      }
-
-      const formData = new FormData(cartForm);
-      const email = String(formData.get("email") || "").trim();
-      if (!email) {
-        showModal("Missing email", "Please enter your email so we can follow up.");
-        return;
-      }
-
-      const state = String(formData.get("state") || "").trim();
-      const zip = String(formData.get("zip") || "").trim();
-
-      if (!validateUSState(state)) {
-        showModal("Check state", "Please enter a valid US state abbreviation (ex: PA).");
-        return;
-      }
-      if (!validateZip(zip)) {
-        showModal("Check ZIP", "Please enter a valid ZIP code (ex: 19382).");
-        return;
-      }
-
-      try { logEvent("order_submit_attempt", { items: cart.length }); } catch {}
-      fireGAEvent("order_submit_attempt", { items: cart.length });
-
-      try {
-        const res = await fetch("https://formspree.io/f/mdakervk", {
-          method: "POST",
-          headers: { "Accept": "application/json", "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            message:
-`SERVICE REQUEST (FutureSprouts)
-
-Email: ${email}
-
-Order:
-${cartToText(cart)}`
-          })
-        });
-
-        if (!res.ok) {
-          showModal("Error", "Something went wrong submitting the request. Please try again or email info@futuresprouts.org.");
-          try { logEvent("order_submit_error", { status: res.status }); } catch {}
-          fireGAEvent("order_submit_error", { status: res.status });
-          return;
-        }
-
-        saveCart([]);
-        renderCart();
-        cartForm.reset();
-        setLockoutHours(6);
-
-        showModal("Request sent", "Thanks! Your request was sent. We'll follow up by email.");
-        try { logEvent("order_submit_success", {}); } catch {}
-        fireGAEvent("order_submit_success", {});
-      } catch {
-        showModal("Error", "Network error. Please try again or email info@futuresprouts.org.");
-        try { logEvent("order_submit_error", { status: "network" }); } catch {}
-        fireGAEvent("order_submit_error", { status: "network" });
-      }
-    });
-  }
-
-  // ---------------------------
-  // Initialize everything after DOM ready
-  // ---------------------------
-  function initAll() {
-    injectHeaderFooter();
-    initMobileMenu();
-    highlightActiveNav();
-    updateCartBadge();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initAll);
-  } else {
-    initAll();
-  }
-
-})();
+    try {
       if (window.gtag) window.gtag("event", name, params || {});
     } catch {}
   }
 
   // ---------------------------
-  // Decide whether to load analytics
+  // Decide whether to load analytics now
+  // US-mostly: if you want â€œnot annoyingâ€, we load after OK only.
+  // If youâ€™d prefer auto-load and banner is just informational, tell me.
   // ---------------------------
   const consent = getConsent();
   if (consent === "granted") {
     loadGA();
     loadClarity();
   } else if (consent === null) {
+    // show banner; do not load analytics yet
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", showConsentBanner);
     } else {
       showConsentBanner();
     }
   }
+  // consent denied => do nothing
 
   // ---------------------------
   // Keys
@@ -606,7 +284,7 @@ ${cartToText(cart)}`
   }
 
   // ---------------------------
-  // Local analytics store
+  // Local analytics store (kept; useful for admin/debug)
   // ---------------------------
   function logEvent(type, data) {
     const store = loadJson(ANALYTICS_KEY, { events: [] });
@@ -615,7 +293,9 @@ ${cartToText(cart)}`
     saveJson(ANALYTICS_KEY, store);
   }
 
+  // page view (local)
   try { logEvent("page_view", { path: location.pathname }); } catch {}
+  // page view (GA)
   fireGAEvent("page_view_fs", { page_path: location.pathname });
 
   // ---------------------------
@@ -651,7 +331,7 @@ ${cartToText(cart)}`
   }
 
   // ---------------------------
-  // Header/Footer injection
+  // Header/Footer injection (single)
   // ---------------------------
   function headerHtml() {
     const name = cfg.siteName || "FutureSprouts";
@@ -693,18 +373,17 @@ ${cartToText(cart)}`
       <a href="donate.html" class="donate-btn" data-track="donate">Donate</a>
       <a href="contact.html" data-track="contact">Contact</a>
 
-      <div class="cart-wrap">
-        <a href="cart.html" class="cart-link" aria-label="View cart" data-track="cart_open">
-          <span class="cart-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
-              <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
-                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
-              <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
-            </svg>
-          </span>
-          <span class="cart-badge" id="cartBadge">0</span>
-        </a>
+      <a href="cart.html" class="cart-link" aria-label="View cart" data-track="cart_open">
+        <span class="cart-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
+            <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
+            <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
+          </svg>
+        </span>
+
+        <span class="cart-badge" id="cartBadge">0</span>
 
         <div class="mini-cart" id="miniCart" aria-label="Cart preview">
           <div class="mini-cart-header">
@@ -716,7 +395,7 @@ ${cartToText(cart)}`
             <a class="btn primary mini-cart-btn" href="cart.html">View Cart</a>
           </div>
         </div>
-      </div>
+      </a>
     </nav>
   </div>
 
@@ -740,25 +419,25 @@ ${cartToText(cart)}`
 </header>`;
   }
 
-  function footerHtml() {
-    const email = cfg.contactEmail || "info@futuresprouts.org";
-    const site = escapeHtml(cfg.siteName || "FutureSprouts");
+function footerHtml() {
+  const email = cfg.contactEmail || "info@futuresprouts.org";
+  const site = escapeHtml(cfg.siteName || "FutureSprouts");
 
-    const ig = (cfg.socials && cfg.socials.instagram) ? cfg.socials.instagram : "";
-    const tt = (cfg.socials && cfg.socials.tiktok) ? cfg.socials.tiktok : "";
-    const yt = (cfg.socials && cfg.socials.youtube) ? cfg.socials.youtube : "";
+  const ig = (cfg.socials && cfg.socials.instagram) ? cfg.socials.instagram : "";
+  const tt = (cfg.socials && cfg.socials.tiktok) ? cfg.socials.tiktok : "";
+  const yt = (cfg.socials && cfg.socials.youtube) ? cfg.socials.youtube : "";
 
-    const socials = [
-      ig ? `<a href="${escapeHtml(ig)}" target="_blank" rel="noopener" data-track="outbound">Instagram</a>` : "",
-      tt ? `<a href="${escapeHtml(tt)}" target="_blank" rel="noopener" data-track="outbound">TikTok</a>` : "",
-      yt ? `<a href="${escapeHtml(yt)}" target="_blank" rel="noopener" data-track="outbound">YouTube</a>` : ""
-    ].filter(Boolean);
+  const socials = [
+    ig ? `<a href="${escapeHtml(ig)}" target="_blank" rel="noopener" data-track="outbound">Instagram</a>` : "",
+    tt ? `<a href="${escapeHtml(tt)}" target="_blank" rel="noopener" data-track="outbound">TikTok</a>` : "",
+    yt ? `<a href="${escapeHtml(yt)}" target="_blank" rel="noopener" data-track="outbound">YouTube</a>` : ""
+  ].filter(Boolean);
 
-    const socialsHtml = socials.length
-      ? `<div class="footer-socials">${socials.join(`<span aria-hidden="true">·</span>`)}</div>`
-      : "";
+  const socialsHtml = socials.length
+    ? `<div class="footer-socials">${socials.join(`<span aria-hidden="true">Â·</span>`)}</div>`
+    : "";
 
-    return `
+  return `
 <footer class="footer">
   <div class="container footer-grid">
     <div>
@@ -787,7 +466,7 @@ ${cartToText(cart)}`
   </div>
 
   <div class="container footer-bottom">
-    <div class="footer-copy">© 2026 ${site}</div>
+    <div class="footer-copy">Â© 2026 ${site}</div>
 
     <div class="footer-actions">
       <div class="theme-wrap" aria-label="Theme">
@@ -803,22 +482,17 @@ ${cartToText(cart)}`
     </div>
   </div>
 </footer>`;
-  }
+}
 
-  // Inject header/footer
-  function injectHeaderFooter() {
-    const headerSlot = document.getElementById("siteHeader");
-    if (headerSlot) headerSlot.outerHTML = headerHtml();
+  // Inject ONLY if slots exist
+  const headerSlot = document.getElementById("siteHeader");
+  if (headerSlot) headerSlot.outerHTML = headerHtml();
 
-    const footerSlot = document.getElementById("siteFooter");
-    if (footerSlot) footerSlot.outerHTML = footerHtml();
-
-    // Now initialize theme after injection
-    initTheme();
-  }
+  const footerSlot = document.getElementById("siteFooter");
+  if (footerSlot) footerSlot.outerHTML = footerHtml();
 
   // ---------------------------
-  // Theme: system/light/dark
+  // Theme: system/light/dark (footer dropdown)
   // ---------------------------
   const media = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
 
@@ -838,8 +512,8 @@ ${cartToText(cart)}`
     }
   }
 
-  function initTheme() {
-    const select = document.getElementById("fsThemeSelect");
+  function syncThemeUI() {
+    const select = document.getElementById("themeToggle");
     if (!select) return;
 
     const pref = getThemePref();
@@ -855,8 +529,8 @@ ${cartToText(cart)}`
     };
   }
 
-  // Apply theme immediately on load
   applyTheme(getThemePref());
+  syncThemeUI();
 
   if (media && typeof media.addEventListener === "function") {
     media.addEventListener("change", () => {
@@ -871,30 +545,26 @@ ${cartToText(cart)}`
   // ---------------------------
   // Mobile menu
   // ---------------------------
-  function initMobileMenu() {
-    const burger = document.querySelector(".hamburger");
-    const mobileMenu = document.querySelector(".mobile-menu");
-    if (burger && mobileMenu) {
-      burger.addEventListener("click", () => {
-        mobileMenu.classList.toggle("show");
-        burger.setAttribute("aria-expanded", mobileMenu.classList.contains("show"));
-      });
-    }
+  const burger = document.querySelector(".hamburger");
+  const mobileMenu = document.querySelector(".mobile-menu");
+  if (burger && mobileMenu) {
+    burger.addEventListener("click", () => {
+      mobileMenu.classList.toggle("show");
+      burger.setAttribute("aria-expanded", mobileMenu.classList.contains("show"));
+    });
   }
 
   // ---------------------------
   // Active nav highlight
   // ---------------------------
-  function highlightActiveNav() {
-    const currentFile = location.pathname.split("/").pop() || "index.html";
-    document.querySelectorAll(".nav-links a, .mobile-menu a").forEach(a => {
-      const href = (a.getAttribute("href") || "").trim();
-      if (href === currentFile) a.classList.add("active");
-    });
-  }
+  const currentFile = location.pathname.split("/").pop() || "index.html";
+  document.querySelectorAll(".nav-links a, .mobile-menu a").forEach(a => {
+    const href = (a.getAttribute("href") || "").trim();
+    if (href === currentFile) a.classList.add("active");
+  });
 
   // ---------------------------
-  // Conversion tracking
+  // Conversion tracking (delegated)
   // ---------------------------
   function trackClick(e) {
     const a = e.target.closest ? e.target.closest("a") : null;
@@ -903,6 +573,7 @@ ${cartToText(cart)}`
     const href = (a.getAttribute("href") || "").trim();
     const track = (a.getAttribute("data-track") || "").trim();
 
+    // Outbound
     const isExternal = /^https?:\/\//i.test(href) && !href.includes(location.host);
 
     if (track === "donate" || /donate\.html$/i.test(href)) {
@@ -1047,14 +718,14 @@ ${cartToText(cart)}`
         <div class="mini-cart-item">
           <div>
             <strong>${escapeHtml(it.name)}</strong>
-            <div class="small">${escapeHtml(parts.join(" • "))}</div>
+            <div class="small">${escapeHtml(parts.join(" â€¢ "))}</div>
           </div>
-          <div class="mini-cart-qty">×${it.qty}</div>
+          <div class="mini-cart-qty">Ã—${it.qty}</div>
         </div>
       `;
     }).join("");
 
-    if (cart.length > 5) miniItems.innerHTML += `<div class="small">+${cart.length - 5} more…</div>`;
+    if (cart.length > 5) miniItems.innerHTML += `<div class="small">+${cart.length - 5} moreâ€¦</div>`;
   }
 
   function animateBadgeIfAdded(cartItems) {
@@ -1100,4 +771,319 @@ ${cartToText(cart)}`
     updateCartBadge();
   }
 
-  try {
+  try { lastCartTotal = loadCart().reduce((s, it) => s + (it.qty || 0), 0); }
+  catch { lastCartTotal = 0; }
+  updateCartBadge();
+
+  window.addEventListener("storage", (e) => {
+    if (e.key === CART_KEY) updateCartBadge();
+  });
+
+  // ---------------------------
+  // Cart operations (unchanged)
+  // ---------------------------
+  function cartAddOrUpdate(id, name, meta, qtyDelta, constraints) {
+    const cart = loadCart();
+    const idx = cart.findIndex(x => x.id === id);
+    const currentQty = idx >= 0 ? cart[idx].qty : 0;
+    const nextQty = Math.max(0, currentQty + qtyDelta);
+
+    if (constraints) {
+      if (constraints.maxPerItem != null && nextQty > constraints.maxPerItem) {
+        showModal("Limit reached", `You can only request up to ${constraints.maxPerItem} of this item per order.`);
+        return false;
+      }
+      if (constraints.bedMaxTotal != null) {
+        const isBed = (id.startsWith("bed-") || (meta && meta.kind === "bed"));
+        if (isBed) {
+          const cartBeds = cart.filter(x => (x.id.startsWith("bed-") || (x.meta && x.meta.kind === "bed")));
+          const totalBeds = cartBeds.reduce((s, x) => s + (x.qty || 0), 0);
+          const nextTotalBeds = totalBeds - currentQty + nextQty;
+          if (nextTotalBeds > constraints.bedMaxTotal) {
+            showModal("Garden bed limit", "To prevent abuse, a maximum of 4 total garden beds can be requested per order (any combination).");
+            return false;
+          }
+        }
+      }
+    }
+
+    if (nextQty === 0) {
+      if (idx >= 0) cart.splice(idx, 1);
+    } else {
+      const item = { id, name, qty: nextQty, meta: meta || {} };
+      if (idx >= 0) cart[idx] = item;
+      else cart.push(item);
+    }
+
+    saveCart(cart);
+    try { logEvent("cart_update", { id, qty: nextQty }); } catch {}
+    fireGAEvent("cart_update", { id, qty: nextQty });
+    return true;
+  }
+
+  function cartRemove(id) {
+    const cart = loadCart().filter(x => x.id !== id);
+    saveCart(cart);
+    try { logEvent("cart_remove", { id }); } catch {}
+    fireGAEvent("cart_remove", { id });
+  }
+
+  function cartUpdateMeta(id, newMeta) {
+    const cart = loadCart();
+    const idx = cart.findIndex(x => x.id === id);
+    if (idx < 0) return false;
+    cart[idx].meta = { ...(cart[idx].meta || {}), ...(newMeta || {}) };
+    saveCart(cart);
+    try { logEvent("cart_meta_update", { id }); } catch {}
+    fireGAEvent("cart_meta_update", { id });
+    return true;
+  }
+
+  // Expose helpers
+  window.FS_CART = {
+    loadCart,
+    saveCart,
+    cartAddOrUpdate,
+    cartRemove,
+    cartUpdateMeta,
+    showModal,
+    loadInventory,
+    saveInventory,
+    getInventoryStatus,
+    logEvent,
+    loadJson,
+    saveJson
+  };
+
+  // ---------------------------
+  // Cart page rendering + Formspree submit
+  // (Your existing logic can stay; add GA events around submits)
+  // ---------------------------
+  const cartList = document.querySelector("#cartList");
+  const cartEmpty = document.querySelector("#cartEmpty");
+  const cartForm = document.querySelector("#cartForm");
+
+  function cartToText(cart) {
+    return cart.map(it => {
+      const meta = it.meta || {};
+      const lines = [`- ${it.name} (qty: ${it.qty})`];
+      if (meta.brochures != null) lines.push(`  brochures: ${meta.brochures}`);
+      if (meta.packets != null) lines.push(`  seed packets: ${meta.packets}`);
+      if (meta.size) lines.push(`  size: ${meta.size}`);
+      if (meta.notes) lines.push(`  notes: ${meta.notes}`);
+      if (meta.address1) lines.push(`  address1: ${meta.address1}`);
+      return lines.join("\n");
+    }).join("\n");
+  }
+
+  function renderCart() {
+    if (!cartList) return;
+    const cart = loadCart();
+
+    if (cart.length === 0) {
+      if (cartEmpty) cartEmpty.style.display = "block";
+      cartList.innerHTML = "";
+      return;
+    }
+    if (cartEmpty) cartEmpty.style.display = "none";
+
+    cartList.innerHTML = cart.map(it => {
+      const meta = it.meta || {};
+      const metaParts = [];
+      if (meta.brochures != null) metaParts.push(`Brochures: ${meta.brochures}`);
+      if (meta.packets != null) metaParts.push(`Seed packs: ${meta.packets}`);
+      if (meta.size) metaParts.push(`Size: ${meta.size}`);
+
+      const showMetaEditor = (meta.brochures != null || meta.packets != null);
+
+      return `
+<div class="cart-line">
+  <div style="flex:1;">
+    <strong>${escapeHtml(it.name)}</strong>
+    <div class="small">${escapeHtml(metaParts.join(" â€¢ "))}</div>
+
+    ${showMetaEditor ? `
+    <div class="meta-edit" aria-label="Edit item details">
+      ${meta.brochures != null ? `
+      <div class="mini-field">
+        <label>Brochures</label>
+        <input type="number" min="0" max="200" value="${meta.brochures}" data-meta-broch="${escapeHtml(it.id)}">
+      </div>` : ""}
+      ${meta.packets != null ? `
+      <div class="mini-field">
+        <label>Seed Packs</label>
+        <input type="number" min="0" max="200" value="${meta.packets}" data-meta-pack="${escapeHtml(it.id)}">
+      </div>` : ""}
+    </div>` : ""}
+  </div>
+
+  <div class="cart-actions">
+    <div class="qty" aria-label="Quantity controls">
+      <button type="button" data-dec="${escapeHtml(it.id)}">âˆ’</button>
+      <span>${it.qty}</span>
+      <button type="button" data-inc="${escapeHtml(it.id)}">+</button>
+    </div>
+    <button type="button" class="trash-btn" data-remove="${escapeHtml(it.id)}" aria-label="Remove item">ðŸ—‘</button>
+  </div>
+</div>`;
+    }).join("");
+
+    cartList.querySelectorAll("[data-dec]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-dec");
+        const item = loadCart().find(x => x.id === id);
+        if (!item) return;
+        const constraints = { maxPerItem: item.id === "soil-kit-1" ? 1 : null, bedMaxTotal: 4 };
+        cartAddOrUpdate(item.id, item.name, item.meta, -1, constraints);
+        renderCart();
+      });
+    });
+
+    cartList.querySelectorAll("[data-inc]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-inc");
+        const item = loadCart().find(x => x.id === id);
+        if (!item) return;
+        const constraints = { maxPerItem: item.id === "soil-kit-1" ? 1 : null, bedMaxTotal: 4 };
+        cartAddOrUpdate(item.id, item.name, item.meta, +1, constraints);
+        renderCart();
+      });
+    });
+
+    cartList.querySelectorAll("[data-remove]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-remove");
+        cartRemove(id);
+        renderCart();
+      });
+    });
+
+    cartList.querySelectorAll("[data-meta-broch]").forEach(inp => {
+      inp.addEventListener("change", () => {
+        const id = inp.getAttribute("data-meta-broch");
+        const val = Math.max(0, Math.min(200, parseInt(inp.value || "0", 10)));
+        cartUpdateMeta(id, { brochures: val });
+        renderCart();
+      });
+    });
+
+    cartList.querySelectorAll("[data-meta-pack]").forEach(inp => {
+      inp.addEventListener("change", () => {
+        const id = inp.getAttribute("data-meta-pack");
+        const val = Math.max(0, Math.min(200, parseInt(inp.value || "0", 10)));
+        cartUpdateMeta(id, { packets: val });
+        renderCart();
+      });
+    });
+  }
+
+  if (cartList) renderCart();
+
+  // ---------------------------
+  // Formspree submit tracking (keeps your current endpoint)
+  // ---------------------------
+  function getLockoutUntil() {
+    const raw = localStorage.getItem(LOCKOUT_KEY);
+    if (!raw) return null;
+    const t = Date.parse(raw);
+    return Number.isFinite(t) ? t : null;
+  }
+
+  function setLockoutHours(hours) {
+    const until = Date.now() + hours * 60 * 60 * 1000;
+    localStorage.setItem(LOCKOUT_KEY, new Date(until).toISOString());
+  }
+
+  function validateUSState(state) {
+    const st = String(state || "").trim().toUpperCase();
+    const states = new Set([
+      "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD",
+      "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC",
+      "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC"
+    ]);
+    return states.has(st);
+  }
+
+  function validateZip(zip) {
+    return /^\d{5}(-\d{4})?$/.test(String(zip || "").trim());
+  }
+
+  if (cartForm) {
+    cartForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const lockUntil = getLockoutUntil();
+      if (lockUntil && Date.now() < lockUntil) {
+        const mins = Math.ceil((lockUntil - Date.now()) / 60000);
+        showModal("Please wait", `To prevent abuse, requests are limited. Try again in about ${mins} minute(s).`);
+        return;
+      }
+
+      const cart = loadCart();
+      if (cart.length === 0) {
+        showModal("Cart empty", "Add services first, then submit your request.");
+        return;
+      }
+
+      const formData = new FormData(cartForm);
+      const email = String(formData.get("email") || "").trim();
+      if (!email) {
+        showModal("Missing email", "Please enter your email so we can follow up.");
+        return;
+      }
+
+      const state = String(formData.get("state") || "").trim();
+      const zip = String(formData.get("zip") || "").trim();
+
+      if (!validateUSState(state)) {
+        showModal("Check state", "Please enter a valid US state abbreviation (ex: PA).");
+        return;
+      }
+      if (!validateZip(zip)) {
+        showModal("Check ZIP", "Please enter a valid ZIP code (ex: 19382).");
+        return;
+      }
+
+      try { logEvent("order_submit_attempt", { items: cart.length }); } catch {}
+      fireGAEvent("order_submit_attempt", { items: cart.length });
+
+      try {
+        const res = await fetch("https://formspree.io/f/mdakervk", {
+          method: "POST",
+          headers: { "Accept": "application/json", "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            message:
+`SERVICE REQUEST (FutureSprouts)
+
+Email: ${email}
+
+Order:
+${cartToText(cart)}`
+          })
+        });
+
+        if (!res.ok) {
+          showModal("Error", "Something went wrong submitting the request. Please try again or email info@futuresprouts.org.");
+          try { logEvent("order_submit_error", { status: res.status }); } catch {}
+          fireGAEvent("order_submit_error", { status: res.status });
+          return;
+        }
+
+        saveCart([]);
+        renderCart();
+        cartForm.reset();
+        setLockoutHours(6);
+
+        showModal("Request sent", "Thanks! Your request was sent. Weâ€™ll follow up by email.");
+        try { logEvent("order_submit_success", {}); } catch {}
+        fireGAEvent("order_submit_success", {});
+      } catch {
+        showModal("Error", "Network error. Please try again or email info@futuresprouts.org.");
+        try { logEvent("order_submit_error", { status: "network" }); } catch {}
+        fireGAEvent("order_submit_error", { status: "network" });
+      }
+    });
+  }
+
+})();
