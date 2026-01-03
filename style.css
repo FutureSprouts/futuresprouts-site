@@ -1,13 +1,5 @@
-/* =========================================
-   FutureSprouts — Clean Style.css (FULL REPLACE)
-   - Light/Dark theme works if data-theme is on <html> OR <body>
-   - Mini-cart preview shows on hover (child OR sibling) + stays open when hovering dropdown
-   - Prevent dropdown clipping (overflow: visible on common wrappers)
-========================================= */
+find the issue in this css code where the light dark tiggle doesnt work and the cart preview does not show when u hover over the cart icon: 
 
-/* =========================
-   RESET
-========================= */
 *{ margin: 0; padding: 0; box-sizing: border-box; }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
@@ -18,7 +10,6 @@ input, textarea, select { font: inherit; }
    THEME VARIABLES
 ========================= */
 :root{
-  /* Light */
   --bg: #FAF7F2;
   --bg2: #F1ECE3;
   --card: #FFFFFF;
@@ -46,9 +37,7 @@ input, textarea, select { font: inherit; }
   --lh: 1.65;
 }
 
-/* ✅ FIX: dark theme works whether JS sets data-theme on <html> or <body> */
-html[data-theme="dark"],
-body[data-theme="dark"]{
+:root[data-theme="dark"]{
   --bg: #0F1210;
   --bg2: #151A16;
   --card: #101512;
@@ -136,8 +125,7 @@ p a:hover{ opacity: .85; }
   border-bottom: 1px solid var(--border);
 }
 
-/* ✅ FIX: prevent dropdown clipping */
-header, .navbar, .container, .nav-inner, .nav-links, .nav-right { overflow: visible; }
+.navbar, .nav-inner, .nav-links, .nav-right { overflow: visible; }
 
 .nav-inner{
   display: flex;
@@ -187,7 +175,6 @@ header, .navbar, .container, .nav-inner, .nav-links, .nav-right { overflow: visi
   border-radius: 14px;
   font-weight: 800;
   cursor: pointer;
-  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
 }
 .icon-btn:hover{
   transform: translateY(-1px);
@@ -259,7 +246,6 @@ header, .navbar, .container, .nav-inner, .nav-links, .nav-right { overflow: visi
   border-radius: 12px;
   border: 1px solid var(--border);
   background: color-mix(in oklab, var(--card) 92%, transparent);
-  transition: background .15s ease, box-shadow .15s ease, transform .15s ease, border-color .15s ease;
 }
 .cart-link:hover{
   background: color-mix(in oklab, var(--green) 14%, transparent);
@@ -317,16 +303,10 @@ header, .navbar, .container, .nav-inner, .nav-links, .nav-right { overflow: visi
   z-index: 9999;
 }
 
-/* ✅ FIX: show dropdown if mini-cart is a child of cart-wrap */
+/* show dropdown on hover or keyboard focus */
 .cart-wrap:hover .mini-cart,
 .cart-wrap:focus-within .mini-cart,
 .cart-wrap.open .mini-cart{
-  display: block;
-}
-
-/* ✅ FIX: also works if mini-cart is a sibling placed right after .cart-link */
-.cart-link:hover + .mini-cart,
-.mini-cart:hover{
   display: block;
 }
 
@@ -425,7 +405,6 @@ header, .navbar, .container, .nav-inner, .nav-links, .nav-right { overflow: visi
   font-weight: 850;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
 }
 .btn.primary{
   background: var(--green);
@@ -545,7 +524,6 @@ header, .navbar, .container, .nav-inner, .nav-links, .nav-right { overflow: visi
   border-radius: 999px;
   font-weight: 850;
   cursor: pointer;
-  transition: background .15s ease, border-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
 .tag:hover{ background: color-mix(in oklab, var(--green) 10%, var(--card)); }
 .tag.active{
@@ -569,7 +547,7 @@ input, textarea, select,
   color: var(--text);
   font-size: 15px;
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, background .15s ease, color .15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 input::placeholder, textarea::placeholder{ color: var(--muted); }
@@ -616,7 +594,6 @@ textarea{ min-height: 140px; resize: vertical; }
   color: var(--text);
   font-weight: 900;
   cursor: pointer;
-  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
 }
 .qty button:hover{ box-shadow: var(--shadow); }
 .qty span{
@@ -655,7 +632,6 @@ textarea{ min-height: 140px; resize: vertical; }
   padding: 8px 10px;
   font-weight: 900;
   cursor: pointer;
-  transition: background .15s ease, border-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
 .trash-btn:hover{
   background: color-mix(in oklab, var(--danger) 18%, transparent);
@@ -687,7 +663,6 @@ textarea{ min-height: 140px; resize: vertical; }
   border-radius: 999px;
   font-weight: 900;
   cursor:pointer;
-  transition: background .15s ease, border-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
 .tab-btn.active{
   background: color-mix(in oklab, var(--green) 14%, transparent);
