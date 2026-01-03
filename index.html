@@ -9,6 +9,7 @@
   <title>FutureSprouts | Youth Farming & Sustainability Education</title>
   <meta name="description" content="FutureSprouts is a youth-led organization providing hands-on sustainable farming education, seed sharing, and environmental stewardship projects." />
   <link rel="canonical" href="https://futuresprouts.org/" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
 
   <!-- Favicons -->
   <link rel="icon" href="/favicon.ico" />
@@ -20,6 +21,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://futuresprouts.org/" />
   <meta property="og:image" content="https://futuresprouts.org/images/og-image.png" />
+  <meta property="og:image:alt" content="FutureSprouts — youth-led sustainable farming education." />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -39,31 +41,73 @@
   <link rel="stylesheet" href="style.css" />
   <script src="config.js"></script>
 
-  <!-- Organization Schema -->
+  <!-- Structured Data: Nonprofit + Website -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "FutureSprouts",
-    "url": "https://futuresprouts.org/",
-    "logo": "https://futuresprouts.org/images/logo.png",
-    "description": "FutureSprouts is a youth-led organization providing hands-on sustainable farming education, seed sharing, and environmental stewardship projects.",
-    "email": "info@futuresprouts.org",
-    "contactPoint": [{
-      "@type": "ContactPoint",
-      "contactType": "customer support",
-      "email": "info@futuresprouts.org"
-    }],
-    "sameAs": []
+    "@graph": [
+      {
+        "@type": "NonprofitOrganization",
+        "@id": "https://futuresprouts.org/#organization",
+        "name": "FutureSprouts",
+        "url": "https://futuresprouts.org/",
+        "logo": "https://futuresprouts.org/images/logo.png",
+        "description": "FutureSprouts is a youth-led organization providing hands-on sustainable farming education, seed sharing, and environmental stewardship projects.",
+        "email": "info@futuresprouts.org",
+        "contactPoint": [{
+          "@type": "ContactPoint",
+          "contactType": "general inquiries",
+          "email": "info@futuresprouts.org"
+        }],
+        "areaServed": "US",
+        "knowsAbout": [
+          "sustainable farming",
+          "agriculture education",
+          "youth education",
+          "environmental stewardship",
+          "food systems"
+        ],
+        "sameAs": []
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://futuresprouts.org/#website",
+        "url": "https://futuresprouts.org/",
+        "name": "FutureSprouts",
+        "publisher": {
+          "@id": "https://futuresprouts.org/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://futuresprouts.org/search.html?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://futuresprouts.org/#webpage",
+        "url": "https://futuresprouts.org/",
+        "name": "FutureSprouts | Youth Farming & Sustainability Education",
+        "isPartOf": { "@id": "https://futuresprouts.org/#website" },
+        "about": { "@id": "https://futuresprouts.org/#organization" },
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": "https://futuresprouts.org/images/og-image.png"
+        }
+      }
+    ]
   }
   </script>
 </head>
 
 <body>
+  <!-- Accessibility -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <!-- Injected header -->
   <div id="siteHeader"></div>
 
-  <div class="container mobile-menu">
+  <div class="container mobile-menu" aria-label="Mobile navigation">
     <a href="about.html">About</a>
     <a href="programs.html">Programs</a>
     <a href="services.html">Services</a>
@@ -87,62 +131,64 @@
     </a>
   </div>
 
-  <section class="hero">
-    <div class="container section reveal">
-      <div class="kicker">Welcome to FutureSprouts</div>
-      <h1>FutureSprouts — Growing skills. Growing stewardship.</h1>
-      <p>
-        Youth-led sustainable farming education, seed distribution, and environmental action—
-        built to scale from local communities to broader impact.
-      </p>
-      <div class="hero-cta">
-        <a class="btn primary" href="get-involved.html">Get Involved</a>
-        <a class="btn secondary" href="programs.html">Explore Programs</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <h2 class="reveal">What we do</h2>
-      <p class="reveal">Hands-on learning + practical projects that turn sustainability into action.</p>
-
-      <div class="grid cols-3">
-        <div class="card reveal">
-          <div class="pill">Farming</div>
-          <h3>Hands-On Education</h3>
-          <p>Soil, composting, planting, and sustainable food systems.</p>
-        </div>
-        <div class="card reveal">
-          <div class="pill">Access</div>
-          <h3>Seed Sharing</h3>
-          <p>Starter seeds and guides for students, families, and classrooms.</p>
-        </div>
-        <div class="card reveal">
-          <div class="pill">Environment</div>
-          <h3>Cleanups</h3>
-          <p>River and park cleanups paired with stewardship education.</p>
+  <main id="main">
+    <section class="hero">
+      <div class="container section reveal">
+        <div class="kicker">Welcome to FutureSprouts</div>
+        <h1>FutureSprouts — Growing skills. Growing stewardship.</h1>
+        <p>
+          Youth-led sustainable farming education, seed distribution, and environmental action—
+          built to scale from local communities to broader impact.
+        </p>
+        <div class="hero-cta">
+          <a class="btn primary" href="get-involved.html">Get Involved</a>
+          <a class="btn secondary" href="programs.html">Explore Programs</a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section alt">
-    <div class="container">
-      <h2 class="reveal">Impact</h2>
-      <p class="reveal">These numbers are meant to be updated as you grow.</p>
+    <section class="section">
+      <div class="container">
+        <h2 class="reveal">What we do</h2>
+        <p class="reveal">Hands-on learning + practical projects that turn sustainability into action.</p>
 
-      <div class="stats">
-        <div class="stat reveal"><div class="num" data-count="1000">0+</div><div class="label">Seeds Shared</div></div>
-        <div class="stat reveal"><div class="num" data-count="250">0+</div><div class="label">Students Reached</div></div>
-        <div class="stat reveal"><div class="num" data-count="10">0+</div><div class="label">Community Events</div></div>
+        <div class="grid cols-3">
+          <div class="card reveal">
+            <div class="pill">Farming</div>
+            <h3>Hands-On Education</h3>
+            <p>Soil, composting, planting, and sustainable food systems.</p>
+          </div>
+          <div class="card reveal">
+            <div class="pill">Access</div>
+            <h3>Seed Sharing</h3>
+            <p>Starter seeds and guides for students, families, and classrooms.</p>
+          </div>
+          <div class="card reveal">
+            <div class="pill">Environment</div>
+            <h3>Cleanups</h3>
+            <p>River and park cleanups paired with stewardship education.</p>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="notice reveal">
-        Contact: <a href="mailto:info@futuresprouts.org">info@futuresprouts.org</a>
+    <section class="section alt">
+      <div class="container">
+        <h2 class="reveal">Impact</h2>
+        <p class="reveal">These numbers are meant to be updated as you grow.</p>
+
+        <div class="stats">
+          <div class="stat reveal"><div class="num" data-count="1000">0+</div><div class="label">Seeds Shared</div></div>
+          <div class="stat reveal"><div class="num" data-count="250">0+</div><div class="label">Students Reached</div></div>
+          <div class="stat reveal"><div class="num" data-count="10">0+</div><div class="label">Community Events</div></div>
+        </div>
+
+        <div class="notice reveal">
+          Contact: <a href="mailto:info@futuresprouts.org">info@futuresprouts.org</a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <div id="siteFooter"></div>
 
