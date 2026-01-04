@@ -100,6 +100,9 @@
       "seed-tomato": { available: true, remaining: 999, note: "In stock" },
       "seed-corn":   { available: true, remaining: 999, note: "In stock" },
       "seed-multi":  { available: true, remaining: 999, note: "In stock" },
+      "seed-tomato": { available: true, remaining: 999, note: "In stock" },
+      "seed-corn":   { available: true, remaining: 999, note: "In stock" },
+      "seed-multi":  { available: true, remaining: 999, note: "In stock" },
       "bed-2x4":     { available: true, remaining: 25,  note: "Limited" },
       "bed-4x4":     { available: true, remaining: 12,  note: "Limited" },
       "soil-kit-1":  { available: true, remaining: 30,  note: "In stock" }
@@ -962,3 +965,4 @@ ${payload.notes}`
     init();
   }
 })();
+
