@@ -743,11 +743,6 @@ textarea{ min-height: 140px; resize: vertical; }
   outline: none;
   line-height: 1;
 }
-
-/* Custom arrow */
-.footer-actions .theme-wrap{
-  position: relative;
-}
 .footer-actions .theme-wrap::after{
   content: "";
   position: absolute;
@@ -1043,6 +1038,7 @@ footer a strong,
   color: #111;
   background: #fff;
 }
+
 
 
 
