@@ -958,14 +958,6 @@ footer a strong,
   pointer-events: none;
 }
 
-/* Dropdown options readability */
-#fsThemeSelect option,
-.fs-theme-select option{
-  color: #111;
-  background: #fff;
-}
-
-
 
 
 
