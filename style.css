@@ -944,3 +944,12 @@ textarea{ min-height: 140px; resize: vertical; }
   border-radius: 999px;
   background: var(--card);
 }
+
+.theme-select {
+  border: none;
+  background: transparent;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+}
