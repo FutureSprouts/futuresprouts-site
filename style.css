@@ -943,23 +943,6 @@ footer a strong,
   line-height: 1;
 }
 
-/* Arrow (only ONE arrow) */
-.footer-actions .theme-wrap::after{
-  content: "";
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  width: 8px;
-  height: 8px;
-  transform: translateY(-60%) rotate(45deg);
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-
-
 
 
 
