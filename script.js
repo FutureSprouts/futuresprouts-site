@@ -92,31 +92,64 @@
   try { logEvent("page_view", { path: location.pathname }); } catch {}
 
   // ---------------------------
-  // Inventory (Admin-lite)
+  // Inventory (Admin-lite) — Catalog-driven
   // ---------------------------
-  const defaultInv = {
-    updatedAt: nowIso(),
-    items: {
-      "seed-tomato": { available: true, remaining: 999, note: "In stock" },
-      "seed-corn":   { available: true, remaining: 999, note: "In stock" },
-      "seed-multi":  { available: true, remaining: 999, note: "In stock" },
-      "seed-tomato": { available: true, remaining: 999, note: "In stock" },
-      "seed-corn":   { available: true, remaining: 999, note: "In stock" },
-      "seed-multi":  { available: true, remaining: 999, note: "In stock" },
-      "bed-2x4":     { available: true, remaining: 25,  note: "Limited" },
-      "bed-4x4":     { available: true, remaining: 12,  note: "Limited" },
-      "soil-kit-1":  { available: true, remaining: 30,  note: "In stock" }
+  function getCatalog() {
+    const list = (window.FS_CONFIG && Array.isArray(window.FS_CONFIG.catalog))
+      ? window.FS_CONFIG.catalog
+      : [];
+    return list
+      .filter(x => x && typeof x.key === "string" && x.key.trim())
+      .map(x => ({
+        key: String(x.key).trim(),
+        inv: (x.inv && typeof x.inv === "object") ? x.inv : null
+      }));
+  }
+
+  function sanitizeInv(inv) {
+    const available = inv ? (inv.available !== false) : true;
+    const remainingRaw = inv && inv.remaining != null ? inv.remaining : 999;
+    const remaining = Number.isFinite(+remainingRaw) ? Math.max(0, parseInt(remainingRaw, 10)) : 999;
+    const note = inv && inv.note != null ? String(inv.note) : "";
+    return { available, remaining, note };
+  }
+
+  function buildDefaultInvFromCatalog() {
+    const items = {};
+
+    // Base defaults (things that are not in catalog but you still want tracked)
+    items["bed-2x4"] = { available: true, remaining: 25, note: "Limited" };
+    items["bed-4x4"] = { available: true, remaining: 12, note: "Limited" };
+    items["soil-kit-1"] = { available: true, remaining: 30, note: "In stock" };
+
+    // Catalog-driven defaults
+    for (const p of getCatalog()) {
+      items[p.key] = sanitizeInv(p.inv);
     }
-  };
+
+    return { updatedAt: nowIso(), items };
+  }
 
   function loadInventory() {
+    const base = buildDefaultInvFromCatalog();
     const inv = loadJson(INVENTORY_KEY, null);
-    if (!inv || !inv.items) return defaultInv;
+
+    // If nothing saved yet, start from catalog defaults
+    if (!inv || !inv.items) return base;
+
+    // Merge: preserve saved values, auto-add any new catalog keys
+    inv.items = inv.items || {};
+    for (const k of Object.keys(base.items)) {
+      if (!inv.items[k]) inv.items[k] = base.items[k];
+    }
+
+    if (!inv.updatedAt) inv.updatedAt = nowIso();
     return inv;
   }
 
   function saveInventory(inv) {
-    const next = inv && inv.items ? inv : defaultInv;
+    const base = buildDefaultInvFromCatalog();
+    const next = (inv && inv.items) ? inv : base;
     next.updatedAt = nowIso();
     saveJson(INVENTORY_KEY, next);
   }
@@ -965,4 +998,5 @@ ${payload.notes}`
     init();
   }
 })();
+
 
