@@ -125,44 +125,143 @@
   // ---------------------------
 function headerHtml() {
   const name = cfg.siteName || "FutureSprouts";
+
+  const orgLd = {
+    "@context": "https://schema.org",
+    "@type": "NonprofitOrganization",
+    "name": name,
+    "email": cfg.contactEmail || "info@futuresprouts.org",
+    "url": cfg.siteUrl || "",
+    "sameAs": [
+      (cfg.socials && cfg.socials.instagram) || "",
+      (cfg.socials && cfg.socials.tiktok) || "",
+      (cfg.socials && cfg.socials.youtube) || ""
+    ].filter(Boolean)
+  };
+
   return `
 <header class="navbar">
   <div class="container nav-inner">
-    <a class="brand" href="index.html">
-      <div class="brand-badge"><img src="images/logo.png" alt="logo"></div>
-      <div>${name}</div>
+    <a class="brand" href="index.html" aria-label="${escapeHtml(name)} Home">
+      <div class="brand-badge">
+        <img src="images/logo.png" alt="${escapeHtml(name)} logo">
+      </div>
+      <div>${escapeHtml(name)}</div>
     </a>
-    <nav class="nav-links">
+
+    <div class="nav-right">
+      <button class="hamburger icon-btn" aria-expanded="false" aria-label="Open menu" type="button">Menu</button>
+    </div>
+
+    <nav class="nav-links" aria-label="Primary">
       <a href="about.html">About</a>
+      <a href="programs.html">Programs</a>
       <a href="services.html">Services</a>
+      <a href="events.html">Events</a>
+      <a href="impact.html">Impact</a>
+      <a href="get-involved.html">Get Involved</a>
+      <a href="donate.html" class="donate-btn">Donate</a>
+      <a href="contact.html">Contact</a>
+
       <div class="cart-wrap">
-        <a href="cart.html" class="cart-link">
-          Cart <span class="cart-badge" id="cartBadge">0</span>
+        <a href="cart.html" class="cart-link" aria-label="View cart">
+          <span class="cart-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
+              <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
+              <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="cart-badge" id="cartBadge">0</span>
         </a>
-        <div class="mini-cart" id="miniCart">
-          <div class="mini-cart-header"><strong>Cart Preview</strong></div>
-          <div id="miniCartItems" class="mini-cart-items"></div>
-          <div class="mini-cart-footer"><a href="cart.html" class="btn primary">Checkout</a></div>
+
+        <div class="mini-cart" id="miniCart" aria-label="Cart preview">
+          <div class="mini-cart-header">
+            <strong>Cart Preview</strong>
+            <span class="small" id="miniCartCount">0 items</span>
+          </div>
+          <div class="mini-cart-items" id="miniCartItems"></div>
+          <div class="mini-cart-footer">
+            <a class="btn primary mini-cart-btn" href="cart.html">View Cart</a>
+          </div>
         </div>
       </div>
     </nav>
   </div>
+
+  <div class="container mobile-menu" aria-label="Mobile">
+    <a href="about.html">About</a>
+    <a href="programs.html">Programs</a>
+    <a href="services.html">Services</a>
+    <a href="events.html">Events</a>
+    <a href="impact.html">Impact</a>
+    <a href="get-involved.html">Get Involved</a>
+    <a href="contact.html">Contact</a>
+    <a href="donate.html" class="donate-btn">Donate</a>
+
+    <a href="cart.html" class="cart-link" aria-label="View cart">
+      <span style="font-weight:700;">Cart</span>
+      <span class="cart-badge" id="cartBadgeMobile">0</span>
+    </a>
+  </div>
+
+  <script type="application/ld+json">${JSON.stringify(orgLd)}</script>
 </header>`;
 }
 
 function footerHtml() {
+  const email = cfg.contactEmail || "info@futuresprouts.org";
+  const site = escapeHtml(cfg.siteName || "FutureSprouts");
+  const ig = (cfg.socials && cfg.socials.instagram) || "#";
+  const tt = (cfg.socials && cfg.socials.tiktok) || "#";
+  const yt = (cfg.socials && cfg.socials.youtube) || "#";
+
   return `
 <footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <h3>${site}</h3>
+      <p>Youth-led sustainable farming education and environmental stewardship.</p>
+      <p style="margin-top:10px;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
+    </div>
+
+    <div>
+      <h3>Quick Links</h3>
+      <p><a href="services.html">Services</a></p>
+      <p><a href="cart.html">Cart</a></p>
+      <p><a href="events.html">Events</a></p>
+      <p><a href="donate.html">Donate</a></p>
+      <p><a href="wishlist.html">Wishlist</a></p>
+    </div>
+
+    <div>
+      <h3>Legal</h3>
+      <p><a href="privacy.html">Privacy Policy</a></p>
+      <p><a href="terms.html">Terms of Service</a></p>
+      <p style="margin-top:10px;"><a href="contact.html">Contact</a></p>
+    </div>
+  </div>
+
   <div class="container footer-bottom">
-    <div>© 2026 FutureSprouts</div>
+    <div class="footer-copy">© 2026 ${site}</div>
+
     <div class="footer-actions">
       <div class="theme-wrap">
-        <strong>Theme:</strong>
-        <select id="themeToggle" class="fs-theme-select">
+        <label for="themeToggle" class="small" style="font-weight:800; cursor:pointer;">Theme:</label>
+        <select id="themeToggle" class="theme-select" aria-label="Theme">
+          <option value="system">System</option>
           <option value="light">Light</option>
           <option value="dark">Dark</option>
-          <option value="system">System</option>
         </select>
+      </div>
+
+      <div class="footer-socials">
+        <a href="${ig}" target="_blank" rel="noopener">Instagram</a>
+        <span aria-hidden="true">·</span>
+        <a href="${tt}" target="_blank" rel="noopener">TikTok</a>
+        <span aria-hidden="true">·</span>
+        <a href="${yt}" target="_blank" rel="noopener">YouTube</a>
       </div>
     </div>
   </div>
@@ -1054,6 +1153,7 @@ select.addEventListener("change", () => {
   });
 
 })();
+
 
 
 
