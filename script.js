@@ -734,7 +734,7 @@
       const disabledAttr = st.out ? "disabled" : "";
 
       grid.insertAdjacentHTML("beforeend", `
-        <div class="card reveal seed-card"
+        <div class="card seed-card"
           data-kind="${escapeHtml(kind)}"
           data-tags="${escapeHtml(tags)}"
           id="card-${escapeHtml(item.key)}">
@@ -1118,3 +1118,4 @@ ${payload.notes}`
     init();
   }
 })();
+
