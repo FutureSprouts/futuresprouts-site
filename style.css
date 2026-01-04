@@ -899,26 +899,6 @@ footer a strong,
 .cart-wrap:hover .mini-cart {
   display: block;
 }
-
-/* 3. Theme Selector Box Style */
-.theme-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
-  border: 2px solid var(--border);
-  border-radius: 999px;
-  background: var(--card);
-}
-
-.theme-select {
-  border: none;
-  background: transparent;
-  font-weight: 700;
-  color: var(--text);
-  cursor: pointer;
-  outline: none;
-}
 /* Add distinct borders to cards and cart items */
 .card, .cart-line, .mini-cart {
   border: 2px solid var(--border) !important; /* Forces a visible border */
@@ -999,6 +979,7 @@ footer a strong,
   color: #111;
   background: #fff;
 }
+
 
 
 
