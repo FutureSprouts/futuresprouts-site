@@ -953,11 +953,6 @@ footer a strong,
   color: var(--text);
 }
 
-.footer-actions .theme-wrap .theme-label{
-  font-weight: 800;
-  color: var(--muted);
-  white-space: nowrap;
-}
 
 /* Your JS/HTML should use: <select id="fsThemeSelect" class="fs-theme-select"> */
 #fsThemeSelect,
@@ -1004,6 +999,7 @@ footer a strong,
   color: #111;
   background: #fff;
 }
+
 
 
 
