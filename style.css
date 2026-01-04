@@ -914,71 +914,72 @@ footer a strong,
   display: block !important;
 }
 /* =========================
-   FOOTER THEME SELECT — single source of truth
-   (Fixes alignment + arrow + spacing)
+   FIXED FOOTER THEME SELECT
 ========================= */
 
-/* Arrow (only ONE arrow) */
-.footer-actions .theme-wrap::after{
-  content: "";
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  width: 8px;
-  height: 8px;
-  transform: translateY(-60%) rotate(45deg);
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-/* Your JS/HTML should use: <select id="fsThemeSelect" class="fs-theme-select"> */
-#fsThemeSelect,
-.fs-theme-select{
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  border: 0;
-  background: transparent;
-  color: var(--text);
-  font-weight: 900;
-
-  /* Make “Light” look centered/clean */
-  min-width: 84px;
-  text-align: center;
-  text-align-last: center; /* Chrome/Edge */
-  padding: 0;
-  margin: 0;
-
-  cursor: pointer;
-  outline: none;
-  line-height: 1;
-}
-
-.footer-actions .theme-wrap{
+.footer-actions .theme-wrap {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-
-  padding: 10px 14px;
-  padding-right: 38px; /* room for arrow */
+  gap: 8px;
+  
+  /* The pill container */
+  padding: 8px 16px; 
+  padding-right: 32px; /* Space for the custom arrow */
   border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--card) 88%, transparent);
+  background: var(--card);
   border-radius: 999px;
+  cursor: pointer;
+}
 
+/* Label styling ("Theme:") */
+.footer-actions .theme-wrap label {
+  font-weight: 800;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* The Select Element itself */
+#fsThemeSelect,
+.fs-theme-select {
+  /* Reset general select styles */
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  
+  width: auto !important; /* Overrides the 100% width in your base CSS */
+  padding: 0 !important;   /* Removes the 14px padding from your base CSS */
+  border: none !important; /* Removes the border from your base CSS */
+  background: transparent !important;
+  
+  color: var(--text);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  line-height: normal;
+}
+
+/* The Single Custom Arrow */
+.footer-actions .theme-wrap::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  transform: translateY(-70%) rotate(45deg);
+  border-right: 2px solid var(--text);
+  border-bottom: 2px solid var(--text);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Dropdown menu styling */
+.fs-theme-select option {
+  background: var(--card);
   color: var(--text);
 }
-
-/* Dropdown options readability */
-#fsThemeSelect option,
-.fs-theme-select option{
-  color: #111;
-  background: #fff;
-}
-
 
 
 
