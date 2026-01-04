@@ -970,7 +970,75 @@ footer a strong,
   transform: translateY(-1px);
   box-shadow: var(--shadow);
 }
+/* Add distinct borders to cards and cart items */
+.card, .cart-line, .mini-cart {
+  border: 2px solid var(--border) !important; /* Forces a visible border */
+}
 
+/* Ensure the cart wrap allows the dropdown to show on hover */
+.cart-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-wrap:hover .mini-cart {
+  display: block !important;
+}
+/* 1. Request Box Borders */
+.card, .cart-line, .mini-cart, .stat {
+  border: 2px solid var(--border) !important;
+  transition: border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--green);
+}
+
+/* 2. Fix Hover Preview Logic */
+.cart-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.mini-cart {
+  display: none; /* Hidden by default */
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 10px;
+  min-width: 280px;
+  background: var(--card);
+  z-index: 1000;
+  padding: 15px;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+}
+
+/* Trigger preview on hover of the container */
+.cart-wrap:hover .mini-cart {
+  display: block;
+}
+
+/* 3. Theme Selector Box Style */
+.theme-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+}
+
+.theme-select {
+  border: none;
+  background: transparent;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+}
 
 
 
