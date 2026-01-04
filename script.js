@@ -1,4 +1,10 @@
 // script.js — FULL REPLACEMENT (STABLE + FIXED)
+// - Single source of truth for Header/Footer injection
+// - Single theme system (system/light/dark)
+// - Cart badge + mini cart preview
+// - Cart page render + Formspree submit + lockout
+// - No duplicate footers, no duplicate theme code
+
 (function () {
   const cfg = window.FS_CONFIG || {};
   const root = document.documentElement;
@@ -10,9 +16,7 @@
   const ANALYTICS_KEY = "fs_analytics_v1";
   const INVENTORY_KEY = "fs_inventory_v1";
   const LOCKOUT_KEY = "fs_order_lockout_until";
-
-  // Theme preference: "system" | "light" | "dark"
-  const THEME_PREF_KEY = "fs_theme_pref";
+  const THEME_PREF_KEY = "fs_theme_pref"; // "system" | "light" | "dark"
 
   // ---------------------------
   // Utilities
@@ -20,7 +24,7 @@
   function nowIso() { return new Date().toISOString(); }
 
   function escapeHtml(str) {
-    return String(str)
+    return String(str ?? "")
       .replaceAll("&", "&amp;")
       .replaceAll("<", "&lt;")
       .replaceAll(">", "&gt;")
@@ -80,15 +84,14 @@
   function logEvent(type, data) {
     const store = loadJson(ANALYTICS_KEY, { events: [] });
     store.events.push({ type, data: data || {}, ts: nowIso() });
-    if (store.events.length > 2000) store.events = store.events.slice(store.events.length - 2000);
+    if (store.events.length > 2000) store.events = store.events.slice(-2000);
     saveJson(ANALYTICS_KEY, store);
   }
 
-  // safe page-view
   try { logEvent("page_view", { path: location.pathname }); } catch {}
 
   // ---------------------------
-  // Inventory (Admin-lite) — single source of truth
+  // Inventory (Admin-lite)
   // ---------------------------
   const defaultInv = {
     updatedAt: nowIso(),
@@ -120,26 +123,69 @@
   }
 
   // ---------------------------
-  // /Footer injection
-  // IMPORTANT: only inject if slots exist
+  // Theme: system/light/dark
   // ---------------------------
-function headerHtml() {
-  const name = cfg.siteName || "FutureSprouts";
+  const media = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
 
-  const orgLd = {
-    "@context": "https://schema.org",
-    "@type": "NonprofitOrganization",
-    "name": name,
-    "email": cfg.contactEmail || "info@futuresprouts.org",
-    "url": cfg.siteUrl || "",
-    "sameAs": [
-      (cfg.socials && cfg.socials.instagram) || "",
-      (cfg.socials && cfg.socials.tiktok) || "",
-      (cfg.socials && cfg.socials.youtube) || ""
-    ].filter(Boolean)
-  };
+  function getThemePref() {
+    const pref = localStorage.getItem(THEME_PREF_KEY);
+    return (pref === "light" || pref === "dark" || pref === "system") ? pref : "system";
+  }
 
-  return `
+  function applyTheme(pref) {
+    if (pref === "dark") root.setAttribute("data-theme", "dark");
+    else if (pref === "light") root.setAttribute("data-theme", "light");
+    else {
+      const sysDark = media ? media.matches : false;
+      root.setAttribute("data-theme", sysDark ? "dark" : "light");
+    }
+  }
+
+  function wireThemeSelect() {
+    const select = document.getElementById("themeSelect");
+    if (!select) return;
+
+    const pref = getThemePref();
+    select.value = pref;
+    applyTheme(pref);
+
+    select.addEventListener("change", () => {
+      const next = select.value;
+      localStorage.setItem(THEME_PREF_KEY, next);
+      applyTheme(next);
+      try { logEvent("theme_change", { pref: next }); } catch {}
+    });
+  }
+
+  // react to OS theme changes if on system
+  function watchSystemTheme() {
+    if (!media) return;
+    const handler = () => {
+      if (getThemePref() === "system") applyTheme("system");
+    };
+    if (typeof media.addEventListener === "function") media.addEventListener("change", handler);
+    else if (typeof media.addListener === "function") media.addListener(handler);
+  }
+
+  // ---------------------------
+  // Header / Footer HTML
+  // ---------------------------
+  function headerHtml() {
+    const name = cfg.siteName || "FutureSprouts";
+    const orgLd = {
+      "@context": "https://schema.org",
+      "@type": "NonprofitOrganization",
+      name,
+      email: cfg.contactEmail || "info@futuresprouts.org",
+      url: cfg.siteUrl || "",
+      sameAs: [
+        (cfg.socials && cfg.socials.instagram) || "",
+        (cfg.socials && cfg.socials.tiktok) || "",
+        (cfg.socials && cfg.socials.youtube) || ""
+      ].filter(Boolean)
+    };
+
+    return `
 <header class="navbar">
   <div class="container nav-inner">
     <a class="brand" href="index.html" aria-label="${escapeHtml(name)} Home">
@@ -150,7 +196,7 @@ function headerHtml() {
     </a>
 
     <div class="nav-right">
-      <button class="hamburger icon-btn" aria-expanded="false" aria-label="Open menu" type="button">Menu</button>
+      <button class="hamburger icon-btn" id="hamburgerBtn" aria-expanded="false" aria-label="Open menu" type="button">Menu</button>
     </div>
 
     <nav class="nav-links" aria-label="Primary">
@@ -190,7 +236,7 @@ function headerHtml() {
     </nav>
   </div>
 
-  <div class="container mobile-menu" aria-label="Mobile">
+  <div class="container mobile-menu" id="mobileMenu" aria-label="Mobile">
     <a href="about.html">About</a>
     <a href="programs.html">Programs</a>
     <a href="services.html">Services</a>
@@ -208,16 +254,16 @@ function headerHtml() {
 
   <script type="application/ld+json">${JSON.stringify(orgLd)}</script>
 </header>`;
-}
+  }
 
-function footerHtml() {
-  const email = cfg.contactEmail || "info@futuresprouts.org";
-  const site = escapeHtml(cfg.siteName || "FutureSprouts");
-  const ig = (cfg.socials && cfg.socials.instagram) || "#";
-  const tt = (cfg.socials && cfg.socials.tiktok) || "#";
-  const yt = (cfg.socials && cfg.socials.youtube) || "#";
+  function footerHtml() {
+    const email = cfg.contactEmail || "info@futuresprouts.org";
+    const site = escapeHtml(cfg.siteName || "FutureSprouts");
+    const ig = (cfg.socials && cfg.socials.instagram) || "#";
+    const tt = (cfg.socials && cfg.socials.tiktok) || "#";
+    const yt = (cfg.socials && cfg.socials.youtube) || "#";
 
-  return `
+    return `
 <footer class="footer">
   <div class="container footer-grid">
     <div>
@@ -244,12 +290,12 @@ function footerHtml() {
   </div>
 
   <div class="container footer-bottom">
-    <div class="footer-copy">© 2026 ${site}</div>
+    <div class="footer-copy">© ${new Date().getFullYear()} ${site}</div>
 
     <div class="footer-actions">
       <div class="theme-wrap">
-        <label for="themeToggle" class="small" style="font-weight:800; cursor:pointer;">Theme:</label>
-        <select id="themeToggle" class="theme-select" aria-label="Theme">
+        <label for="themeSelect" class="small" style="font-weight:800; cursor:pointer;">Theme:</label>
+        <select id="themeSelect" class="theme-select" aria-label="Theme">
           <option value="system">System</option>
           <option value="light">Light</option>
           <option value="dark">Dark</option>
@@ -266,125 +312,80 @@ function footerHtml() {
     </div>
   </div>
 </footer>`;
-}
-
-  // Inject ONLY if slots exist
-  const headerSlot = document.getElementById("siteHeader");
-  if (headerSlot) headerSlot.outerHTML = headerHtml();
-
-  const footerSlot = document.getElementById("siteFooter");
-  if (footerSlot) footerSlot.outerHTML = footerHtml();
-
-  // ---------------------------
-  // Theme: system/light/dark (footer dropdown)
-  // ---------------------------
-  const media = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
-
-  function getThemePref() {
-    const pref = localStorage.getItem(THEME_PREF_KEY);
-    return (pref === "light" || pref === "dark" || pref === "system") ? pref : "system";
   }
 
-  function applyTheme(pref) {
-    if (pref === "dark") {
-      root.setAttribute("data-theme", "dark");
-    } else if (pref === "light") {
-      root.setAttribute("data-theme", "light");
-    } else {
-      // system
-      const sysDark = media ? media.matches : false;
-      root.setAttribute("data-theme", sysDark ? "dark" : "light");
-    }
-  }
+  function injectLayoutIfSlotsExist() {
+    const headerSlot = document.getElementById("siteHeader");
+    const footerSlot = document.getElementById("siteFooter");
 
-  function syncThemeUI() {
-    const select = document.getElementById("themeToggle");
-    if (!select) return;
-
-    const pref = getThemePref();
-    select.value = pref;
-
-    // apply immediately
-    applyTheme(pref);
-
-    select.onchange = () => {
-      const next = select.value;
-      localStorage.setItem(THEME_PREF_KEY, next);
-      applyTheme(next);
-      logEvent("theme_change", { pref: next });
-    };
-  }
-
-  // initial
-  applyTheme(getThemePref());
-  syncThemeUI();
-
-  // if system theme changes while user is on "system"
-  if (media && typeof media.addEventListener === "function") {
-    media.addEventListener("change", () => {
-      if (getThemePref() === "system") applyTheme("system");
-    });
-  } else if (media && typeof media.addListener === "function") {
-    media.addListener(() => {
-      if (getThemePref() === "system") applyTheme("system");
-    });
+    // IMPORTANT: use innerHTML not outerHTML to keep mount nodes stable
+    if (headerSlot) headerSlot.innerHTML = headerHtml();
+    if (footerSlot) footerSlot.innerHTML = footerHtml();
   }
 
   // ---------------------------
   // Mobile menu
   // ---------------------------
-  const burger = document.querySelector(".hamburger");
-  const mobileMenu = document.querySelector(".mobile-menu");
-  if (burger && mobileMenu) {
+  function wireMobileMenu() {
+    const burger = document.getElementById("hamburgerBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    if (!burger || !mobileMenu) return;
+
     burger.addEventListener("click", () => {
       mobileMenu.classList.toggle("show");
-      burger.setAttribute("aria-expanded", mobileMenu.classList.contains("show"));
+      burger.setAttribute("aria-expanded", mobileMenu.classList.contains("show") ? "true" : "false");
     });
   }
 
   // ---------------------------
   // Active nav highlight
   // ---------------------------
-  const currentFile = location.pathname.split("/").pop() || "index.html";
-  document.querySelectorAll(".nav-links a, .mobile-menu a").forEach(a => {
-    const href = (a.getAttribute("href") || "").trim();
-    if (href === currentFile) a.classList.add("active");
-  });
+  function highlightActiveNav() {
+    const currentFile = location.pathname.split("/").pop() || "index.html";
+    document.querySelectorAll(".nav-links a, .mobile-menu a").forEach(a => {
+      const href = (a.getAttribute("href") || "").trim();
+      if (href === currentFile) a.classList.add("active");
+    });
+  }
 
   // ---------------------------
-  // Scroll reveal (resets)
+  // Scroll reveal
   // ---------------------------
-  const reveals = document.querySelectorAll(".reveal");
-  if (reveals.length && "IntersectionObserver" in window) {
-    const revealObs = new IntersectionObserver((entries) => {
+  function initReveal() {
+    const reveals = document.querySelectorAll(".reveal");
+    if (!reveals.length || !("IntersectionObserver" in window)) return;
+
+    const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add("show");
         else entry.target.classList.remove("show");
       });
     }, { threshold: 0.18 });
-    reveals.forEach(el => revealObs.observe(el));
+
+    reveals.forEach(el => obs.observe(el));
   }
 
   // ---------------------------
-  // Impact numbers (Count-up stats) — FIX for “stuck at 0”
-  // Elements should look like: <span data-count="1200">0+</span>
+  // Impact count-up
   // ---------------------------
   function countUp(el, target) {
     const duration = 900;
-    const startTime = performance.now();
+    const start = performance.now();
 
     function step(now) {
-      const progress = Math.min((now - startTime) / duration, 1);
-      const value = Math.floor(target * progress);
+      const p = Math.min((now - start) / duration, 1);
+      const value = Math.floor(target * p);
       el.textContent = value.toLocaleString() + "+";
-      if (progress < 1) requestAnimationFrame(step);
+      if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
 
-  const statNums = document.querySelectorAll("[data-count]");
-  if (statNums.length && "IntersectionObserver" in window) {
-    const statObs = new IntersectionObserver((entries) => {
+  function initCountUps() {
+    const statNums = document.querySelectorAll("[data-count]");
+    if (!statNums.length || !("IntersectionObserver" in window)) return;
+
+    const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const el = entry.target;
         const target = parseInt(el.getAttribute("data-count") || "0", 10);
@@ -395,23 +396,26 @@ function footerHtml() {
       });
     }, { threshold: 0.45 });
 
-    statNums.forEach(el => statObs.observe(el));
+    statNums.forEach(el => obs.observe(el));
   }
 
   // ---------------------------
   // Programs filtering
   // ---------------------------
-  const tagButtons = document.querySelectorAll("[data-filter]");
-  const programCards = document.querySelectorAll("[data-category]");
-  function applyFilter(filter) {
-    tagButtons.forEach(b => b.classList.toggle("active", b.dataset.filter === filter));
-    programCards.forEach(card => {
-      const cats = (card.dataset.category || "").split(",").map(s => s.trim());
-      const show = filter === "all" || cats.includes(filter);
-      card.style.display = show ? "" : "none";
-    });
-  }
-  if (tagButtons.length && programCards.length) {
+  function initProgramFilter() {
+    const tagButtons = document.querySelectorAll("[data-filter]");
+    const programCards = document.querySelectorAll("[data-category]");
+    if (!tagButtons.length || !programCards.length) return;
+
+    function applyFilter(filter) {
+      tagButtons.forEach(b => b.classList.toggle("active", b.dataset.filter === filter));
+      programCards.forEach(card => {
+        const cats = (card.dataset.category || "").split(",").map(s => s.trim());
+        const show = filter === "all" || cats.includes(filter);
+        card.style.display = show ? "" : "none";
+      });
+    }
+
     tagButtons.forEach(btn => btn.addEventListener("click", () => applyFilter(btn.dataset.filter)));
     applyFilter("all");
   }
@@ -419,9 +423,11 @@ function footerHtml() {
   // ---------------------------
   // Before/After slider
   // ---------------------------
-  const range = document.querySelector("#baRange");
-  const afterImg = document.querySelector(".ba-after");
-  if (range && afterImg) {
+  function initBeforeAfter() {
+    const range = document.querySelector("#baRange");
+    const afterImg = document.querySelector(".ba-after");
+    if (!range || !afterImg) return;
+
     const update = () => {
       const pct = parseInt(range.value || "50", 10);
       afterImg.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
@@ -431,9 +437,10 @@ function footerHtml() {
   }
 
   // ---------------------------
-  // Cart: storage helpers
+  // Cart helpers
   // ---------------------------
   function loadCart() { return loadJson(CART_KEY, []); }
+  function saveCart(items) { saveJson(CART_KEY, items); animateBadgeIfAdded(items); updateCartBadge(); }
 
   let lastCartTotal = 0;
 
@@ -478,7 +485,7 @@ function footerHtml() {
       [b1, b2].forEach(b => {
         if (!b) return;
         b.classList.remove("pop");
-        void b.offsetWidth; // restart animation
+        void b.offsetWidth;
         b.classList.add("pop");
       });
     }
@@ -504,30 +511,16 @@ function footerHtml() {
     renderMiniCart(cart, total);
   }
 
-  function saveCart(items) {
-    saveJson(CART_KEY, items);
-    animateBadgeIfAdded(items);
-    updateCartBadge();
-  }
-
-  try { lastCartTotal = loadCart().reduce((s, it) => s + (it.qty || 0), 0); }
-  catch { lastCartTotal = 0; }
-  updateCartBadge();
-
   window.addEventListener("storage", (e) => {
     if (e.key === CART_KEY) updateCartBadge();
   });
 
-  // ---------------------------
-  // Cart operations
-  // ---------------------------
   function cartAddOrUpdate(id, name, meta, qtyDelta, constraints) {
     const cart = loadCart();
     const idx = cart.findIndex(x => x.id === id);
     const currentQty = idx >= 0 ? cart[idx].qty : 0;
     const nextQty = Math.max(0, currentQty + qtyDelta);
 
-    // constraints
     if (constraints) {
       if (constraints.maxPerItem != null && nextQty > constraints.maxPerItem) {
         showModal("Limit reached", `You can only request up to ${constraints.maxPerItem} of this item per order.`);
@@ -576,33 +569,24 @@ function footerHtml() {
     return true;
   }
 
-  // ---------------------------
-  // Expose helpers
-  // ---------------------------
+  // expose helpers
   window.FS_CART = {
-    // cart
     loadCart,
     saveCart,
     cartAddOrUpdate,
     cartRemove,
     cartUpdateMeta,
-
-    // ui
     showModal,
-
-    // inventory
     loadInventory,
     saveInventory,
     getInventoryStatus,
-
-    // analytics + utils
     logEvent,
     loadJson,
     saveJson
   };
 
   // ---------------------------
-  // Cart page rendering (if cart.html present)
+  // Cart page rendering
   // ---------------------------
   const cartList = document.querySelector("#cartList");
   const cartEmpty = document.querySelector("#cartEmpty");
@@ -673,7 +657,6 @@ function footerHtml() {
 </div>`;
     }).join("");
 
-    // qty buttons
     cartList.querySelectorAll("[data-dec]").forEach(btn => {
       btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-dec");
@@ -696,7 +679,6 @@ function footerHtml() {
       });
     });
 
-    // remove
     cartList.querySelectorAll("[data-remove]").forEach(btn => {
       btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-remove");
@@ -705,7 +687,6 @@ function footerHtml() {
       });
     });
 
-    // meta editors
     cartList.querySelectorAll("[data-meta-broch]").forEach(inp => {
       inp.addEventListener("change", () => {
         const id = inp.getAttribute("data-meta-broch");
@@ -724,8 +705,6 @@ function footerHtml() {
       });
     });
   }
-
-  if (cartList) renderCart();
 
   // ---------------------------
   // Order lockouts + validation + submit (Formspree)
@@ -756,64 +735,96 @@ function footerHtml() {
     return /^\d{5}(-\d{4})?$/.test(String(zip || "").trim());
   }
 
-  if (cartForm) {
-    cartForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  // ---------------------------
+  // Init (runs once)
+  // ---------------------------
+  function init() {
+    // Inject layout first so elements exist
+    injectLayoutIfSlotsExist();
 
-      const lockUntil = getLockoutUntil();
-      if (lockUntil && Date.now() < lockUntil) {
-        const mins = Math.ceil((lockUntil - Date.now()) / 60000);
-        showModal("Please wait", `To prevent abuse, requests are limited. Try again in about ${mins} minute(s).`);
-        return;
-      }
+    // Theme
+    applyTheme(getThemePref());
+    wireThemeSelect();
+    watchSystemTheme();
 
-      const cart = loadCart();
-      if (cart.length === 0) {
-        showModal("Cart empty", "Add services first, then submit your request.");
-        return;
-      }
+    // Header controls
+    wireMobileMenu();
+    highlightActiveNav();
 
-      const formData = new FormData(cartForm);
-      const email = String(formData.get("email") || "").trim();
-      if (!email) {
-        showModal("Missing email", "Please enter your email so we can follow up.");
-        return;
-      }
+    // Page features
+    initReveal();
+    initCountUps();
+    initProgramFilter();
+    initBeforeAfter();
 
-      const state = String(formData.get("state") || "").trim();
-      const zip = String(formData.get("zip") || "").trim();
+    // Cart UI
+    try { lastCartTotal = loadCart().reduce((s, it) => s + (it.qty || 0), 0); } catch { lastCartTotal = 0; }
+    updateCartBadge();
 
-      if (!validateUSState(state)) {
-        showModal("Check state", "Please enter a valid US state abbreviation (ex: PA).");
-        return;
-      }
-      if (!validateZip(zip)) {
-        showModal("Check ZIP", "Please enter a valid ZIP code (ex: 19382).");
-        return;
-      }
+    // Cart page
+    if (cartList) renderCart();
 
-      const payload = {
-        email,
-        name: formData.get("name") || "",
-        organization: formData.get("organization") || "",
-        address1: formData.get("address1") || "",
-        city: formData.get("city") || "",
-        state,
-        zip,
-        location: `${formData.get("address1") || ""}, ${formData.get("city") || ""}, ${state} ${zip}`.replace(/\s+/g, " ").trim(),
-        notes: formData.get("notes") || "",
-        order_summary: cartToText(cart)
-      };
+    // Form submit (only if present)
+    if (cartForm) {
+      cartForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-      try { logEvent("order_submit_attempt", { items: cart.length }); } catch {}
+        const lockUntil = getLockoutUntil();
+        if (lockUntil && Date.now() < lockUntil) {
+          const mins = Math.ceil((lockUntil - Date.now()) / 60000);
+          showModal("Please wait", `To prevent abuse, requests are limited. Try again in about ${mins} minute(s).`);
+          return;
+        }
 
-      try {
-        const res = await fetch("https://formspree.io/f/mdakervk", {
-          method: "POST",
-          headers: { "Accept": "application/json", "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: payload.email,
-            message:
+        const cart = loadCart();
+        if (cart.length === 0) {
+          showModal("Cart empty", "Add services first, then submit your request.");
+          return;
+        }
+
+        const formData = new FormData(cartForm);
+        const email = String(formData.get("email") || "").trim();
+        if (!email) {
+          showModal("Missing email", "Please enter your email so we can follow up.");
+          return;
+        }
+
+        const state = String(formData.get("state") || "").trim();
+        const zip = String(formData.get("zip") || "").trim();
+
+        if (!validateUSState(state)) {
+          showModal("Check state", "Please enter a valid US state abbreviation (ex: PA).");
+          return;
+        }
+        if (!validateZip(zip)) {
+          showModal("Check ZIP", "Please enter a valid ZIP code (ex: 19382).");
+          return;
+        }
+
+        const payload = {
+          email,
+          name: formData.get("name") || "",
+          organization: formData.get("organization") || "",
+          address1: formData.get("address1") || "",
+          city: formData.get("city") || "",
+          state: state.toUpperCase(),
+          zip,
+          location: `${formData.get("address1") || ""}, ${formData.get("city") || ""}, ${state} ${zip}`
+            .replace(/\s+/g, " ")
+            .trim(),
+          notes: formData.get("notes") || "",
+          order_summary: cartToText(cart)
+        };
+
+        try { logEvent("order_submit_attempt", { items: cart.length }); } catch {}
+
+        try {
+          const res = await fetch("https://formspree.io/f/mdakervk", {
+            method: "POST",
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: payload.email,
+              message:
 `SERVICE REQUEST (FutureSprouts)
 
 Name: ${payload.name}
@@ -826,334 +837,35 @@ ${payload.order_summary}
 
 Notes:
 ${payload.notes}`
-          })
-        });
+            })
+          });
 
-        if (!res.ok) {
-          showModal("Error", "Something went wrong submitting the request. Please try again or email info@futuresprouts.org.");
-          try { logEvent("order_submit_error", { status: res.status }); } catch {}
-          return;
+          if (!res.ok) {
+            showModal("Error", "Something went wrong submitting the request. Please try again or email info@futuresprouts.org.");
+            try { logEvent("order_submit_error", { status: res.status }); } catch {}
+            return;
+          }
+
+          // success
+          saveCart([]);
+          if (cartList) renderCart();
+          cartForm.reset();
+
+          setLockoutHours(6);
+
+          showModal("Request sent", "Thanks! Your request was sent. We’ll follow up by email.");
+          try { logEvent("order_submit_success", {}); } catch {}
+        } catch {
+          showModal("Error", "Network error. Please try again or email info@futuresprouts.org.");
+          try { logEvent("order_submit_error", { status: "network" }); } catch {}
         }
-
-        // success
-        saveCart([]);
-        renderCart();
-        cartForm.reset();
-
-        // lockout: 6 hours
-        setLockoutHours(6);
-
-        showModal("Request sent", "Thanks! Your request was sent. We’ll follow up by email.");
-        try { logEvent("order_submit_success", {}); } catch {}
-      } catch {
-        showModal("Error", "Network error. Please try again or email info@futuresprouts.org.");
-        try { logEvent("order_submit_error", { status: "network" }); } catch {}
-      }
-    });
-  }
-
-})();
-const select = document.getElementById("theme-select");
-select.value = document.documentElement.dataset.theme || "light";
-
-select.addEventListener("change", () => {
-  const theme = select.value;
-  document.documentElement.dataset.theme = theme;
-  localStorage.setItem("theme", theme);
-});
-(function () {
-  // ---------------------------
-  // Theme UI Injection (Footer)
-  // ---------------------------
-
-  const THEME_KEY = "fs_theme"; // change if you already use a key
-  const THEME_ATTR = "data-theme";
-
-  function getSavedTheme() {
-    const t = localStorage.getItem(THEME_KEY);
-    return (t === "dark" || t === "light") ? t : null;
-  }
-
-  function setTheme(theme) {
-    document.documentElement.setAttribute(THEME_ATTR, theme);
-    localStorage.setItem(THEME_KEY, theme);
-  }
-
-  function ensureThemeInitialized() {
-    // If already set in HTML, respect it
-    const existing = document.documentElement.getAttribute(THEME_ATTR);
-    if (existing === "dark" || existing === "light") return;
-
-    // Otherwise use saved theme, fallback to light
-    setTheme(getSavedTheme() || "light");
-  }
-
-  function injectThemeStylesOnce() {
-    if (document.getElementById("fs-theme-pill-styles")) return;
-
-    const style = document.createElement("style");
-    style.id = "fs-theme-pill-styles";
-    style.textContent = `
-      .footer-bottom-right {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-
-      .theme-pill {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 14px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.25);
-        background: rgba(255,255,255,0.06);
-        font-size: 14px;
-      }
-
-      .theme-label {
-        opacity: 0.85;
-        white-space: nowrap;
-      }
-
-      .theme-pill select {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        border: none;
-        background: transparent;
-        color: inherit;
-        font-size: 14px;
-        font-weight: 500;
-        padding-right: 18px;
-        cursor: pointer;
-        line-height: 1;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right center;
-      }
-
-      .theme-pill select:focus { outline: none; }
-
-      /* Light theme variant */
-      [data-theme="light"] .theme-pill {
-        background: rgba(0,0,0,0.05);
-        border-color: rgba(0,0,0,0.2);
-        color: #000;
-      }
-
-      [data-theme="light"] .theme-pill select {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='black' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  function buildThemePill() {
-    const pill = document.createElement("div");
-    pill.className = "theme-pill";
-    pill.setAttribute("data-fs-theme-pill", "1");
-
-    const label = document.createElement("span");
-    label.className = "theme-label";
-    label.textContent = "Theme";
-
-    const select = document.createElement("select");
-    select.id = "theme-select";
-    select.setAttribute("aria-label", "Theme selector");
-
-    const optLight = document.createElement("option");
-    optLight.value = "light";
-    optLight.textContent = "Light";
-
-    const optDark = document.createElement("option");
-    optDark.value = "dark";
-    optDark.textContent = "Dark";
-
-    select.appendChild(optLight);
-    select.appendChild(optDark);
-
-    // Set current
-    const current = document.documentElement.getAttribute(THEME_ATTR) || "light";
-    select.value = (current === "dark") ? "dark" : "light";
-
-    select.addEventListener("change", () => {
-      setTheme(select.value);
-    });
-
-    pill.appendChild(label);
-    pill.appendChild(select);
-
-    return pill;
-  }
-
-  function injectThemePillIntoFooter() {
-    const footer = document.querySelector("footer");
-    if (!footer) return;
-
-    // Don't inject twice
-    if (footer.querySelector('[data-fs-theme-pill="1"]')) return;
-
-    // Try to find your bottom-right container; fall back to something sane
-    let right = footer.querySelector(".footer-bottom-right");
-
-    // If it doesn't exist, try to locate a socials container and use its parent
-    if (!right) {
-      const socials = footer.querySelector(".socials");
-      if (socials && socials.parentElement) {
-        right = socials.parentElement;
-        right.classList.add("footer-bottom-right");
-      }
+      });
     }
-
-    // If still not found, create a container at the end of footer
-    if (!right) {
-      right = document.createElement("div");
-      right.className = "footer-bottom-right";
-      footer.appendChild(right);
-    }
-
-    // Insert theme pill before socials if socials exists, otherwise append
-    const socials = right.querySelector(".socials") || footer.querySelector(".socials");
-    const pill = buildThemePill();
-
-    if (socials && socials.parentElement === right) {
-      right.insertBefore(pill, socials);
-    } else {
-      right.appendChild(pill);
-    }
-  }
-
-  function initFooterThemeInjection() {
-    ensureThemeInitialized();
-    injectThemeStylesOnce();
-    injectThemePillIntoFooter();
-
-    // If your footer is injected later by JS, try again a few times
-    let tries = 0;
-    const timer = setInterval(() => {
-      tries += 1;
-      injectThemePillIntoFooter();
-      const footer = document.querySelector("footer");
-      if ((footer && footer.querySelector('[data-fs-theme-pill="1"]')) || tries >= 20) {
-        clearInterval(timer);
-      }
-    }, 250);
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initFooterThemeInjection);
+    document.addEventListener("DOMContentLoaded", init);
   } else {
-    initFooterThemeInjection();
+    init();
   }
 })();
-(function () {
-  // ---------------------------
-  // Footer Injection
-  // ---------------------------
-
-  function buildFooterHTML() {
-    return `
-      <footer class="site-footer">
-        <div class="footer-top">
-          <div class="footer-brand">
-            <strong>FUTURESPROUTS</strong>
-            <p>Youth-led sustainable farming education and environmental stewardship.</p>
-            <a href="mailto:info@futuresprouts.org">info@futuresprouts.org</a>
-          </div>
-
-          <div class="footer-links">
-            <h4>Quick Links</h4>
-            <a href="/services">Services</a>
-            <a href="/cart">Cart</a>
-            <a href="/events">Events</a>
-            <a href="/donate">Donate</a>
-            <a href="/wishlist">Wishlist</a>
-          </div>
-
-          <div class="footer-links">
-            <h4>Legal</h4>
-            <a href="/privacy">Privacy Policy</a>
-            <a href="/terms">Terms of Service</a>
-            <a href="/contact">Contact</a>
-          </div>
-        </div>
-
-        <div class="footer-bottom">
-          <span>© ${new Date().getFullYear()} FutureSprouts</span>
-
-          <div class="footer-bottom-right">
-            <!-- Theme pill injected separately -->
-            <div class="socials">
-              <a href="#">Instagram</a> ·
-              <a href="#">TikTok</a> ·
-              <a href="#">YouTube</a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    `;
-  }
-
-  function injectFooter() {
-    const mount = document.getElementById("siteFooter");
-    if (!mount || mount.dataset.injected) return;
-
-    mount.innerHTML = buildFooterHTML();
-    mount.dataset.injected = "true";
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", injectFooter);
-  } else {
-    injectFooter();
-  }
-})();
-/* ===============================
-   Social Links Auto-Injection
-   Injects social icons into all footers
-================================ */
-
-(function injectSocials() {
-  const cfg = window.FS_CONFIG;
-  if (!cfg || !cfg.socials) return;
-
-  const ICONS = {
-    instagram: "icons/instagram.svg",
-    x: "icons/x.svg",
-    linkedin: "icons/linkedin.svg",
-    youtube: "icons/youtube.svg",
-    facebook: "icons/facebook.svg"
-  };
-
-  // HTML template
-  function buildSocialHTML() {
-    return Object.entries(cfg.socials)
-      .filter(([key, url]) => url && ICONS[key])
-      .map(([key, url]) => `
-        <a
-          href="${url}"
-          data-social="${key}"
-          aria-label="${key}"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="${ICONS[key]}" alt="">
-        </a>
-      `)
-      .join("");
-  }
-
-  // Inject into every .footer-socials container
-  document.querySelectorAll(".footer-socials").forEach(container => {
-    if (container.dataset.injected === "true") return;
-
-    container.innerHTML = buildSocialHTML();
-    container.dataset.injected = "true";
-  });
-
-})();
-
-
-
-
