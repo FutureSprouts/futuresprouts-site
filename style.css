@@ -957,6 +957,31 @@ footer a strong,
   line-height: 1;
 }
 
+.footer-actions .theme-wrap{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 14px;
+  padding-right: 38px; /* room for arrow */
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 88%, transparent);
+  border-radius: 999px;
+
+  color: var(--text);
+}
+
+/* Dropdown options readability */
+#fsThemeSelect option,
+.fs-theme-select option{
+  color: #111;
+  background: #fff;
+}
+
+
+
+
 
 
 
