@@ -293,14 +293,30 @@
     <div class="footer-copy">© ${new Date().getFullYear()} ${site}</div>
 
     <div class="footer-actions">
-      <div class="theme-wrap">
-        <label for="themeSelect" class="small" style="font-weight:800; cursor:pointer;">Theme:</label>
-        <select id="themeSelect" class="theme-select" aria-label="Theme">
-          <option value="system">System</option>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
-      </div>
+      <div class="theme-control" id="themeControl">
+  <button class="theme-btn" id="themeBtn" type="button" aria-haspopup="menu" aria-expanded="false">
+    <span class="theme-label">Theme</span>
+    <span class="theme-value" id="themeValue">System</span>
+    <svg class="theme-caret" viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M5.5 7.5L10 12l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <div class="theme-menu" id="themeMenu" role="menu" aria-label="Theme options">
+    <button class="theme-item" type="button" role="menuitemradio" data-theme="light" aria-checked="false">
+      <span>Light</span>
+      <span class="theme-check" aria-hidden="true">✓</span>
+    </button>
+    <button class="theme-item" type="button" role="menuitemradio" data-theme="dark" aria-checked="false">
+      <span>Dark</span>
+      <span class="theme-check" aria-hidden="true">✓</span>
+    </button>
+    <button class="theme-item" type="button" role="menuitemradio" data-theme="system" aria-checked="true">
+      <span>System</span>
+      <span class="theme-check" aria-hidden="true">✓</span>
+    </button>
+  </div>
+</div>
 
       <div class="footer-socials">
         <a href="${ig}" target="_blank" rel="noopener">Instagram</a>
@@ -869,3 +885,4 @@ ${payload.notes}`
     init();
   }
 })();
+
