@@ -979,6 +979,21 @@ footer a strong,
   background: var(--card);
   color: var(--text);
 }
+/* Add this to your select styling */
+#fsThemeSelect,
+.fs-theme-select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background: transparent !important;
+  background-image: none !important;
+  padding-right: 20px !important;
+  
+  /* Hide default arrow in IE/Edge */
+  &::-ms-expand {
+    display: none;
+  }
+}
 
 
 
