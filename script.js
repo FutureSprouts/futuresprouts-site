@@ -465,7 +465,7 @@
   // Scroll reveal
   // ---------------------------
   function initReveal() {
-    const reveals = document.querySelectorAll(".reveal");
+    const reveals = document.querySelectorAll(".reveal:not(.seed-card)");
     if (!reveals.length || !("IntersectionObserver" in window)) return;
 
     const obs = new IntersectionObserver((entries) => {
@@ -1118,4 +1118,5 @@ ${payload.notes}`
     init();
   }
 })();
+
 
