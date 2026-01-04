@@ -1139,6 +1139,13 @@ footer a strong,
   border: 0 !important;
   box-shadow: none !important;
 }
+/* Seed cards should NEVER use reveal-on-scroll */
+.seed-card.reveal{
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
 
 
 
