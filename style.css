@@ -929,7 +929,6 @@ footer a strong,
   border: 1px solid var(--border);
   background: var(--card);
   border-radius: 999px;
-  cursor: pointer;
 }
 
 /* Label styling ("Theme:") */
@@ -980,6 +979,7 @@ footer a strong,
   background: var(--card);
   color: var(--text);
 }
+
 
 
 
