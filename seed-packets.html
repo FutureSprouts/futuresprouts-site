@@ -43,9 +43,23 @@
       <h2 class="reveal">Choose seed types and quantities.</h2>
       <p class="reveal">For each seed type, select how many brochures and seed packets you want, then add to cart.</p>
 
-      <div class="grid cols-3">
+      <!-- FILTER TAGS -->
+      <div class="tags reveal" id="seedFilters" style="margin-top:14px;">
+        <button class="tag active" type="button" data-filter="all">All</button>
+        <button class="tag" type="button" data-filter="fruit">Fruits</button>
+        <button class="tag" type="button" data-filter="vegetable">Vegetables</button>
+        <button class="tag" type="button" data-filter="beginner">Beginner</button>
+        <button class="tag" type="button" data-filter="pollinator">Pollinator</button>
+        <button class="tag" type="button" data-filter="summer">Summer</button>
+        <button class="tag" type="button" data-filter="fall">Fall</button>
+        <button class="tag" type="button" data-filter="pack">Packs</button>
+      </div>
+      <div class="small reveal" id="seedFilterCount" style="margin-top:8px;"></div>
+
+      <div class="grid cols-3" id="seedGrid">
+
         <!-- TOMATO -->
-        <div class="card reveal" id="cardTomato">
+        <div class="card reveal seed-card" id="cardTomato" data-kind="seed" data-tags="fruit vegetable summer beginner">
           <img class="shop-img" src="https://images.unsplash.com/photo-1567306301408-9b74779a11af?auto=format&fit=crop&w=1600&q=80" alt="Tomato seed package">
           <div class="shop-body">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
@@ -91,7 +105,7 @@
         </div>
 
         <!-- CORN -->
-        <div class="card reveal" id="cardCorn">
+        <div class="card reveal seed-card" id="cardCorn" data-kind="seed" data-tags="vegetable summer">
           <img class="shop-img" src="https://images.unsplash.com/photo-1509223197845-458d87318791?auto=format&fit=crop&w=1600&q=80" alt="Corn seed package">
           <div class="shop-body">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
@@ -131,7 +145,7 @@
         </div>
 
         <!-- MULTI -->
-        <div class="card reveal" id="cardMulti">
+        <div class="card reveal seed-card" id="cardMulti" data-kind="pack" data-tags="beginner pollinator summer fall">
           <img class="shop-img" src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1600&q=80" alt="Mixed seeds">
           <div class="shop-body">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
@@ -169,6 +183,127 @@
             </div>
           </div>
         </div>
+
+        <!-- POLLINATOR PACK -->
+        <div class="card reveal seed-card" id="cardPollinator" data-kind="pack" data-tags="pack pollinator beginner spring summer fall">
+          <img class="shop-img" src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1600&q=80" alt="Pollinator pack">
+          <div class="shop-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div class="pill">Seed Pack</div>
+              <span class="badge ok" id="badgePollinator">Available</span>
+            </div>
+
+            <h3 style="margin-top:10px;">Pollinator Pack</h3>
+            <p class="small" id="descPollinator" data-base="A curated mix that supports bees & butterflies (great for school gardens).">
+              A curated mix that supports bees & butterflies (great for school gardens).
+            </p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div><strong>Brochures</strong><div class="small">Info handouts</div></div>
+              <div class="qty">
+                <button type="button" data-broch-dec="pollinator">−</button>
+                <span id="pollinatorBroch">0</span>
+                <button type="button" data-broch-inc="pollinator">+</button>
+              </div>
+            </div>
+
+            <div class="qty-row">
+              <div><strong>Seed packets</strong><div class="small">Pack units</div></div>
+              <div class="qty">
+                <button type="button" data-pack-dec="pollinator">−</button>
+                <span id="pollinatorPack">0</span>
+                <button type="button" data-pack-inc="pollinator">+</button>
+              </div>
+            </div>
+
+            <div style="margin-top:14px;">
+              <button class="btn primary" type="button" data-add="seed-pollinator-pack" id="addPollinator">Add to cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BEGINNER GARDEN PACK -->
+        <div class="card reveal seed-card" id="cardBeginner" data-kind="pack" data-tags="pack beginner vegetable fruit spring summer">
+          <img class="shop-img" src="https://images.unsplash.com/photo-1524594150409-7b6b4b2b3d2a?auto=format&fit=crop&w=1600&q=80" alt="Beginner garden pack">
+          <div class="shop-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div class="pill">Seed Pack</div>
+              <span class="badge ok" id="badgeBeginner">Available</span>
+            </div>
+
+            <h3 style="margin-top:10px;">Beginner Garden Pack</h3>
+            <p class="small" id="descBeginner" data-base="Easy-to-grow basics + simple instructions (perfect first garden).">
+              Easy-to-grow basics + simple instructions (perfect first garden).
+            </p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div><strong>Brochures</strong><div class="small">Info handouts</div></div>
+              <div class="qty">
+                <button type="button" data-broch-dec="beginner">−</button>
+                <span id="beginnerBroch">0</span>
+                <button type="button" data-broch-inc="beginner">+</button>
+              </div>
+            </div>
+
+            <div class="qty-row">
+              <div><strong>Seed packets</strong><div class="small">Pack units</div></div>
+              <div class="qty">
+                <button type="button" data-pack-dec="beginner">−</button>
+                <span id="beginnerPack">0</span>
+                <button type="button" data-pack-inc="beginner">+</button>
+              </div>
+            </div>
+
+            <div style="margin-top:14px;">
+              <button class="btn primary" type="button" data-add="seed-beginner-pack" id="addBeginner">Add to cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FALL HARVEST PACK -->
+        <div class="card reveal seed-card" id="cardFall" data-kind="pack" data-tags="pack fall beginner vegetable">
+          <img class="shop-img" src="https://images.unsplash.com/photo-1506806732259-39c2d0268443?auto=format&fit=crop&w=1600&q=80" alt="Fall harvest pack">
+          <div class="shop-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div class="pill">Seed Pack</div>
+              <span class="badge ok" id="badgeFall">Available</span>
+            </div>
+
+            <h3 style="margin-top:10px;">Fall Harvest Pack</h3>
+            <p class="small" id="descFall" data-base="Cool-season favorites for late-summer planting and fall harvests.">
+              Cool-season favorites for late-summer planting and fall harvests.
+            </p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div><strong>Brochures</strong><div class="small">Info handouts</div></div>
+              <div class="qty">
+                <button type="button" data-broch-dec="fall">−</button>
+                <span id="fallBroch">0</span>
+                <button type="button" data-broch-inc="fall">+</button>
+              </div>
+            </div>
+
+            <div class="qty-row">
+              <div><strong>Seed packets</strong><div class="small">Pack units</div></div>
+              <div class="qty">
+                <button type="button" data-pack-dec="fall">−</button>
+                <span id="fallPack">0</span>
+                <button type="button" data-pack-inc="fall">+</button>
+              </div>
+            </div>
+
+            <div style="margin-top:14px;">
+              <button class="btn primary" type="button" data-add="seed-fall-pack" id="addFall">Add to cart</button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="notice reveal">
@@ -185,10 +320,51 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+
+      // ---------------------------
+      // Filter chips (single-select)
+      // ---------------------------
+      (function initSeedFilters(){
+        const tags = Array.from(document.querySelectorAll("#seedFilters .tag"));
+        const cards = Array.from(document.querySelectorAll(".seed-card"));
+        const countEl = document.getElementById("seedFilterCount");
+
+        if (!tags.length || !cards.length) return;
+
+        function applyFilter(filter) {
+          tags.forEach(t => t.classList.toggle("active", t.dataset.filter === filter));
+
+          let shown = 0;
+          cards.forEach(card => {
+            const tagList = String(card.dataset.tags || "").split(/\s+/).filter(Boolean);
+            const kind = card.dataset.kind || "";
+
+            const show =
+              filter === "all" ||
+              tagList.includes(filter) ||
+              kind === filter;
+
+            card.style.display = show ? "" : "none";
+            if (show) shown++;
+          });
+
+          if (countEl) countEl.textContent = `Showing ${shown} of ${cards.length}`;
+        }
+
+        tags.forEach(btn => btn.addEventListener("click", () => applyFilter(btn.dataset.filter)));
+        applyFilter("all");
+      })();
+
+      // ---------------------------
+      // Quantity state
+      // ---------------------------
       const state = {
-        tomato: { brochures: 0, packets: 0 },
-        corn:   { brochures: 0, packets: 0 },
-        multi:  { brochures: 0, packets: 0 }
+        tomato:     { brochures: 0, packets: 0 },
+        corn:       { brochures: 0, packets: 0 },
+        multi:      { brochures: 0, packets: 0 },
+        pollinator: { brochures: 0, packets: 0 },
+        beginner:   { brochures: 0, packets: 0 },
+        fall:       { brochures: 0, packets: 0 }
       };
 
       function clamp(n) { return Math.max(0, Math.min(200, n)); }
@@ -202,6 +378,15 @@
 
         document.getElementById("multiBroch").textContent = state.multi.brochures;
         document.getElementById("multiPack").textContent  = state.multi.packets;
+
+        document.getElementById("pollinatorBroch").textContent = state.pollinator.brochures;
+        document.getElementById("pollinatorPack").textContent  = state.pollinator.packets;
+
+        document.getElementById("beginnerBroch").textContent = state.beginner.brochures;
+        document.getElementById("beginnerPack").textContent  = state.beginner.packets;
+
+        document.getElementById("fallBroch").textContent = state.fall.brochures;
+        document.getElementById("fallPack").textContent  = state.fall.packets;
       }
 
       function bindQty(type) {
@@ -211,7 +396,7 @@
         document.querySelectorAll(`[data-pack-dec="${type}"]`).forEach(b => b.onclick = () => { state[type].packets = clamp(state[type].packets - 1); render(); });
       }
 
-      ["tomato", "corn", "multi"].forEach(bindQty);
+      ["tomato", "corn", "multi", "pollinator", "beginner", "fall"].forEach(bindQty);
       render();
 
       function uniqueId(baseId) {
@@ -282,9 +467,13 @@
         return st;
       }
 
-      const statusTomato = setSeedUI("tomato","seed-tomato","badgeTomato","descTomato","addTomato","cardTomato");
-      const statusCorn   = setSeedUI("corn","seed-corn","badgeCorn","descCorn","addCorn","cardCorn");
-      const statusMulti  = setSeedUI("multi","seed-multi","badgeMulti","descMulti","addMulti","cardMulti");
+      const statusTomato     = setSeedUI("tomato","seed-tomato","badgeTomato","descTomato","addTomato","cardTomato");
+      const statusCorn       = setSeedUI("corn","seed-corn","badgeCorn","descCorn","addCorn","cardCorn");
+      const statusMulti      = setSeedUI("multi","seed-multi","badgeMulti","descMulti","addMulti","cardMulti");
+
+      const statusPollinator = setSeedUI("pollinator","seed-pollinator-pack","badgePollinator","descPollinator","addPollinator","cardPollinator");
+      const statusBeginner   = setSeedUI("beginner","seed-beginner-pack","badgeBeginner","descBeginner","addBeginner","cardBeginner");
+      const statusFall       = setSeedUI("fall","seed-fall-pack","badgeFall","descFall","addFall","cardFall");
 
       document.querySelectorAll("[data-add]").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -295,9 +484,13 @@
 
           const baseId = btn.getAttribute("data-add");
           const map = {
-            "seed-tomato": { key: "tomato", name: "Seed Packets — Tomato", status: statusTomato },
-            "seed-corn":   { key: "corn",   name: "Seed Packets — Corn", status: statusCorn },
-            "seed-multi":  { key: "multi",  name: "Seed Packets — Multi-Seed", status: statusMulti }
+            "seed-tomato":          { key: "tomato",     name: "Seed Packets — Tomato",        status: statusTomato },
+            "seed-corn":            { key: "corn",       name: "Seed Packets — Corn",          status: statusCorn },
+            "seed-multi":           { key: "multi",      name: "Seed Packets — Multi-Seed",    status: statusMulti },
+
+            "seed-pollinator-pack": { key: "pollinator", name: "Seed Packets — Pollinator Pack", status: statusPollinator },
+            "seed-beginner-pack":   { key: "beginner",   name: "Seed Packets — Beginner Pack",   status: statusBeginner },
+            "seed-fall-pack":       { key: "fall",       name: "Seed Packets — Fall Harvest Pack", status: statusFall }
           };
 
           const info = map[baseId];
