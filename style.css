@@ -1039,6 +1039,20 @@ footer a strong,
   cursor: pointer;
   outline: none;
 }
+/* Add distinct borders to cards and cart items */
+.card, .cart-line, .mini-cart {
+  border: 2px solid var(--border) !important; /* Forces a visible border */
+}
+
+/* Ensure the cart wrap allows the dropdown to show on hover */
+.cart-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-wrap:hover .mini-cart {
+  display: block !important;
+}
 
 
 
