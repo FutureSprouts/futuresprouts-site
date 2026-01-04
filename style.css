@@ -723,33 +723,11 @@ textarea{ min-height: 140px; resize: vertical; }
   gap: 12px;
   flex-wrap: wrap;
 }
-
-.footer-actions{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
 .footer-socials{
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
-
-/* Theme label + select pill */
-.footer-actions .theme-wrap{
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--card) 88%, transparent);
-  border-radius: 999px;
-  color: var(--text);
-}
-
 /* Your JS should use: <select id="fsThemeSelect" class="fs-theme-select"> */
 #fsThemeSelect,
 .fs-theme-select{
@@ -1065,6 +1043,7 @@ footer a strong,
   color: #111;
   background: #fff;
 }
+
 
 
 
