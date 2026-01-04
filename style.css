@@ -1111,6 +1111,29 @@ footer a strong,
 [data-theme="dark"] .theme-item:hover{ background: rgba(255,255,255,0.10); }
 [data-theme="dark"] .theme-item:focus{ background: rgba(47,111,78,0.20); }
 }
+/* Fix weird inner border inside cart item cards */
+.cart-line{
+  border: 1px solid rgba(0,0,0,0.12) !important; /* keep only ONE border */
+  border-radius: 18px;
+  background: var(--card);
+  overflow: hidden; /* prevents inner edges from showing */
+}
+
+/* Kill any accidental borders/outlines on direct children */
+.cart-line > div{
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+/* If your meta editor wrapper is drawing a box, remove it */
+.cart-line .meta-edit{
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
 
 
 
