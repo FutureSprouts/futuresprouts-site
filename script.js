@@ -4,6 +4,8 @@
 // - Footer theme dropdown (Light/Dark/System) styled as pill + caret (no bold text)
 // - Cart badge + mini cart preview
 // - Cart page render + Formspree submit + lockout
+// - Catalog-driven inventory defaults + auto-merge
+// - Seed Packets page auto-renders cards from FS_CONFIG.catalog + filter chips
 // - No duplicate footers, no duplicate theme code
 
 (function () {
@@ -90,55 +92,66 @@
   }
 
   try { logEvent("page_view", { path: location.pathname }); } catch {}
-// ---------------------------
-// Inventory (Catalog-driven)
-// ---------------------------
-function getCatalog() {
-  return (window.FS_CONFIG && Array.isArray(window.FS_CONFIG.catalog))
-    ? window.FS_CONFIG.catalog
-    : [];
-}
 
-function buildDefaultInv() {
-  const items = {
-    "bed-2x4":    { available: true, remaining: 25, note: "Limited" },
-    "bed-4x4":    { available: true, remaining: 12, note: "Limited" },
-    "soil-kit-1": { available: true, remaining: 30, note: "In stock" }
-  };
+  // ---------------------------
+  // Catalog + Inventory (Catalog-driven)
+  // ---------------------------
+  function getCatalog() {
+    const list = (window.FS_CONFIG && Array.isArray(window.FS_CONFIG.catalog))
+      ? window.FS_CONFIG.catalog
+      : [];
+    // keep only valid items with a string key
+    return list.filter(x => x && typeof x.key === "string" && x.key.trim());
+  }
 
-  getCatalog().forEach(p => {
-    items[p.key] = {
-      available: p.inv?.available !== false,
-      remaining: Number.isFinite(+p.inv?.remaining) ? +p.inv.remaining : 999,
-      note: p.inv?.note || ""
+  function buildDefaultInv() {
+    // Base defaults (non-catalog items you still track)
+    const items = {
+      "bed-2x4":    { available: true, remaining: 25, note: "Limited" },
+      "bed-4x4":    { available: true, remaining: 12, note: "Limited" },
+      "soil-kit-1": { available: true, remaining: 30, note: "In stock" }
     };
-  });
 
-  return { updatedAt: nowIso(), items };
-}
+    // Catalog-driven defaults
+    getCatalog().forEach(p => {
+      const inv = (p.inv && typeof p.inv === "object") ? p.inv : {};
+      items[p.key] = {
+        available: inv.available !== false,
+        remaining: Number.isFinite(+inv.remaining) ? Math.max(0, parseInt(inv.remaining, 10)) : 999,
+        note: inv.note || ""
+      };
+    });
 
-function loadInventory() {
-  const base = buildDefaultInv();
-  const saved = loadJson(INVENTORY_KEY, null);
+    return { updatedAt: nowIso(), items };
+  }
 
-  if (!saved || !saved.items) return base;
+  function loadInventory() {
+    const base = buildDefaultInv();
+    const saved = loadJson(INVENTORY_KEY, null);
 
-  Object.keys(base.items).forEach(k => {
-    if (!saved.items[k]) saved.items[k] = base.items[k];
-  });
+    if (!saved || !saved.items) return base;
 
-  return saved;
-}
+    // merge: preserve saved, auto-add any missing defaults/new catalog keys
+    saved.items = saved.items || {};
+    Object.keys(base.items).forEach(k => {
+      if (!saved.items[k]) saved.items[k] = base.items[k];
+    });
 
-function saveInventory(inv) {
-  inv.updatedAt = nowIso();
-  saveJson(INVENTORY_KEY, inv);
-}
+    if (!saved.updatedAt) saved.updatedAt = nowIso();
+    return saved;
+  }
 
-function getInventoryStatus(key) {
-  const inv = loadInventory();
-  return inv.items[key] || { available: true, remaining: 999, note: "" };
-}
+  function saveInventory(inv) {
+    const next = (inv && inv.items) ? inv : buildDefaultInv();
+    next.updatedAt = nowIso();
+    saveJson(INVENTORY_KEY, next);
+  }
+
+  function getInventoryStatus(key) {
+    const inv = loadInventory();
+    return (inv.items && inv.items[key]) || { available: true, remaining: 999, note: "" };
+  }
+
   // ---------------------------
   // Theme: system/light/dark
   // ---------------------------
@@ -158,7 +171,6 @@ function getInventoryStatus(key) {
     }
   }
 
-  // React to OS theme changes if on system
   function watchSystemTheme() {
     if (!media) return;
     const handler = () => {
@@ -171,7 +183,6 @@ function getInventoryStatus(key) {
   // ---------------------------
   // Footer Theme Dropdown (Injected)
   // ---------------------------
-  // Global close listeners (only bind once)
   function bindThemeDropdownGlobalsOnce() {
     if (window.__FS_THEME_DD_GLOBAL__) return;
     window.__FS_THEME_DD_GLOBAL__ = true;
@@ -215,7 +226,6 @@ function getInventoryStatus(key) {
     const control = document.getElementById("themeControl");
     if (!control) return;
 
-    // Prevent double-bind (in case injection runs again)
     if (control.__bound) return;
     control.__bound = true;
 
@@ -225,7 +235,6 @@ function getInventoryStatus(key) {
     const menu = control.querySelector("#themeMenu");
     if (!btn || !menu) return;
 
-    // Init from saved pref
     syncThemeDropdownUI();
     applyTheme(getThemePref());
 
@@ -421,11 +430,9 @@ function getInventoryStatus(key) {
     const headerSlot = document.getElementById("siteHeader");
     const footerSlot = document.getElementById("siteFooter");
 
-    // IMPORTANT: use innerHTML not outerHTML to keep mount nodes stable
     if (headerSlot) headerSlot.innerHTML = headerHtml();
     if (footerSlot) footerSlot.innerHTML = footerHtml();
 
-    // After footer injection, wire the theme dropdown (if present)
     wireThemeDropdown();
   }
 
@@ -506,7 +513,7 @@ function getInventoryStatus(key) {
   }
 
   // ---------------------------
-  // Programs filtering
+  // Programs filtering (kept for programs page)
   // ---------------------------
   function initProgramFilter() {
     const tagButtons = document.querySelectorAll("[data-filter]");
@@ -696,6 +703,134 @@ function getInventoryStatus(key) {
   };
 
   // ---------------------------
+  // Seed Packets Page Renderer + Filters
+  // ---------------------------
+  function classifyInvStatus(key) {
+    const it = getInventoryStatus(key);
+    const availableFlag = (it.available !== false);
+    const remaining = (typeof it.remaining === "number") ? it.remaining : null;
+    const availableNow = availableFlag && (remaining == null || remaining > 0);
+
+    if (!availableNow) return { label: "Out of stock", tone: "danger", out: true, remaining: 0 };
+    if (remaining != null && remaining <= 10) return { label: "Limited", tone: "warn", out: false, remaining };
+    return { label: "Available", tone: "ok", out: false, remaining };
+  }
+
+  function renderSeedPackets() {
+    const grid = document.getElementById("seedGrid");
+    if (!grid) return;
+
+    const catalog = getCatalog();
+    grid.innerHTML = "";
+
+    catalog.forEach(item => {
+      const tags = Array.isArray(item.tags) ? item.tags.join(" ") : "";
+      const kind = item.kind || item.type || "seed";
+      const name = item.name || item.title || item.key;
+      const desc = item.desc || item.description || "";
+      const image = item.image || "images/placeholder.jpg";
+
+      const st = classifyInvStatus(item.key);
+      const disabledAttr = st.out ? "disabled" : "";
+
+      grid.insertAdjacentHTML("beforeend", `
+        <div class="card reveal seed-card"
+          data-kind="${escapeHtml(kind)}"
+          data-tags="${escapeHtml(tags)}"
+          id="card-${escapeHtml(item.key)}">
+
+          <img class="shop-img" src="${escapeHtml(image)}" alt="${escapeHtml(name)}">
+
+          <div class="shop-body">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+              <div class="pill">${kind === "pack" ? "Seed Pack" : "Seed Package"}</div>
+              <span class="badge ${st.tone}" id="badge-${escapeHtml(item.key)}">${escapeHtml(st.label)}</span>
+            </div>
+
+            <h3 style="margin-top:10px;">${escapeHtml(name)}</h3>
+            <p class="small" id="desc-${escapeHtml(item.key)}" data-base="${escapeHtml(desc)}">
+              ${escapeHtml(desc)}
+            </p>
+
+            <div class="divider"></div>
+
+            <button class="btn primary" type="button" data-add="${escapeHtml(item.key)}" ${disabledAttr}>
+              ${st.out ? "Out of stock" : "Add to cart"}
+            </button>
+          </div>
+        </div>
+      `);
+    });
+  }
+
+  function initSeedFilters() {
+    const filters = document.getElementById("seedFilters");
+    const countEl = document.getElementById("seedFilterCount");
+    const grid = document.getElementById("seedGrid");
+    if (!filters || !grid) return;
+
+    const tagButtons = Array.from(filters.querySelectorAll(".tag"));
+
+    function getCards() {
+      return Array.from(document.querySelectorAll(".seed-card"));
+    }
+
+    function applyFilter(filter) {
+      tagButtons.forEach(b => b.classList.toggle("active", b.dataset.filter === filter));
+
+      const cards = getCards();
+      let shown = 0;
+
+      cards.forEach(card => {
+        const tagList = String(card.dataset.tags || "").split(/\s+/).filter(Boolean);
+        const kind = String(card.dataset.kind || "");
+
+        const show =
+          filter === "all" ||
+          tagList.includes(filter) ||
+          kind === filter;
+
+        card.style.display = show ? "" : "none";
+        if (show) shown++;
+      });
+
+      if (countEl) countEl.textContent = `Showing ${shown} of ${cards.length}`;
+    }
+
+    tagButtons.forEach(btn => {
+      btn.addEventListener("click", () => applyFilter(btn.dataset.filter || "all"));
+    });
+
+    applyFilter("all");
+  }
+
+  function wireSeedAddToCart() {
+    const grid = document.getElementById("seedGrid");
+    if (!grid) return;
+
+    grid.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-add]");
+      if (!btn) return;
+
+      const key = btn.getAttribute("data-add");
+      if (!key) return;
+
+      const st = classifyInvStatus(key);
+      if (st.out) {
+        showModal("Out of stock", "This item is currently unavailable. Please check back later.");
+        return;
+      }
+
+      const item = getCatalog().find(x => x.key === key);
+      const name = item ? (item.name || item.title || item.key) : key;
+      const kind = item ? (item.kind || item.type || "") : "";
+
+      cartAddOrUpdate(key, name, { kind, baseId: key }, +1, null);
+      showModal("Added to cart", "Item added. Click the cart icon to review and submit your request.");
+    });
+  }
+
+  // ---------------------------
   // Cart page rendering
   // ---------------------------
   const cartList = document.querySelector("#cartList");
@@ -731,7 +866,7 @@ function getInventoryStatus(key) {
       const metaParts = [];
       if (meta.brochures != null) metaParts.push(`Brochures: ${meta.brochures}`);
       if (meta.packets != null) metaParts.push(`Seed packs: ${meta.packets}`);
-      if (meta.size) metaParts.push(`Size: ${meta.size}`);
+      if (meta.size) parts.push(`Size: ${meta.size}`);
 
       const showMetaEditor = (meta.brochures != null || meta.packets != null);
 
@@ -849,7 +984,7 @@ function getInventoryStatus(key) {
   // Init (runs once)
   // ---------------------------
   function init() {
-    // Inject layout first so elements exist
+    // Layout first
     injectLayoutIfSlotsExist();
 
     // Theme
@@ -859,6 +994,11 @@ function getInventoryStatus(key) {
     // Header controls
     wireMobileMenu();
     highlightActiveNav();
+
+    // Seed packets page: render + wire (BEFORE reveal)
+    renderSeedPackets();
+    initSeedFilters();
+    wireSeedAddToCart();
 
     // Page features
     initReveal();
@@ -977,47 +1117,4 @@ ${payload.notes}`
   } else {
     init();
   }
-  // ---------------------------
-// Seed Packets Page Renderer
-// ---------------------------
-function renderSeedPackets() {
-  const grid = document.getElementById("seedGrid");
-  if (!grid) return;
-
-  grid.innerHTML = "";
-
-  getCatalog().forEach(item => {
-    const tags = item.tags.join(" ");
-
-    grid.insertAdjacentHTML("beforeend", `
-      <div class="card reveal seed-card"
-        data-kind="${item.kind}"
-        data-tags="${tags}"
-        id="card-${item.key}">
-
-        <img class="shop-img" src="${item.image}" alt="${item.name}">
-        <div class="shop-body">
-          <div style="display:flex; justify-content:space-between;">
-            <div class="pill">${item.kind === "pack" ? "Seed Pack" : "Seed Package"}</div>
-            <span class="badge ok" id="badge-${item.key}">Available</span>
-          </div>
-
-          <h3 style="margin-top:10px;">${item.name}</h3>
-          <p class="small" id="desc-${item.key}" data-base="${item.desc}">
-            ${item.desc}
-          </p>
-
-          <div class="divider"></div>
-
-          <button class="btn primary" type="button" data-add="${item.key}">
-            Add to cart
-          </button>
-        </div>
-      </div>
-    `);
-  });
-}
 })();
-
-
-
