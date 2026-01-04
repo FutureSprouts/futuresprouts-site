@@ -1,3 +1,4 @@
+// config.js (FULL REPLACEMENT)
 window.FS_CONFIG = {
   siteName: "FutureSprouts",
   contactEmail: "info@futuresprouts.org",
@@ -13,13 +14,14 @@ window.FS_CONFIG = {
   canonicalBase: "https://futuresprouts.org",
   googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 
-  // ✅ Single source of truth (add new items here)
+  // ✅ Single source of truth:
+  // Add new items here and they show up on Seed Packets page + Admin inventory defaults.
   catalog: [
     {
       key: "seed-tomato",
       name: "Tomato Package",
       kind: "seed",
-      image: "https://images.unsplash.com/photo-1567306301408-9b74779a11af?auto=format&fit=crop&w=1600&q=80",
+      image: "images/seed-tomato.jpg",
       desc: "Includes tomato seed packets + basic planting guide.",
       tags: ["fruit", "vegetable", "summer", "beginner"],
       inv: { available: true, remaining: 999, note: "In stock" }
@@ -28,7 +30,7 @@ window.FS_CONFIG = {
       key: "seed-corn",
       name: "Corn Package",
       kind: "seed",
-      image: "https://images.unsplash.com/photo-1509223197845-458d87318791?auto=format&fit=crop&w=1600&q=80",
+      image: "images/seed-corn.jpg",
       desc: "Includes corn seed packets + simple growing instructions.",
       tags: ["vegetable", "summer"],
       inv: { available: true, remaining: 999, note: "In stock" }
@@ -37,27 +39,27 @@ window.FS_CONFIG = {
       key: "seed-pollinator-pack",
       name: "Pollinator Pack",
       kind: "pack",
-      image: "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1600&q=80",
+      image: "images/seed-pollinator-pack.jpg",
       desc: "A curated mix that supports bees and butterflies.",
-      tags: ["pollinator", "beginner", "spring", "summer"],
+      tags: ["pack", "pollinator", "beginner", "spring", "summer", "fall"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
     {
       key: "seed-beginner-pack",
       name: "Beginner Garden Pack",
       kind: "pack",
-      image: "https://images.unsplash.com/photo-1524594150409-7b6b4b2b3d2a?auto=format&fit=crop&w=1600&q=80",
+      image: "images/seed-beginner-pack.jpg",
       desc: "Easy-to-grow basics + simple instructions.",
-      tags: ["beginner", "spring", "summer"],
+      tags: ["pack", "beginner", "vegetable", "fruit", "spring", "summer"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
     {
       key: "seed-fall-pack",
       name: "Fall Harvest Pack",
       kind: "pack",
-      image: "https://images.unsplash.com/photo-1506806732259-39c2d0268443?auto=format&fit=crop&w=1600&q=80",
-      desc: "Cool-season favorites for fall planting.",
-      tags: ["fall", "vegetable", "beginner"],
+      image: "images/seed-fall-pack.jpg",
+      desc: "Cool-season favorites for late-summer planting and fall harvests.",
+      tags: ["pack", "fall", "beginner", "vegetable"],
       inv: { available: true, remaining: 200, note: "In stock" }
     }
   ]
