@@ -90,75 +90,55 @@
   }
 
   try { logEvent("page_view", { path: location.pathname }); } catch {}
+// ---------------------------
+// Inventory (Catalog-driven)
+// ---------------------------
+function getCatalog() {
+  return (window.FS_CONFIG && Array.isArray(window.FS_CONFIG.catalog))
+    ? window.FS_CONFIG.catalog
+    : [];
+}
 
-  // ---------------------------
-  // Inventory (Admin-lite) — Catalog-driven
-  // ---------------------------
-  function getCatalog() {
-    const list = (window.FS_CONFIG && Array.isArray(window.FS_CONFIG.catalog))
-      ? window.FS_CONFIG.catalog
-      : [];
-    return list
-      .filter(x => x && typeof x.key === "string" && x.key.trim())
-      .map(x => ({
-        key: String(x.key).trim(),
-        inv: (x.inv && typeof x.inv === "object") ? x.inv : null
-      }));
-  }
+function buildDefaultInv() {
+  const items = {
+    "bed-2x4":    { available: true, remaining: 25, note: "Limited" },
+    "bed-4x4":    { available: true, remaining: 12, note: "Limited" },
+    "soil-kit-1": { available: true, remaining: 30, note: "In stock" }
+  };
 
-  function sanitizeInv(inv) {
-    const available = inv ? (inv.available !== false) : true;
-    const remainingRaw = inv && inv.remaining != null ? inv.remaining : 999;
-    const remaining = Number.isFinite(+remainingRaw) ? Math.max(0, parseInt(remainingRaw, 10)) : 999;
-    const note = inv && inv.note != null ? String(inv.note) : "";
-    return { available, remaining, note };
-  }
+  getCatalog().forEach(p => {
+    items[p.key] = {
+      available: p.inv?.available !== false,
+      remaining: Number.isFinite(+p.inv?.remaining) ? +p.inv.remaining : 999,
+      note: p.inv?.note || ""
+    };
+  });
 
-  function buildDefaultInvFromCatalog() {
-    const items = {};
+  return { updatedAt: nowIso(), items };
+}
 
-    // Base defaults (things that are not in catalog but you still want tracked)
-    items["bed-2x4"] = { available: true, remaining: 25, note: "Limited" };
-    items["bed-4x4"] = { available: true, remaining: 12, note: "Limited" };
-    items["soil-kit-1"] = { available: true, remaining: 30, note: "In stock" };
+function loadInventory() {
+  const base = buildDefaultInv();
+  const saved = loadJson(INVENTORY_KEY, null);
 
-    // Catalog-driven defaults
-    for (const p of getCatalog()) {
-      items[p.key] = sanitizeInv(p.inv);
-    }
+  if (!saved || !saved.items) return base;
 
-    return { updatedAt: nowIso(), items };
-  }
+  Object.keys(base.items).forEach(k => {
+    if (!saved.items[k]) saved.items[k] = base.items[k];
+  });
 
-  function loadInventory() {
-    const base = buildDefaultInvFromCatalog();
-    const inv = loadJson(INVENTORY_KEY, null);
+  return saved;
+}
 
-    // If nothing saved yet, start from catalog defaults
-    if (!inv || !inv.items) return base;
+function saveInventory(inv) {
+  inv.updatedAt = nowIso();
+  saveJson(INVENTORY_KEY, inv);
+}
 
-    // Merge: preserve saved values, auto-add any new catalog keys
-    inv.items = inv.items || {};
-    for (const k of Object.keys(base.items)) {
-      if (!inv.items[k]) inv.items[k] = base.items[k];
-    }
-
-    if (!inv.updatedAt) inv.updatedAt = nowIso();
-    return inv;
-  }
-
-  function saveInventory(inv) {
-    const base = buildDefaultInvFromCatalog();
-    const next = (inv && inv.items) ? inv : base;
-    next.updatedAt = nowIso();
-    saveJson(INVENTORY_KEY, next);
-  }
-
-  function getInventoryStatus(key) {
-    const inv = loadInventory();
-    return (inv.items && inv.items[key]) || { available: true, remaining: 999, note: "" };
-  }
-
+function getInventoryStatus(key) {
+  const inv = loadInventory();
+  return inv.items[key] || { available: true, remaining: 999, note: "" };
+}
   // ---------------------------
   // Theme: system/light/dark
   // ---------------------------
@@ -997,6 +977,47 @@ ${payload.notes}`
   } else {
     init();
   }
+  // ---------------------------
+// Seed Packets Page Renderer
+// ---------------------------
+function renderSeedPackets() {
+  const grid = document.getElementById("seedGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  getCatalog().forEach(item => {
+    const tags = item.tags.join(" ");
+
+    grid.insertAdjacentHTML("beforeend", `
+      <div class="card reveal seed-card"
+        data-kind="${item.kind}"
+        data-tags="${tags}"
+        id="card-${item.key}">
+
+        <img class="shop-img" src="${item.image}" alt="${item.name}">
+        <div class="shop-body">
+          <div style="display:flex; justify-content:space-between;">
+            <div class="pill">${item.kind === "pack" ? "Seed Pack" : "Seed Package"}</div>
+            <span class="badge ok" id="badge-${item.key}">Available</span>
+          </div>
+
+          <h3 style="margin-top:10px;">${item.name}</h3>
+          <p class="small" id="desc-${item.key}" data-base="${item.desc}">
+            ${item.desc}
+          </p>
+
+          <div class="divider"></div>
+
+          <button class="btn primary" type="button" data-add="${item.key}">
+            Add to cart
+          </button>
+        </div>
+      </div>
+    `);
+  });
+}
 })();
+
 
 
