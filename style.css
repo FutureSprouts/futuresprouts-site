@@ -1133,6 +1133,13 @@ footer a strong,
   box-shadow: none !important;
   background: transparent !important;
 }
+.cart-line .card,
+.cart-line .panel,
+.cart-line .box{
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
 
 
 
