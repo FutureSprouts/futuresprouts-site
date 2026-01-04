@@ -1,6 +1,7 @@
 // script.js — FULL REPLACEMENT (STABLE + FIXED)
 // - Single source of truth for Header/Footer injection
 // - Single theme system (system/light/dark)
+// - Footer theme dropdown (Light/Dark/System) styled as pill + caret (no bold text)
 // - Cart badge + mini cart preview
 // - Cart page render + Formspree submit + lockout
 // - No duplicate footers, no duplicate theme code
@@ -141,23 +142,7 @@
     }
   }
 
-  function wireThemeSelect() {
-    const select = document.getElementById("themeSelect");
-    if (!select) return;
-
-    const pref = getThemePref();
-    select.value = pref;
-    applyTheme(pref);
-
-    select.addEventListener("change", () => {
-      const next = select.value;
-      localStorage.setItem(THEME_PREF_KEY, next);
-      applyTheme(next);
-      try { logEvent("theme_change", { pref: next }); } catch {}
-    });
-  }
-
-  // react to OS theme changes if on system
+  // React to OS theme changes if on system
   function watchSystemTheme() {
     if (!media) return;
     const handler = () => {
@@ -165,6 +150,92 @@
     };
     if (typeof media.addEventListener === "function") media.addEventListener("change", handler);
     else if (typeof media.addListener === "function") media.addListener(handler);
+  }
+
+  // ---------------------------
+  // Footer Theme Dropdown (Injected)
+  // ---------------------------
+  // Global close listeners (only bind once)
+  function bindThemeDropdownGlobalsOnce() {
+    if (window.__FS_THEME_DD_GLOBAL__) return;
+    window.__FS_THEME_DD_GLOBAL__ = true;
+
+    document.addEventListener("click", (e) => {
+      const open = document.querySelector(".theme-control.open");
+      if (!open) return;
+      if (!open.contains(e.target)) {
+        open.classList.remove("open");
+        const btn = open.querySelector(".theme-btn");
+        if (btn) btn.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      const open = document.querySelector(".theme-control.open");
+      if (!open) return;
+      open.classList.remove("open");
+      const btn = open.querySelector(".theme-btn");
+      if (btn) btn.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  function syncThemeDropdownUI() {
+    const control = document.getElementById("themeControl");
+    if (!control) return;
+
+    const pref = getThemePref();
+    const valueEl = control.querySelector("#themeValue");
+    const items = Array.from(control.querySelectorAll(".theme-item"));
+
+    if (valueEl) valueEl.textContent = pref.charAt(0).toUpperCase() + pref.slice(1);
+    items.forEach((it) => {
+      const t = it.getAttribute("data-theme");
+      it.setAttribute("aria-checked", t === pref ? "true" : "false");
+    });
+  }
+
+  function wireThemeDropdown() {
+    const control = document.getElementById("themeControl");
+    if (!control) return;
+
+    // Prevent double-bind (in case injection runs again)
+    if (control.__bound) return;
+    control.__bound = true;
+
+    bindThemeDropdownGlobalsOnce();
+
+    const btn = control.querySelector("#themeBtn");
+    const menu = control.querySelector("#themeMenu");
+    if (!btn || !menu) return;
+
+    // Init from saved pref
+    syncThemeDropdownUI();
+    applyTheme(getThemePref());
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = control.classList.toggle("open");
+      btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    menu.addEventListener("click", (e) => {
+      const item = e.target.closest(".theme-item");
+      if (!item) return;
+
+      const next = (item.getAttribute("data-theme") || "system").toLowerCase();
+      if (next !== "light" && next !== "dark" && next !== "system") return;
+
+      localStorage.setItem(THEME_PREF_KEY, next);
+      applyTheme(next);
+      syncThemeDropdownUI();
+
+      control.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+      btn.focus();
+
+      try { logEvent("theme_change", { pref: next }); } catch {}
+    });
   }
 
   // ---------------------------
@@ -294,29 +365,29 @@
 
     <div class="footer-actions">
       <div class="theme-control" id="themeControl">
-  <button class="theme-btn" id="themeBtn" type="button" aria-haspopup="menu" aria-expanded="false">
-    <span class="theme-label">Theme</span>
-    <span class="theme-value" id="themeValue">System</span>
-    <svg class="theme-caret" viewBox="0 0 20 20" aria-hidden="true">
-      <path d="M5.5 7.5L10 12l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-    </svg>
-  </button>
+        <button class="theme-btn" id="themeBtn" type="button" aria-haspopup="menu" aria-expanded="false">
+          <span class="theme-label">Theme</span>
+          <span class="theme-value" id="themeValue">System</span>
+          <svg class="theme-caret" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M5.5 7.5L10 12l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
 
-  <div class="theme-menu" id="themeMenu" role="menu" aria-label="Theme options">
-    <button class="theme-item" type="button" role="menuitemradio" data-theme="light" aria-checked="false">
-      <span>Light</span>
-      <span class="theme-check" aria-hidden="true">✓</span>
-    </button>
-    <button class="theme-item" type="button" role="menuitemradio" data-theme="dark" aria-checked="false">
-      <span>Dark</span>
-      <span class="theme-check" aria-hidden="true">✓</span>
-    </button>
-    <button class="theme-item" type="button" role="menuitemradio" data-theme="system" aria-checked="true">
-      <span>System</span>
-      <span class="theme-check" aria-hidden="true">✓</span>
-    </button>
-  </div>
-</div>
+        <div class="theme-menu" id="themeMenu" role="menu" aria-label="Theme options">
+          <button class="theme-item" type="button" role="menuitemradio" data-theme="light" aria-checked="false">
+            <span>Light</span>
+            <span class="theme-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="theme-item" type="button" role="menuitemradio" data-theme="dark" aria-checked="false">
+            <span>Dark</span>
+            <span class="theme-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="theme-item" type="button" role="menuitemradio" data-theme="system" aria-checked="true">
+            <span>System</span>
+            <span class="theme-check" aria-hidden="true">✓</span>
+          </button>
+        </div>
+      </div>
 
       <div class="footer-socials">
         <a href="${ig}" target="_blank" rel="noopener">Instagram</a>
@@ -337,6 +408,9 @@
     // IMPORTANT: use innerHTML not outerHTML to keep mount nodes stable
     if (headerSlot) headerSlot.innerHTML = headerHtml();
     if (footerSlot) footerSlot.innerHTML = footerHtml();
+
+    // After footer injection, wire the theme dropdown (if present)
+    wireThemeDropdown();
   }
 
   // ---------------------------
@@ -529,6 +603,10 @@
 
   window.addEventListener("storage", (e) => {
     if (e.key === CART_KEY) updateCartBadge();
+    if (e.key === THEME_PREF_KEY) {
+      applyTheme(getThemePref());
+      syncThemeDropdownUI();
+    }
   });
 
   function cartAddOrUpdate(id, name, meta, qtyDelta, constraints) {
@@ -760,7 +838,6 @@
 
     // Theme
     applyTheme(getThemePref());
-    wireThemeSelect();
     watchSystemTheme();
 
     // Header controls
@@ -885,4 +962,3 @@ ${payload.notes}`
     init();
   }
 })();
-
