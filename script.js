@@ -102,7 +102,9 @@
       ? window.FS_CONFIG.catalog
       : [];
     // keep only valid items with a string key
-    return list.filter(x => x && typeof x.key === "string" && x.key.trim());
+    const validItems = list.filter(x => x && typeof x.key === "string" && x.key.trim());
+    console.log(`getCatalog: Found ${list.length} total items, ${validItems.length} valid items`);
+    return validItems;
   }
 
   function buildDefaultInv() {
@@ -719,12 +721,16 @@
 
   function renderSeedPackets() {
     const grid = document.getElementById("seedGrid");
-    if (!grid) return;
+    if (!grid) {
+      console.log("seedGrid element not found");
+      return;
+    }
 
     const catalog = getCatalog();
-    grid.innerHTML = "";
-
-    catalog.forEach(item => {
+    console.log(`Rendering ${catalog.length} seed packets`);
+    
+    // Build all HTML at once instead of inserting one by one
+    const cardsHtml = catalog.map(item => {
       const tags = Array.isArray(item.tags) ? item.tags.join(" ") : "";
       const kind = item.kind || item.type || "seed";
       const name = item.name || item.title || item.key;
@@ -734,7 +740,7 @@
       const st = classifyInvStatus(item.key);
       const disabledAttr = st.out ? "disabled" : "";
 
-      grid.insertAdjacentHTML("beforeend", `
+      return `
         <div class="card seed-card"
           data-kind="${escapeHtml(kind)}"
           data-tags="${escapeHtml(tags)}"
@@ -760,8 +766,12 @@
             </button>
           </div>
         </div>
-      `);
-    });
+      `;
+    }).join("");
+
+    // Insert all at once for better performance
+    grid.innerHTML = cardsHtml;
+    console.log(`Successfully rendered ${grid.children.length} seed cards`);
   }
 
   function initSeedFilters() {
@@ -1009,13 +1019,24 @@
     // Cart page
     if (cartList) renderCart();
 
-    // Seed packets page: ONLY render if seedGrid exists (AFTER DOM is ready)
-    // This will be called again when DOMContentLoaded fires to ensure DOM is ready
-    if (document.getElementById("seedGrid")) {
-      renderSeedPackets();
-      initSeedFilters();
-      wireSeedAddToCart();
-    }
+    // Seed packets page: render with retry logic to ensure DOM is ready
+    const initSeedPacketsPage = () => {
+      const grid = document.getElementById("seedGrid");
+      if (grid) {
+        console.log("Initializing seed packets page");
+        renderSeedPackets();
+        initSeedFilters();
+        wireSeedAddToCart();
+      } else {
+        console.log("seedGrid not found during init");
+      }
+    };
+
+    // Try immediately
+    initSeedPacketsPage();
+
+    // Also try after a short delay in case DOM updates
+    setTimeout(initSeedPacketsPage, 100);
 
     // Form submit (only if present)
     if (cartForm) {
