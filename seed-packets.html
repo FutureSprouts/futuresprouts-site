@@ -21,8 +21,8 @@
         Browse available seed packets and curated packs. Filter by category, season, or audience.
       </p>
 
-      <!-- FILTER TAGS -->
-      <div class="tags reveal" id="seedFilters" style="margin-top:14px;">
+      <!-- FILTER TAGS (no reveal - shows immediately) -->
+      <div class="tags" id="seedFilters" style="margin-top:14px;">
         <button class="tag active" type="button" data-filter="all">All</button>
         <button class="tag" type="button" data-filter="fruit">Fruits</button>
         <button class="tag" type="button" data-filter="vegetable">Vegetables</button>
@@ -33,10 +33,11 @@
         <button class="tag" type="button" data-filter="pack">Packs</button>
       </div>
 
-      <div class="small reveal" id="seedFilterCount" style="margin-top:8px;"></div>
+      <!-- Filter count (no reveal - shows immediately) -->
+      <div class="small" id="seedFilterCount" style="margin-top:8px;"></div>
 
-      <!-- AUTO-RENDERED GRID -->
-      <div class="grid cols-3 reveal" id="seedGrid"></div>
+      <!-- AUTO-RENDERED GRID (no reveal - seed cards show immediately) -->
+      <div class="grid cols-3" id="seedGrid"></div>
 
       <div class="notice reveal">
         After adding items, click the cart icon in the top-right and submit your request.
