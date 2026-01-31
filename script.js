@@ -866,7 +866,7 @@
       const metaParts = [];
       if (meta.brochures != null) metaParts.push(`Brochures: ${meta.brochures}`);
       if (meta.packets != null) metaParts.push(`Seed packs: ${meta.packets}`);
-      if (meta.size) parts.push(`Size: ${meta.size}`);
+      if (meta.size) metaParts.push(`Size: ${meta.size}`);
 
       const showMetaEditor = (meta.brochures != null || meta.packets != null);
 
@@ -1117,6 +1117,21 @@ ${payload.notes}`
   } else {
     init();
   }
+  document.addEventListener("DOMContentLoaded", () => {
+  // Only run on the seed packets page
+  if (document.getElementById("seedGrid")) {
+    renderSeedPackets();
+    initSeedFilters();
+    wireSeedAddToCart();
+  }
+
+  // Only run on cart page
+  if (document.getElementById("cartList")) {
+    renderCart();
+  }
+});
+
 })();
+
 
 
