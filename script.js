@@ -1,12 +1,4 @@
 // script.js — FULL REPLACEMENT (STABLE + FIXED)
-// - Single source of truth for Header/Footer injection
-// - Single theme system (system/light/dark)
-// - Footer theme dropdown (Light/Dark/System) styled as pill + caret (no bold text)
-// - Cart badge + mini cart preview
-// - Cart page render + Formspree submit + lockout
-// - Catalog-driven inventory defaults + auto-merge
-// - Seed Packets page auto-renders cards from FS_CONFIG.catalog + filter chips
-// - No duplicate footers, no duplicate theme code
 
 (function () {
   const cfg = window.FS_CONFIG || {};
@@ -100,24 +92,22 @@
     const list = (window.FS_CONFIG && Array.isArray(window.FS_CONFIG.catalog))
       ? window.FS_CONFIG.catalog
       : [];
-    // keep only valid items with a string key
     return list.filter(x => x && typeof x.key === "string" && x.key.trim());
   }
 
   function buildDefaultInv() {
-    // Base defaults (non-catalog items you still track)
     const items = {
       "bed-2x4":    { available: true, remaining: 25, note: "Limited" },
       "bed-4x4":    { available: true, remaining: 12, note: "Limited" },
       "soil-kit-1": { available: true, remaining: 30, note: "In stock" }
     };
 
-    // Catalog-driven defaults
     getCatalog().forEach(p => {
       const inv = (p.inv && typeof p.inv === "object") ? p.inv : {};
+      const rem = Number.isFinite(+inv.remaining) ? Math.max(0, parseInt(inv.remaining, 10)) : 999;
       items[p.key] = {
         available: inv.available !== false,
-        remaining: Number.isFinite(+inv.remaining) ? Math.max(0, parseInt(inv.remaining, 10)) : 999,
+        remaining: rem,
         note: inv.note || ""
       };
     });
@@ -128,10 +118,8 @@
   function loadInventory() {
     const base = buildDefaultInv();
     const saved = loadJson(INVENTORY_KEY, null);
-
     if (!saved || !saved.items) return base;
 
-    // merge: preserve saved, auto-add any missing defaults/new catalog keys
     saved.items = saved.items || {};
     Object.keys(base.items).forEach(k => {
       if (!saved.items[k]) saved.items[k] = base.items[k];
@@ -149,7 +137,11 @@
 
   function getInventoryStatus(key) {
     const inv = loadInventory();
-    return (inv.items && inv.items[key]) || { available: true, remaining: 999, note: "" };
+    const it = (inv.items && inv.items[key]) || { available: true, remaining: 999, note: "" };
+
+    // Normalize remaining to a number
+    const rem = Number.isFinite(+it.remaining) ? Math.max(0, parseInt(it.remaining, 10)) : 999;
+    return { ...it, remaining: rem };
   }
 
   // ---------------------------
@@ -225,7 +217,6 @@
   function wireThemeDropdown() {
     const control = document.getElementById("themeControl");
     if (!control) return;
-
     if (control.__bound) return;
     control.__bound = true;
 
@@ -236,7 +227,6 @@
     if (!btn || !menu) return;
 
     syncThemeDropdownUI();
-    applyTheme(getThemePref());
 
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -249,7 +239,7 @@
       if (!item) return;
 
       const next = (item.getAttribute("data-theme") || "system").toLowerCase();
-      if (next !== "light" && next !== "dark" && next !== "system") return;
+      if (!["light", "dark", "system"].includes(next)) return;
 
       localStorage.setItem(THEME_PREF_KEY, next);
       applyTheme(next);
@@ -465,7 +455,8 @@
   // Scroll reveal
   // ---------------------------
   function initReveal() {
-    const reveals = document.querySelectorAll(".reveal:not(.seed-card)");
+    // Observe ALL .reveal elements (including #seedGrid)
+    const reveals = document.querySelectorAll(".reveal");
     if (!reveals.length || !("IntersectionObserver" in window)) return;
 
     const obs = new IntersectionObserver((entries) => {
@@ -513,7 +504,7 @@
   }
 
   // ---------------------------
-  // Programs filtering (kept for programs page)
+  // Programs filtering
   // ---------------------------
   function initProgramFilter() {
     const tagButtons = document.querySelectorAll("[data-filter]");
@@ -553,7 +544,6 @@
   // Cart helpers
   // ---------------------------
   function loadCart() { return loadJson(CART_KEY, []); }
-  function saveCart(items) { saveJson(CART_KEY, items); animateBadgeIfAdded(items); updateCartBadge(); }
 
   let lastCartTotal = 0;
 
@@ -603,6 +593,12 @@
       });
     }
     lastCartTotal = newTotal;
+  }
+
+  function saveCart(items) {
+    saveJson(CART_KEY, items);
+    animateBadgeIfAdded(items);
+    updateCartBadge();
   }
 
   function updateCartBadge() {
@@ -708,11 +704,11 @@
   function classifyInvStatus(key) {
     const it = getInventoryStatus(key);
     const availableFlag = (it.available !== false);
-    const remaining = (typeof it.remaining === "number") ? it.remaining : null;
-    const availableNow = availableFlag && (remaining == null || remaining > 0);
+    const remaining = Number.isFinite(+it.remaining) ? parseInt(it.remaining, 10) : 999;
+    const availableNow = availableFlag && remaining > 0;
 
     if (!availableNow) return { label: "Out of stock", tone: "danger", out: true, remaining: 0 };
-    if (remaining != null && remaining <= 10) return { label: "Limited", tone: "warn", out: false, remaining };
+    if (remaining <= 10) return { label: "Limited", tone: "warn", out: false, remaining };
     return { label: "Available", tone: "ok", out: false, remaining };
   }
 
@@ -806,7 +802,8 @@
 
   function wireSeedAddToCart() {
     const grid = document.getElementById("seedGrid");
-    if (!grid) return;
+    if (!grid || grid.__seedBound) return;
+    grid.__seedBound = true;
 
     grid.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-add]");
@@ -984,21 +981,21 @@
   // Init (runs once)
   // ---------------------------
   function init() {
-    // Layout first
     injectLayoutIfSlotsExist();
 
     // Theme
     applyTheme(getThemePref());
     watchSystemTheme();
 
-    // Header controls
     wireMobileMenu();
     highlightActiveNav();
 
-    // Seed packets page: render + wire (BEFORE reveal)
-    renderSeedPackets();
-    initSeedFilters();
-    wireSeedAddToCart();
+    // Seed packets page only
+    if (document.getElementById("seedGrid")) {
+      renderSeedPackets();
+      initSeedFilters();
+      wireSeedAddToCart();
+    }
 
     // Page features
     initReveal();
@@ -1006,11 +1003,11 @@
     initProgramFilter();
     initBeforeAfter();
 
-    // Cart UI
+    // Cart badge always
     try { lastCartTotal = loadCart().reduce((s, it) => s + (it.qty || 0), 0); } catch { lastCartTotal = 0; }
     updateCartBadge();
 
-    // Cart page
+    // Cart page only
     if (cartList) renderCart();
 
     // Form submit (only if present)
@@ -1050,21 +1047,6 @@
           return;
         }
 
-        const payload = {
-          email,
-          name: formData.get("name") || "",
-          organization: formData.get("organization") || "",
-          address1: formData.get("address1") || "",
-          city: formData.get("city") || "",
-          state: state.toUpperCase(),
-          zip,
-          location: `${formData.get("address1") || ""}, ${formData.get("city") || ""}, ${state} ${zip}`
-            .replace(/\s+/g, " ")
-            .trim(),
-          notes: formData.get("notes") || "",
-          order_summary: cartToText(cart)
-        };
-
         try { logEvent("order_submit_attempt", { items: cart.length }); } catch {}
 
         try {
@@ -1072,20 +1054,20 @@
             method: "POST",
             headers: { "Accept": "application/json", "Content-Type": "application/json" },
             body: JSON.stringify({
-              email: payload.email,
+              email,
               message:
 `SERVICE REQUEST (FutureSprouts)
 
-Name: ${payload.name}
-Email: ${payload.email}
-Organization: ${payload.organization}
-Address: ${payload.location}
+Name: ${formData.get("name") || ""}
+Email: ${email}
+Organization: ${formData.get("organization") || ""}
+Address: ${(formData.get("address1") || "")}, ${(formData.get("city") || "")}, ${state.toUpperCase()} ${zip}
 
 Order:
-${payload.order_summary}
+${cartToText(cart)}
 
 Notes:
-${payload.notes}`
+${formData.get("notes") || ""}`
             })
           });
 
@@ -1095,7 +1077,6 @@ ${payload.notes}`
             return;
           }
 
-          // success
           saveCart([]);
           if (cartList) renderCart();
           cartForm.reset();
@@ -1117,21 +1098,4 @@ ${payload.notes}`
   } else {
     init();
   }
-  document.addEventListener("DOMContentLoaded", () => {
-  // Only run on the seed packets page
-  if (document.getElementById("seedGrid")) {
-    renderSeedPackets();
-    initSeedFilters();
-    wireSeedAddToCart();
-  }
-
-  // Only run on cart page
-  if (document.getElementById("cartList")) {
-    renderCart();
-  }
-});
-
 })();
-
-
-
