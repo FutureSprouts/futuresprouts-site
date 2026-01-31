@@ -482,6 +482,17 @@
   }
 
   // ---------------------------
+  // Disable reveal for seed cards
+  // ---------------------------
+  function disableSeedCardReveal() {
+    // Remove reveal class from any seed cards that might have it
+    document.querySelectorAll(".seed-card.reveal").forEach(card => {
+      card.classList.remove("reveal");
+      card.classList.add("show"); // Make them visible immediately
+    });
+  }
+
+  // ---------------------------
   // Impact count-up
   // ---------------------------
   function countUp(el, target) {
@@ -544,12 +555,30 @@
     const afterImg = document.querySelector(".ba-after");
     if (!range || !afterImg) return;
 
+    // Ensure range input is configured correctly
+    range.min = "0";
+    range.max = "100";
+    range.value = range.value || "50";
+
     const update = () => {
       const pct = parseInt(range.value || "50", 10);
-      afterImg.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+      // Clamp value between 0 and 100
+      const clampedPct = Math.max(0, Math.min(100, pct));
+      afterImg.style.clipPath = `inset(0 ${100 - clampedPct}% 0 0)`;
     };
+    
     range.addEventListener("input", update);
+    range.addEventListener("change", update);
+    
+    // Initialize on load
     update();
+    
+    // Re-initialize on window resize to ensure proper alignment
+    let resizeTimeout;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(update, 100);
+    });
   }
 
   // ---------------------------
@@ -780,6 +809,10 @@
     const grid = document.getElementById("seedGrid");
     if (!filters || !grid) return;
 
+    // Prevent duplicate event listeners
+    if (filters.__filtersWired) return;
+    filters.__filtersWired = true;
+
     const tagButtons = Array.from(filters.querySelectorAll(".tag"));
 
     function getCards() {
@@ -818,6 +851,10 @@
   function wireSeedAddToCart() {
     const grid = document.getElementById("seedGrid");
     if (!grid) return;
+
+    // Prevent duplicate event listeners
+    if (grid.__cartWired) return;
+    grid.__cartWired = true;
 
     grid.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-add]");
@@ -1027,6 +1064,7 @@
         renderSeedPackets();
         initSeedFilters();
         wireSeedAddToCart();
+        disableSeedCardReveal(); // Ensure seed cards don't have reveal animation
       } else {
         console.log("seedGrid not found during init");
       }
