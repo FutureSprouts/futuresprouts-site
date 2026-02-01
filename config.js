@@ -28,7 +28,7 @@ window.FS_CONFIG = {
       name: "Beginner Garden Pack",
       kind: "pack",
       image: "images/seed-beginner-pack.jpg",
-      desc: "Includes: beginner-friendly seed packs and simple growing instructions.\nA best-of starter set for first-time gardeners.",
+      desc: "Includes: beginner-friendly seed packs and simple growing instructions."\n"A best-of starter set for first-time gardeners.",
       tags: ["pack", "beginner", "vegetable", "spring", "summer"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
@@ -357,46 +357,10 @@ window.FS_CONFIG = {
 
     // -------------------------
     // FLOWERS / POLLINATORS (popular add-ons)
-    // -------------------------
-    {
-      key: "seed-marigold",
-      name: "Marigold",
-      kind: "seed",
-      image: "images/seed-marigold.jpg",
-      desc: "Includes: marigold seed packs and simple growing instructions. Bright companion flower that supports a healthy garden ecosystem.",
-      tags: ["pollinator", "beginner", "spring", "summer", "fall", "planter", "container"],
-      inv: { available: true, remaining: 400, note: "In stock" }
-    },
-    {
-      key: "seed-nasturtium",
-      name: "Nasturtium",
-      kind: "seed",
-      image: "images/seed-nasturtium.jpg",
-      desc: "Includes: nasturtium seed packs and simple growing instructions. Easy, edible blooms that make an excellent planter companion.",
-      tags: ["pollinator", "beginner", "spring", "summer", "planter", "container"],
-      inv: { available: true, remaining: 320, note: "In stock" }
-    },
-    {
-      key: "seed-calendula",
-      name: "Calendula",
-      kind: "seed",
-      image: "images/seed-calendula.jpg",
-      desc: "Includes: calendula seed packs and simple growing instructions. Easy blooms that attract pollinators—great in raised beds.",
-      tags: ["pollinator", "beginner", "spring", "summer", "fall", "planter", "container"],
-      inv: { available: true, remaining: 260, note: "In stock" }
-    },
-    {
-      key: "seed-sunflower-dwarf",
-      name: "Dwarf Sunflower",
-      kind: "seed",
-      image: "images/seed-sunflower-dwarf.jpg",
-      desc: "Includes: dwarf sunflower seed packs and simple growing instructions. Big impact, small footprint—great for planters.",
-      tags: ["pollinator", "beginner", "summer", "planter", "container"],
-      inv: { available: true, remaining: 220, note: "In stock" }
-    }
 
     // ✅ Removed:
     // - Herbal Tea Pack (seed-tea-herb-pack)
     // - Strawberry (Container) (seed-strawberry)
   ]
 };
+
