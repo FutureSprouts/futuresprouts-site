@@ -1,4 +1,6 @@
-// config.js (FULL REPLACEMENT) — with all new items integrated + ordered by “most popular first”
+// config.js (FULL REPLACEMENT) — updated: removed Tea + Strawberry, added Zucchini/Green Bean/Broccoli/Cauliflower/Pickling Cucumbers,
+// updated descriptions to "Includes: ... + simple growing instructions." + a clear one-line benefit,
+// and removed ALL "fruit" tags everywhere.
 window.FS_CONFIG = {
   siteName: "FutureSprouts",
   contactEmail: "info@futuresprouts.org",
@@ -26,8 +28,8 @@ window.FS_CONFIG = {
       name: "Beginner Garden Pack",
       kind: "pack",
       image: "images/seed-beginner-pack.jpg",
-      desc: "Easy-to-grow basics + simple instructions.",
-      tags: ["pack", "beginner", "vegetable", "fruit", "spring", "summer"],
+      desc: "Includes: beginner-friendly seed packs and simple growing instructions. A best-of starter set for first-time gardeners.",
+      tags: ["pack", "beginner", "vegetable", "spring", "summer"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
     {
@@ -35,7 +37,7 @@ window.FS_CONFIG = {
       name: "Pollinator Pack",
       kind: "pack",
       image: "images/seed-pollinator-pack.jpg",
-      desc: "A curated mix that supports bees and butterflies.",
+      desc: "Includes: pollinator-friendly flower seed packs and simple growing instructions. Helps support bees and butterflies all season.",
       tags: ["pack", "pollinator", "beginner", "spring", "summer", "fall"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
@@ -44,7 +46,7 @@ window.FS_CONFIG = {
       name: "Kids Garden Pack",
       kind: "pack",
       image: "images/seed-kids-garden-pack.jpg",
-      desc: "Fast, fun plants for classrooms: radish, lettuce, marigold, basil.",
+      desc: "Includes: radish, lettuce, marigold, and basil seed packs plus simple growing instructions. Fast, fun plants for classrooms and family gardens.",
       tags: ["pack", "beginner", "spring", "summer", "fall", "planter", "container"],
       inv: { available: true, remaining: 220, note: "In stock" }
     },
@@ -53,7 +55,7 @@ window.FS_CONFIG = {
       name: "Salad Greens Pack",
       kind: "pack",
       image: "images/seed-salad-greens-pack.jpg",
-      desc: "A quick-growing mix for continuous salads: lettuce, arugula, spinach.",
+      desc: "Includes: lettuce, arugula, and spinach seed packs plus simple growing instructions. Quick-growing mix for continuous salads.",
       tags: ["pack", "beginner", "spring", "fall", "vegetable", "planter", "container"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
@@ -62,7 +64,7 @@ window.FS_CONFIG = {
       name: "Kitchen Herb Pack",
       kind: "pack",
       image: "images/seed-herb-kitchen-pack.jpg",
-      desc: "Basil, parsley, cilantro, and chives—perfect for a small planter box.",
+      desc: "Includes: basil, parsley, cilantro, and chives seed packs plus simple growing instructions. Perfect for a small planter box or windowsill setup.",
       tags: ["pack", "beginner", "spring", "summer", "herb", "planter", "container"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
@@ -71,8 +73,8 @@ window.FS_CONFIG = {
       name: "Salsa Garden Pack",
       kind: "pack",
       image: "images/seed-salsa-garden-pack.jpg",
-      desc: "Tomatoes, peppers, cilantro, and green onions—classic raised-bed combo.",
-      tags: ["pack", "beginner", "summer", "vegetable", "fruit", "planter", "container"],
+      desc: "Includes: tomato, pepper, cilantro, and green onion seed packs plus simple growing instructions. Classic raised-bed combo for fresh salsa.",
+      tags: ["pack", "beginner", "summer", "vegetable", "planter", "container"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
     {
@@ -80,21 +82,21 @@ window.FS_CONFIG = {
       name: "Pizza Garden Pack",
       kind: "pack",
       image: "images/seed-pizza-garden-pack.jpg",
-      desc: "Tomatoes, basil, oregano, and peppers—grow your own pizza toppings.",
+      desc: "Includes: tomato, basil, oregano, and pepper seed packs plus simple growing instructions. Grow your own pizza toppings at home.",
       tags: ["pack", "beginner", "summer", "herb", "vegetable", "planter", "container"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
 
     // -------------------------
-    // CORE INDIVIDUAL VEG/Fruit (very popular)
+    // CORE INDIVIDUAL VEG (very popular)
     // -------------------------
     {
       key: "seed-tomato",
       name: "Tomato Package",
       kind: "seed",
       image: "images/seed-tomato.jpg",
-      desc: "Includes tomato seed packets + basic planting guide.",
-      tags: ["fruit", "vegetable", "summer", "beginner"],
+      desc: "Includes: tomato seed packs and simple growing instructions. Reliable summer staple for beds, buckets, and backyard gardens.",
+      tags: ["vegetable", "summer", "beginner"],
       inv: { available: true, remaining: 999, note: "In stock" }
     },
     {
@@ -102,8 +104,8 @@ window.FS_CONFIG = {
       name: "Cherry Tomato (Container)",
       kind: "seed",
       image: "images/seed-cherry-tomato.jpg",
-      desc: "High-yield container tomato—great for patio and planter boxes.",
-      tags: ["fruit", "vegetable", "beginner", "summer", "planter", "container"],
+      desc: "Includes: cherry tomato seed packs and simple growing instructions. High-yield container tomato—great for patios and planter boxes.",
+      tags: ["vegetable", "beginner", "summer", "planter", "container"],
       inv: { available: true, remaining: 280, note: "In stock" }
     },
     {
@@ -111,8 +113,8 @@ window.FS_CONFIG = {
       name: "Bell Pepper (Compact)",
       kind: "seed",
       image: "images/seed-bell-pepper.jpg",
-      desc: "Compact pepper for raised beds and containers; sweet harvest.",
-      tags: ["fruit", "vegetable", "beginner", "summer", "planter", "container"],
+      desc: "Includes: bell pepper seed packs and simple growing instructions. Compact, sweet harvest—great for raised beds and containers.",
+      tags: ["vegetable", "beginner", "summer", "planter", "container"],
       inv: { available: true, remaining: 260, note: "In stock" }
     },
     {
@@ -120,26 +122,71 @@ window.FS_CONFIG = {
       name: "Jalapeño Pepper",
       kind: "seed",
       image: "images/seed-jalapeno.jpg",
-      desc: "Spicy, productive pepper that grows well in planters.",
-      tags: ["fruit", "vegetable", "summer", "planter", "container"],
+      desc: "Includes: jalapeño seed packs and simple growing instructions. Spicy, productive pepper that grows well in planters.",
+      tags: ["vegetable", "summer", "planter", "container"],
       inv: { available: true, remaining: 240, note: "In stock" }
     },
     {
       key: "seed-cucumber-bush",
-      name: "Bush Cucumber",
+      name: "Cucumber (Bush)",
       kind: "seed",
       image: "images/seed-cucumber-bush.jpg",
-      desc: "Container-friendly cucumber—great for small trellises.",
-      tags: ["fruit", "vegetable", "summer", "planter", "container", "beginner"],
+      desc: "Includes: bush cucumber seed packs and simple growing instructions. Container-friendly and great for small trellises.",
+      tags: ["vegetable", "summer", "planter", "container", "beginner", "trellis"],
       inv: { available: true, remaining: 220, note: "In stock" }
     },
     {
-      key: "seed-corn",
-      name: "Corn Package",
+      key: "seed-cucumber-pickling",
+      name: "Pickling Cucumber",
       kind: "seed",
-      image: "images/seed-corn.jpg",
-      desc: "Includes corn seed packets + simple growing instructions.",
-      tags: ["vegetable", "summer"],
+      image: "images/seed-cucumber-pickling.jpg",
+      desc: "Includes: pickling cucumber seed packs and simple growing instructions. Crisp, firm cucumbers ideal for homemade pickles.",
+      tags: ["vegetable", "summer", "beginner", "trellis", "raised-bed", "garden"],
+      inv: { available: true, remaining: 220, note: "In stock" }
+    },
+    {
+      key: "seed-zucchini",
+      name: "Zucchini",
+      kind: "seed",
+      image: "images/seed-zucchini.jpg",
+      desc: "Includes: zucchini seed packs and simple growing instructions. Fast-growing summer squash with big harvests from a few plants.",
+      tags: ["vegetable", "summer", "beginner", "raised-bed", "garden"],
+      inv: { available: true, remaining: 220, note: "In stock" }
+    },
+    {
+      key: "seed-green-bean",
+      name: "Green Bean",
+      kind: "seed",
+      image: "images/seed-green-bean.jpg",
+      desc: "Includes: green bean seed packs and simple growing instructions. High-yield plants that do great with a simple stake or trellis.",
+      tags: ["vegetable", "summer", "beginner", "trellis", "raised-bed", "garden", "container"],
+      inv: { available: true, remaining: 240, note: "In stock" }
+    },
+    {
+      key: "seed-broccoli",
+      name: "Broccoli",
+      kind: "seed",
+      image: "images/seed-broccoli.jpg",
+      desc: "Includes: broccoli seed packs and simple growing instructions. Cool-season staple—best planted for spring and fall harvests.",
+      tags: ["vegetable", "beginner", "spring", "fall", "raised-bed", "garden"],
+      inv: { available: true, remaining: 220, note: "In stock" }
+    },
+    {
+      key: "seed-cauliflower",
+      name: "Cauliflower",
+      kind: "seed",
+      image: "images/seed-cauliflower.jpg",
+      desc: "Includes: cauliflower seed packs and simple growing instructions. Cool-season crop that rewards patience with dense, flavorful heads.",
+      tags: ["vegetable", "spring", "fall", "raised-bed", "garden"],
+      inv: { available: true, remaining: 200, note: "In stock" }
+    },
+    {
+      key: "seed-eggplant",
+      name: "Eggplant",
+      kind: "seed",
+      image: "images/seed-eggplant.jpg",
+      desc: "Includes: eggplant seed packs and simple growing instructions. Warm-season veggie that thrives in sunny beds and large containers.",
+      tags: ["vegetable", "summer", "planter", "container"],
       inv: { available: true, remaining: 999, note: "In stock" }
     },
 
@@ -151,7 +198,7 @@ window.FS_CONFIG = {
       name: "Lettuce Mix",
       kind: "seed",
       image: "images/seed-lettuce-mix.jpg",
-      desc: "Quick harvest in planter boxes; cut-and-come-again leaves.",
+      desc: "Includes: lettuce mix seed packs and simple growing instructions. Quick harvest in planter boxes—cut-and-come-again leaves.",
       tags: ["vegetable", "beginner", "spring", "fall", "planter", "container"],
       inv: { available: true, remaining: 500, note: "In stock" }
     },
@@ -160,7 +207,7 @@ window.FS_CONFIG = {
       name: "Spinach",
       kind: "seed",
       image: "images/seed-spinach.jpg",
-      desc: "Cool-season favorite that grows great in shallow raised beds.",
+      desc: "Includes: spinach seed packs and simple growing instructions. Cool-season favorite that grows great in shallow raised beds.",
       tags: ["vegetable", "beginner", "spring", "fall", "planter", "container"],
       inv: { available: true, remaining: 450, note: "In stock" }
     },
@@ -169,7 +216,7 @@ window.FS_CONFIG = {
       name: "Kale",
       kind: "seed",
       image: "images/seed-kale.jpg",
-      desc: "Hardy green—excellent for extended harvest in beds and planters.",
+      desc: "Includes: kale seed packs and simple growing instructions. Hardy green—excellent for extended harvest in beds and planters.",
       tags: ["vegetable", "beginner", "spring", "fall", "planter", "container"],
       inv: { available: true, remaining: 380, note: "In stock" }
     },
@@ -178,7 +225,7 @@ window.FS_CONFIG = {
       name: "Arugula",
       kind: "seed",
       image: "images/seed-arugula.jpg",
-      desc: "Peppery salad green that grows fast in containers.",
+      desc: "Includes: arugula seed packs and simple growing instructions. Peppery salad green that grows fast in containers.",
       tags: ["vegetable", "beginner", "spring", "fall", "planter", "container"],
       inv: { available: true, remaining: 360, note: "In stock" }
     },
@@ -187,7 +234,7 @@ window.FS_CONFIG = {
       name: "Swiss Chard",
       kind: "seed",
       image: "images/seed-swiss-chard.jpg",
-      desc: "Colorful, productive leaves—great for planter boxes all season.",
+      desc: "Includes: Swiss chard seed packs and simple growing instructions. Colorful, productive leaves—great for planter boxes all season.",
       tags: ["vegetable", "beginner", "spring", "summer", "fall", "planter", "container"],
       inv: { available: true, remaining: 320, note: "In stock" }
     },
@@ -200,7 +247,7 @@ window.FS_CONFIG = {
       name: "Radish",
       kind: "seed",
       image: "images/seed-radish.jpg",
-      desc: "Fastest root crop—great for kid-friendly gardens and planters.",
+      desc: "Includes: radish seed packs and simple growing instructions. Fastest root crop—great for kid-friendly gardens and planters.",
       tags: ["vegetable", "beginner", "spring", "fall", "planter", "container"],
       inv: { available: true, remaining: 600, note: "In stock" }
     },
@@ -209,7 +256,7 @@ window.FS_CONFIG = {
       name: "Carrot",
       kind: "seed",
       image: "images/seed-carrot.jpg",
-      desc: "Sweet roots in deeper planter boxes; keep soil loose for best results.",
+      desc: "Includes: carrot seed packs and simple growing instructions. Sweet roots in deeper planter boxes—keep soil loose for best results.",
       tags: ["vegetable", "beginner", "spring", "fall", "planter", "container"],
       inv: { available: true, remaining: 420, note: "In stock" }
     },
@@ -218,7 +265,7 @@ window.FS_CONFIG = {
       name: "Beet",
       kind: "seed",
       image: "images/seed-beet.jpg",
-      desc: "Dual-purpose crop—tasty roots and greens; ideal for raised beds.",
+      desc: "Includes: beet seed packs and simple growing instructions. Dual-purpose crop—tasty roots and greens; ideal for raised beds.",
       tags: ["vegetable", "beginner", "spring", "fall", "planter", "container"],
       inv: { available: true, remaining: 350, note: "In stock" }
     },
@@ -227,7 +274,7 @@ window.FS_CONFIG = {
       name: "Green Onion (Scallion)",
       kind: "seed",
       image: "images/seed-green-onion.jpg",
-      desc: "Easy, compact crop for edges of planter boxes.",
+      desc: "Includes: green onion (scallion) seed packs and simple growing instructions. Easy, compact crop for edges of planter boxes.",
       tags: ["vegetable", "beginner", "spring", "summer", "fall", "planter", "container"],
       inv: { available: true, remaining: 400, note: "In stock" }
     },
@@ -240,7 +287,7 @@ window.FS_CONFIG = {
       name: "Basil",
       kind: "seed",
       image: "images/seed-basil.jpg",
-      desc: "Fast-growing herb for containers—perfect for pesto and salads.",
+      desc: "Includes: basil seed packs and simple growing instructions. Fast-growing herb for containers—perfect for pesto and salads.",
       tags: ["herb", "beginner", "spring", "summer", "planter", "container"],
       inv: { available: true, remaining: 300, note: "In stock" }
     },
@@ -249,7 +296,7 @@ window.FS_CONFIG = {
       name: "Parsley",
       kind: "seed",
       image: "images/seed-parsley.jpg",
-      desc: "Hardy herb that grows well in raised beds and containers.",
+      desc: "Includes: parsley seed packs and simple growing instructions. Hardy herb that grows well in raised beds and containers.",
       tags: ["herb", "beginner", "spring", "summer", "fall", "planter", "container"],
       inv: { available: true, remaining: 250, note: "In stock" }
     },
@@ -258,7 +305,7 @@ window.FS_CONFIG = {
       name: "Cilantro",
       kind: "seed",
       image: "images/seed-cilantro.jpg",
-      desc: "Cool-season herb that thrives in planter boxes; re-sow for continuous harvest.",
+      desc: "Includes: cilantro seed packs and simple growing instructions. Cool-season herb that thrives in planter boxes—re-sow for continuous harvest.",
       tags: ["herb", "beginner", "spring", "fall", "planter", "container"],
       inv: { available: true, remaining: 300, note: "In stock" }
     },
@@ -267,7 +314,7 @@ window.FS_CONFIG = {
       name: "Chives",
       kind: "seed",
       image: "images/seed-chives.jpg",
-      desc: "Perennial-style herb for edges of planter boxes—great for pollinators too.",
+      desc: "Includes: chives seed packs and simple growing instructions. Great for the edges of planter boxes and helpful for pollinators.",
       tags: ["herb", "beginner", "spring", "summer", "pollinator", "planter", "container"],
       inv: { available: true, remaining: 250, note: "In stock" }
     },
@@ -276,7 +323,7 @@ window.FS_CONFIG = {
       name: "Dill",
       kind: "seed",
       image: "images/seed-dill.jpg",
-      desc: "Airy herb for containers; attracts beneficial insects.",
+      desc: "Includes: dill seed packs and simple growing instructions. Airy herb that attracts beneficial insects—great in containers.",
       tags: ["herb", "beginner", "spring", "summer", "pollinator", "planter", "container"],
       inv: { available: true, remaining: 220, note: "In stock" }
     },
@@ -285,7 +332,7 @@ window.FS_CONFIG = {
       name: "Oregano",
       kind: "seed",
       image: "images/seed-oregano.jpg",
-      desc: "Container-friendly herb that spreads—great for edges of a planter box.",
+      desc: "Includes: oregano seed packs and simple growing instructions. Container-friendly herb that spreads—great for planter edges.",
       tags: ["herb", "beginner", "spring", "summer", "planter", "container"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
@@ -294,7 +341,7 @@ window.FS_CONFIG = {
       name: "Thyme",
       kind: "seed",
       image: "images/seed-thyme.jpg",
-      desc: "Low-growing herb that thrives in small planters and raised beds.",
+      desc: "Includes: thyme seed packs and simple growing instructions. Low-growing herb that thrives in small planters and raised beds.",
       tags: ["herb", "beginner", "spring", "summer", "fall", "planter", "container"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
@@ -303,78 +350,13 @@ window.FS_CONFIG = {
       name: "Mint",
       kind: "seed",
       image: "images/seed-mint.jpg",
-      desc: "Aromatically strong and vigorous—best kept contained in a planter.",
+      desc: "Includes: mint seed packs and simple growing instructions. Vigorous grower—best kept contained in a planter.",
       tags: ["herb", "beginner", "spring", "summer", "container", "planter"],
       inv: { available: true, remaining: 180, note: "In stock" }
     },
 
-    // -------------------------
-    // FLOWERS / POLLINATORS (popular add-ons)
-    // -------------------------
-    {
-      key: "seed-marigold",
-      name: "Marigold",
-      kind: "seed",
-      image: "images/seed-marigold.jpg",
-      desc: "Bright companion flower—helps support a healthy garden ecosystem.",
-      tags: ["pollinator", "beginner", "spring", "summer", "fall", "planter", "container"],
-      inv: { available: true, remaining: 400, note: "In stock" }
-    },
-    {
-      key: "seed-nasturtium",
-      name: "Nasturtium",
-      kind: "seed",
-      image: "images/seed-nasturtium.jpg",
-      desc: "Edible flowers and leaves—excellent planter companion plant.",
-      tags: ["pollinator", "beginner", "spring", "summer", "planter", "container"],
-      inv: { available: true, remaining: 320, note: "In stock" }
-    },
-    {
-      key: "seed-calendula",
-      name: "Calendula",
-      kind: "seed",
-      image: "images/seed-calendula.jpg",
-      desc: "Easy blooms that attract pollinators; great in raised beds.",
-      tags: ["pollinator", "beginner", "spring", "summer", "fall", "planter", "container"],
-      inv: { available: true, remaining: 260, note: "In stock" }
-    },
-    {
-      key: "seed-sunflower-dwarf",
-      name: "Dwarf Sunflower",
-      kind: "seed",
-      image: "images/seed-sunflower-dwarf.jpg",
-      desc: "Compact sunflowers for planters—big impact, small footprint.",
-      tags: ["pollinator", "beginner", "summer", "planter", "container"],
-      inv: { available: true, remaining: 220, note: "In stock" }
-    },
-
-    // -------------------------
-    // SEASONAL / SPECIALTY PACKS
-    // -------------------------
-   
-    {
-      key: "seed-tea-herb-pack",
-      name: "Herbal Tea Pack",
-      kind: "pack",
-      image: "images/seed-tea-herb-pack.jpg",
-      desc: "Mint and calming herbs for containers—great for a tea garden setup.",
-      tags: ["pack", "beginner", "spring", "summer", "herb", "planter", "container"],
-      inv: { available: true, remaining: 160, note: "In stock" }
-    },
-
-    // -------------------------
-    // SWEET/FRUIT EXTRAS
-    // -------------------------
-    {
-      key: "seed-strawberry",
-      name: "Strawberry (Container)",
-      kind: "seed",
-      image: "images/seed-strawberry.jpg",
-      desc: "Sweet berries for pots and planter boxes; great for kids.",
-      tags: ["fruit", "beginner", "spring", "summer", "planter", "container"],
-      inv: { available: true, remaining: 200, note: "In stock" }
-    }
+    // ✅ Removed:
+    // - Herbal Tea Pack (seed-tea-herb-pack)
+    // - Strawberry (Container) (seed-strawberry)
   ]
 };
-
-
