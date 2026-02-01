@@ -4,197 +4,49 @@
   <meta charset="UTF-8" />
   <title>Garden Supplies | FutureSprouts Services</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Request garden supplies like gloves, trowels, spades, and more." />
+  <meta name="description" content="Request garden tools and supplies such as gloves, trowels, and watering equipment." />
   <link rel="stylesheet" href="style.css" />
   <script src="config.js"></script>
 </head>
 <body>
 
-  <!-- Injected header (from script.js) -->
+  <!-- Injected header -->
   <div id="siteHeader"></div>
-
-  <div class="container mobile-menu">
-    <a href="about.html">About</a>
-    <a href="programs.html">Programs</a>
-    <a href="services.html">Services</a>
-    <a href="events.html">Events</a>
-    <a href="impact.html">Impact</a>
-    <a href="get-involved.html">Get Involved</a>
-    <a href="contact.html">Contact</a>
-    <a href="donate.html" class="donate-btn">Donate</a>
-
-    <a href="cart.html" class="cart-link mobile-cart-link" aria-label="View cart">
-      <span class="cart-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="18" height="18" role="img" focusable="false">
-          <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="9.5" cy="20" r="1.4" fill="currentColor"/>
-          <circle cx="17.5" cy="20" r="1.4" fill="currentColor"/>
-        </svg>
-      </span>
-      <span style="font-weight:800;">Cart</span>
-      <span class="cart-badge" id="cartBadgeMobile">0</span>
-    </a>
-  </div>
 
   <section class="section">
     <div class="container">
       <div class="kicker reveal">Services • Garden Supplies</div>
-      <h2 class="reveal">Request tools and supplies for your garden.</h2>
-      <p class="reveal">Choose items below and add what you need to your cart.</p>
+      <h2 class="reveal">Choose supplies and quantities.</h2>
+      <p class="reveal">
+        Browse available tools and materials for classroom and community gardens. Filter by type or use-case.
+      </p>
 
-      <div class="rulebox reveal">
-        Tip: Supplies may be limited—availability updates based on Admin → Inventory.
+      <!-- FILTER TAGS -->
+      <div class="tags" id="supFilters" style="margin-top:14px;">
+        <button class="tag active" type="button" data-filter="all">All</button>
+        <button class="tag" type="button" data-filter="tools">Tools</button>
+        <button class="tag" type="button" data-filter="container">Containers</button>
+        <button class="tag" type="button" data-filter="watering">Watering</button>
+        <button class="tag" type="button" data-filter="beginner">Beginner</button>
       </div>
 
-      <!-- Cards render here -->
-      <div class="grid cols-3" id="suppliesGrid"></div>
+      <!-- Filter count -->
+      <div class="small" id="supFilterCount" style="margin-top:8px;"></div>
 
-      <div class="cart-actions reveal">
-        <a class="btn outline" href="services.html">Back to Services</a>
-        <a class="btn primary" href="cart.html">View Cart</a>
+      <!-- AUTO-RENDERED GRID -->
+      <div class="grid cols-3" id="supGrid"></div>
+
+      <div class="notice reveal">
+        After adding items, click the cart icon in the top-right and submit your request.
       </div>
     </div>
   </section>
 
-  <!-- Injected footer (from script.js) -->
+  <!-- Injected footer -->
   <div id="siteFooter"></div>
 
+  <!-- Core site script -->
   <script src="script.js"></script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      function readyCart() {
-        return window.FS_CART
-          && typeof window.FS_CART.loadCart === "function"
-          && typeof window.FS_CART.cartAddOrUpdate === "function";
-      }
-
-      function getCatalogSupplies() {
-        const all = (window.FS_CONFIG && Array.isArray(window.FS_CONFIG.catalog)) ? window.FS_CONFIG.catalog : [];
-        return all.filter(it => it && it.kind === "supply");
-      }
-
-      function getQty(id) {
-        const cart = window.FS_CART.loadCart();
-        const item = cart.find(x => x.id === id);
-        return item ? item.qty : 0;
-      }
-
-      function cardHTML(it) {
-        // If your FS_CART already has a shared card renderer, use it.
-        if (window.FS_CART && typeof window.FS_CART.cardHTML === "function") {
-          return window.FS_CART.cardHTML(it);
-        }
-
-        // Fallback renderer matching your existing visual structure.
-        const qty = getQty(it.key);
-
-        // simple escape for name/desc
-        const name = String(it.name || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        const desc = String(it.desc || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        const img  = it.image || "images/placeholder.jpg";
-
-        return `
-          <div class="card reveal">
-            <img class="shop-img" src="${img}" alt="${name}">
-            <div class="shop-body">
-              <div class="pill">Supply</div>
-              <h3>${name}</h3>
-              <p class="small">${desc}</p>
-
-              <div class="divider"></div>
-
-              <div class="qty-row">
-                <div>
-                  <strong>Quantity</strong>
-                  <div class="small">${it.inv && it.inv.note ? it.inv.note : ""}</div>
-                </div>
-                <div class="qty">
-                  <button type="button" data-dec="${it.key}">−</button>
-                  <span id="qty-${it.key}">${qty}</span>
-                  <button type="button" data-inc="${it.key}">+</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      function render() {
-        const grid = document.getElementById("suppliesGrid");
-        if (!grid) return;
-
-        const supplies = getCatalogSupplies();
-
-        // Apply inventory overrides (if your FS_CART inventory system stores overrides by key)
-        const inv = (window.FS_CART && typeof window.FS_CART.loadInventory === "function")
-          ? window.FS_CART.loadInventory()
-          : null;
-        const items = (inv && inv.items) || {};
-
-        const merged = supplies.map(it => {
-          const live = items[it.key];
-          return live ? { ...it, inv: live } : it;
-        });
-
-        grid.innerHTML = merged.map(cardHTML).join("");
-
-        // Disable out-of-stock cards
-        merged.forEach(it => {
-          const live = it.inv || {};
-          const available = !!live.available && (live.remaining == null || live.remaining > 0);
-          if (!available) {
-            // Find the buttons and disable them
-            document.querySelectorAll(`[data-inc="${it.key}"], [data-dec="${it.key}"]`).forEach(btn => {
-              btn.disabled = true;
-              btn.style.opacity = "0.5";
-              btn.style.cursor = "not-allowed";
-            });
-          }
-        });
-      }
-
-      function bind() {
-        // Event delegation for +/-
-        document.addEventListener("click", (e) => {
-          const inc = e.target && e.target.getAttribute && e.target.getAttribute("data-inc");
-          const dec = e.target && e.target.getAttribute && e.target.getAttribute("data-dec");
-          if (!inc && !dec) return;
-
-          const key = inc || dec;
-          const supplies = getCatalogSupplies();
-          const it = supplies.find(x => x.key === key);
-          if (!it) return;
-
-          const delta = inc ? +1 : -1;
-
-          // Name shown in cart
-          const cartName = `Garden Supply — ${it.name}`;
-
-          window.FS_CART.cartAddOrUpdate(it.key, cartName, { kind: "supply" }, delta);
-
-          // Update just that qty display
-          const qtyEl = document.getElementById(`qty-${it.key}`);
-          if (qtyEl) qtyEl.textContent = getQty(it.key);
-        });
-
-        render();
-      }
-
-      // Wait briefly if script.js initializes FS_CART late
-      if (readyCart()) bind();
-      else {
-        const t0 = Date.now();
-        const timer = setInterval(() => {
-          if (readyCart() || Date.now() - t0 > 1500) {
-            clearInterval(timer);
-            if (readyCart()) bind();
-          }
-        }, 50);
-      }
-    });
-  </script>
 
 </body>
 </html>
