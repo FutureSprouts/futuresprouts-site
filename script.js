@@ -300,7 +300,6 @@
 
     <nav class="nav-links" aria-label="Primary">
       <a href="about.html">About</a>
-      <a href="programs.html">Programs</a>
       <a href="services.html">Services</a>
       <a href="events.html">Events</a>
       <a href="impact.html">Impact</a>
@@ -337,7 +336,6 @@
 
   <div class="container mobile-menu" id="mobileMenu" aria-label="Mobile">
     <a href="about.html">About</a>
-    <a href="programs.html">Programs</a>
     <a href="services.html">Services</a>
     <a href="events.html">Events</a>
     <a href="impact.html">Impact</a>
@@ -1199,4 +1197,5 @@ ${payload.notes}`
   }
 
 })();
+
 
