@@ -84,15 +84,6 @@ window.FS_CONFIG = {
       tags: ["pack", "beginner", "summer", "herb", "vegetable", "planter", "container"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
-    {
-      key: "seed-companion-flower-pack",
-      name: "Companion Flower Pack",
-      kind: "pack",
-      image: "images/seed-companion-flower-pack.jpg",
-      desc: "Planter-friendly flowers that support pollinators: marigold, nasturtium, calendula.",
-      tags: ["pack", "pollinator", "beginner", "spring", "summer", "fall", "planter", "container"],
-      inv: { available: true, remaining: 200, note: "In stock" }
-    },
 
     // -------------------------
     // CORE INDIVIDUAL VEG/Fruit (very popular)
@@ -402,3 +393,4 @@ window.FS_CONFIG = {
     }
   ]
 };
+
