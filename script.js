@@ -107,13 +107,98 @@
     return validItems;
   }
 
-  function buildDefaultInv() {
-    // Base defaults (non-catalog items you still track)
-    const items = {
-      "bed-2x4":    { available: true, remaining: 25, note: "Limited" },
-      "bed-4x4":    { available: true, remaining: 12, note: "Limited" },
-      "soil-kit-1": { available: true, remaining: 30, note: "In stock" }
-    };
+ function buildDefaultInv() {
+  // Base defaults (non-catalog items you still track)
+  const items = {
+
+    // =========================
+    // GARDEN SUPPLIES
+    // =========================
+    "sup-gloves": {
+      available: true,
+      remaining: 120,
+      note: "In stock"
+    },
+    "sup-trowel": {
+      available: true,
+      remaining: 90,
+      note: "In stock"
+    },
+    "sup-hand-spade": {
+      available: true,
+      remaining: 70,
+      note: "In stock"
+    },
+    "sup-shovel": {
+      available: true,
+      remaining: 25,
+      note: "Limited"
+    },
+    "sup-spade": {
+      available: true,
+      remaining: 25,
+      note: "Limited"
+    },
+    "sup-watering-can": {
+      available: true,
+      remaining: 40,
+      note: "In stock"
+    },
+    "sup-pruners": {
+      available: true,
+      remaining: 35,
+      note: "In stock"
+    },
+
+    // =========================
+    // EDUCATION RESOURCES
+    // (mostly unlimited)
+    // =========================
+    "edu-brochure-tomato": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-brochure-lettuce": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-brochure-basil": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-coloring-pollinators": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-coloring-vegetables": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-manual-wicking-bucket": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-manual-raised-bed": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-manual-compost": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    }
+  };
+
+  return { items };
+}
+
 
     // Catalog-driven defaults
     getCatalog().forEach(p => {
@@ -1185,3 +1270,4 @@ ${payload.notes}`
   }
 
 })();
+
