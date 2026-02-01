@@ -650,7 +650,7 @@
           const totalBeds = cartBeds.reduce((s, x) => s + (x.qty || 0), 0);
           const nextTotalBeds = totalBeds - currentQty + nextQty;
           if (nextTotalBeds > constraints.bedMaxTotal) {
-            showModal("Limit reached", "To ensure fair distribution, large-item requests may be limited per order.");
+            showModal("Garden bed limit", "To prevent abuse, a maximum of 4 total garden beds can be requested per order (any combination).");
             return false;
           }
         }
@@ -716,66 +716,52 @@
     return { label: "Available", tone: "ok", out: false, remaining };
   }
 
-function renderSeedPackets() {
-  const grid = document.getElementById("seedGrid");
-  if (!grid) return;
+  function renderSeedPackets() {
+    const grid = document.getElementById("seedGrid");
+    if (!grid) return;
 
-  // Only include seed-related items:
-  // - preferred: category === "seeds" (new config)
-  // - fallback: kind === "seed" or kind === "pack" (works with your current config)
-  const catalog = getCatalog().filter(item => {
-    const kind = (item.kind || item.type || "").toLowerCase();
-    const category = (item.category || "").toLowerCase();
+    const catalog = getCatalog();
+    grid.innerHTML = "";
 
-    // If you added category fields, this is the cleanest rule:
-    if (category) return category === "seeds";
+    catalog.forEach(item => {
+      const tags = Array.isArray(item.tags) ? item.tags.join(" ") : "";
+      const kind = item.kind || item.type || "seed";
+      const name = item.name || item.title || item.key;
+      const desc = item.desc || item.description || "";
+      const image = item.image || "images/placeholder.jpg";
 
-    // Fallback for your current data:
-    return kind === "seed" || kind === "pack";
-  });
+      const st = classifyInvStatus(item.key);
+      const disabledAttr = st.out ? "disabled" : "";
 
-  grid.innerHTML = "";
+      grid.insertAdjacentHTML("beforeend", `
+        <div class="card seed-card"
+          data-kind="${escapeHtml(kind)}"
+          data-tags="${escapeHtml(tags)}"
+          id="card-${escapeHtml(item.key)}">
 
-  catalog.forEach(item => {
-    const tags = Array.isArray(item.tags) ? item.tags.join(" ") : "";
-    const kind = (item.kind || item.type || "seed").toLowerCase();
-    const name = item.name || item.title || item.key;
-    const desc = item.desc || item.description || "";
-    const image = item.image || "images/placeholder.jpg";
+          <img class="shop-img" src="${escapeHtml(image)}" alt="${escapeHtml(name)}">
 
-    const st = classifyInvStatus(item.key);
-    const disabledAttr = st.out ? "disabled" : "";
+          <div class="shop-body">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+              <div class="pill">${kind === "pack" ? "Seed Pack" : "Seed Package"}</div>
+              <span class="badge ${st.tone}" id="badge-${escapeHtml(item.key)}">${escapeHtml(st.label)}</span>
+            </div>
 
-    grid.insertAdjacentHTML("beforeend", `
-      <div class="card seed-card"
-        data-kind="${escapeHtml(kind)}"
-        data-tags="${escapeHtml(tags)}"
-        id="card-${escapeHtml(item.key)}">
+            <h3 style="margin-top:10px;">${escapeHtml(name)}</h3>
+            <p class="small" id="desc-${escapeHtml(item.key)}" data-base="${escapeHtml(desc)}">
+              ${escapeHtml(desc)}
+            </p>
 
-        <img class="shop-img" src="${escapeHtml(image)}" alt="${escapeHtml(name)}">
+            <div class="divider"></div>
 
-        <div class="shop-body">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-            <div class="pill">${kind === "pack" ? "Seed Pack" : "Seed Packet"}</div>
-            <span class="badge ${st.tone}" id="badge-${escapeHtml(item.key)}">${escapeHtml(st.label)}</span>
+            <button class="btn primary" type="button" data-add="${escapeHtml(item.key)}" ${disabledAttr}>
+              ${st.out ? "Out of stock" : "Add to cart"}
+            </button>
           </div>
-
-          <h3 style="margin-top:10px;">${escapeHtml(name)}</h3>
-          <p class="small" id="desc-${escapeHtml(item.key)}" data-base="${escapeHtml(desc)}">
-            ${escapeHtml(desc)}
-          </p>
-
-          <div class="divider"></div>
-
-          <button class="btn primary" type="button" data-add="${escapeHtml(item.key)}" ${disabledAttr}>
-            ${st.out ? "Out of stock" : "Add to cart"}
-          </button>
         </div>
-      </div>
-    `);
-  });
-}
-
+      `);
+    });
+  }
 
   function initSeedFilters() {
     const filters = document.getElementById("seedFilters");
@@ -1146,3 +1132,5 @@ ${payload.notes}`
 });
 
 })();
+
+
