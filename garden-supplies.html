@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Garden Supplies | FutureSprouts Services</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Request garden supplies and tools." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- Injected header -->
+  <div id="siteHeader"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="kicker reveal">Services • Garden Supplies</div>
+      <h2 class="reveal">Tools and supplies for your garden.</h2>
+      <p class="reveal">
+        Browse available garden tools and supplies. Request what you need to get started or expand your garden.
+      </p>
+
+      <!-- FILTER TAGS -->
+      <div class="tags" id="suppliesFilters" style="margin-top:14px;">
+        <button class="tag active" type="button" data-filter="all">All</button>
+        <button class="tag" type="button" data-filter="tools">Tools</button>
+        <button class="tag" type="button" data-filter="beginner">Beginner</button>
+        <button class="tag" type="button" data-filter="container">Container</button>
+        <button class="tag" type="button" data-filter="raised-bed">Raised Bed</button>
+      </div>
+
+      <!-- Filter count -->
+      <div class="small" id="suppliesFilterCount" style="margin-top:8px;"></div>
+
+      <!-- AUTO-RENDERED GRID -->
+      <div class="grid cols-3" id="suppliesGrid"></div>
+
+      <div class="notice reveal">
+        After adding items, click the cart icon in the top-right and submit your request.
+      </div>
+    </div>
+  </section>
+
+  <!-- Injected footer -->
+  <div id="siteFooter"></div>
+
+  <!-- Core site script -->
+  <script src="script.js"></script>
+  
+  <!-- Page-specific script for supplies -->
+  <script>
+    (function() {
+      const cfg = window.FS_CONFIG || {};
+      
+      function getCatalog() {
+        return (cfg.catalog && Array.isArray(cfg.catalog)) 
+          ? cfg.catalog.filter(x => x && typeof x.key === "string" && x.key.trim())
+          : [];
+      }
+      
+      function getInventoryStatus(key) {
+        if (window.FS_CART && window.FS_CART.getInventoryStatus) {
+          return window.FS_CART.getInventoryStatus(key);
+        }
+        return { available: true, remaining: 999, note: "" };
+      }
+      
+      function classifyInvStatus(key) {
+        const it = getInventoryStatus(key);
+        const availableFlag = (it.available !== false);
+        const remaining = (typeof it.remaining === "number") ? it.remaining : null;
+        const availableNow = availableFlag && (remaining == null || remaining > 0);
+
+        if (!availableNow) return { label: "Out of stock", tone: "danger", out: true, remaining: 0 };
+        if (remaining != null && remaining <= 10) return { label: "Limited", tone: "warn", out: false, remaining };
+        return { label: "Available", tone: "ok", out: false, remaining };
+      }
+      
+      function escapeHtml(str) {
+        return String(str ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+      
+      function renderSupplies() {
+        const grid = document.getElementById("suppliesGrid");
+        if (!grid) {
+          console.log("suppliesGrid element not found");
+          return;
+        }
+
+        const catalog = getCatalog().filter(item => {
+          const category = String(item.category || "").toLowerCase();
+          return category === "supplies";
+        });
+
+        console.log(`Rendering ${catalog.length} supply items`);
+
+        const cardsHtml = catalog.map(item => {
+          const tags = Array.isArray(item.tags) ? item.tags.join(" ") : "";
+          const name = item.name || item.title || item.key;
+          const desc = item.desc || item.description || "";
+          const image = item.image || "images/placeholder.jpg";
+
+          const st = classifyInvStatus(item.key);
+          const disabledAttr = st.out ? "disabled" : "";
+
+          return `
+            <div class="card supply-card"
+              data-tags="${escapeHtml(tags)}"
+              id="card-${escapeHtml(item.key)}">
+
+              <img class="shop-img" src="${escapeHtml(image)}" alt="${escapeHtml(name)}">
+
+              <div class="shop-body">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                  <div class="pill">Supply</div>
+                  <span class="badge ${st.tone}" id="badge-${escapeHtml(item.key)}">${escapeHtml(st.label)}</span>
+                </div>
+
+                <h3 style="margin-top:10px;">${escapeHtml(name)}</h3>
+                <p class="small">${escapeHtml(desc)}</p>
+
+                <div class="divider"></div>
+
+                <button class="btn primary" type="button" data-add="${escapeHtml(item.key)}" ${disabledAttr}>
+                  ${st.out ? "Out of stock" : "Add to cart"}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        grid.innerHTML = cardsHtml;
+        console.log(`Successfully rendered ${grid.children.length} supply cards`);
+      }
+      
+      function initSuppliesFilters() {
+        const filters = document.getElementById("suppliesFilters");
+        const countEl = document.getElementById("suppliesFilterCount");
+        const grid = document.getElementById("suppliesGrid");
+        if (!filters || !grid) return;
+
+        if (filters.__filtersWired) return;
+        filters.__filtersWired = true;
+
+        const tagButtons = Array.from(filters.querySelectorAll(".tag"));
+
+        function getCards() {
+          return Array.from(document.querySelectorAll(".supply-card"));
+        }
+
+        function applyFilter(filter) {
+          tagButtons.forEach(b => b.classList.toggle("active", b.dataset.filter === filter));
+
+          const cards = getCards();
+          let shown = 0;
+
+          cards.forEach(card => {
+            const tagList = String(card.dataset.tags || "").split(/\s+/).filter(Boolean);
+
+            const show = filter === "all" || tagList.includes(filter);
+
+            card.style.display = show ? "" : "none";
+            if (show) shown++;
+          });
+
+          if (countEl) countEl.textContent = `Showing ${shown} of ${cards.length}`;
+        }
+
+        tagButtons.forEach(btn => {
+          btn.addEventListener("click", () => applyFilter(btn.dataset.filter || "all"));
+        });
+
+        applyFilter("all");
+      }
+      
+      function wireSuppliesAddToCart() {
+        const grid = document.getElementById("suppliesGrid");
+        if (!grid) return;
+
+        if (grid.__cartWired) return;
+        grid.__cartWired = true;
+
+        grid.addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-add]");
+          if (!btn) return;
+
+          const key = btn.getAttribute("data-add");
+          if (!key) return;
+
+          const st = classifyInvStatus(key);
+          if (st.out) {
+            if (window.FS_CART && window.FS_CART.showModal) {
+              window.FS_CART.showModal("Out of stock", "This item is currently unavailable. Please check back later.");
+            } else {
+              alert("Out of stock: This item is currently unavailable.");
+            }
+            return;
+          }
+
+          const item = getCatalog().find(x => x.key === key);
+          const name = item ? (item.name || item.title || item.key) : key;
+          const kind = item ? (item.kind || item.type || "") : "";
+
+          if (window.FS_CART && window.FS_CART.cartAddOrUpdate) {
+            window.FS_CART.cartAddOrUpdate(key, name, { kind, baseId: key }, +1, null);
+            window.FS_CART.showModal("Added to cart", "Item added. Click the cart icon to review and submit your request.");
+          }
+        });
+      }
+      
+      // Initialize when DOM is ready
+      function init() {
+        renderSupplies();
+        initSuppliesFilters();
+        wireSuppliesAddToCart();
+      }
+      
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+      } else {
+        init();
+      }
+      
+      // Also try after a short delay
+      setTimeout(init, 100);
+    })();
+  </script>
+
+</body>
+</html>
