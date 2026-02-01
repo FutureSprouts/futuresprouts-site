@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Soil Testing Kit | FutureSprouts Services</title>
+  <title>Educational Resources | FutureSprouts Services</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Request a soil testing kit (limit 1 per order)." />
+  <meta name="description" content="Request educational gardening resources including brochures, activity sheets, and instructional manuals." />
   <link rel="stylesheet" href="style.css" />
   <script src="config.js"></script>
 </head>
 <body>
 
-  <!-- Injected header (from script.js) -->
+  <!-- Injected header -->
   <div id="siteHeader"></div>
 
+  <!-- Mobile menu (same as other pages) -->
   <div class="container mobile-menu">
     <a href="about.html">About</a>
     <a href="programs.html">Programs</a>
@@ -37,85 +38,133 @@
     </a>
   </div>
 
+  <!-- Main content -->
   <section class="section">
     <div class="container">
-      <div class="kicker reveal">Services • Soil Testing</div>
-      <h2 class="reveal">Soil testing kit (1 per order).</h2>
-      <p class="reveal">To prevent abuse, we limit soil kits to one per request.</p>
+      <div class="kicker reveal">Services • Education</div>
+      <h2 class="reveal">Request educational gardening resources.</h2>
+      <p class="reveal">
+        Choose brochures, activity sheets, and instructional manuals to support classroom
+        learning and hands-on garden projects.
+      </p>
 
       <div class="rulebox reveal">
-        Abuse prevention rule: <strong>Soil testing kits are limited to 1 per order.</strong>
+        Most educational materials are printable or reproducible and may not reduce inventory.
       </div>
 
-      <div class="grid cols-2">
-        <div class="card reveal">
-          <img class="shop-img" src="https://images.unsplash.com/photo-1617137984095-74e4e5b984b3?auto=format&fit=crop&w=1600&q=80" alt="Soil testing kit">
-          <div class="shop-body">
-            <div class="pill">Soil</div>
-            <h3>Soil Testing Kit</h3>
-            <p class="small">Basic kit for sampling guidance + results process (details you can refine).</p>
+      <!-- Cards render here -->
+      <div class="grid cols-3" id="educationGrid"></div>
 
-            <div class="divider"></div>
-
-            <div class="qty-row">
-              <div><strong>Quantity</strong><div class="small">Max 1 per order</div></div>
-              <div class="qty">
-                <button type="button" id="soilDec">−</button>
-                <span id="soilQty">0</span>
-                <button type="button" id="soilInc">+</button>
-              </div>
-            </div>
-
-            <div class="cart-actions" style="margin-top:14px;">
-              <a class="btn outline" href="services.html">Back</a>
-              <a class="btn primary" href="cart.html">View Cart</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="card reveal">
-          <div class="pill">Note</div>
-          <h3>What happens next?</h3>
-          <p class="small">
-            After you submit your request, FutureSprouts will confirm eligibility, delivery method, and timing.
-          </p>
-        </div>
+      <div class="cart-actions reveal">
+        <a class="btn outline" href="services.html">Back to Services</a>
+        <a class="btn primary" href="cart.html">View Cart</a>
       </div>
     </div>
   </section>
 
-  <!-- Injected footer (from script.js) -->
+  <!-- Injected footer -->
   <div id="siteFooter"></div>
 
   <script src="script.js"></script>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+
       function readyCart() {
         return window.FS_CART
           && typeof window.FS_CART.loadCart === "function"
           && typeof window.FS_CART.cartAddOrUpdate === "function";
       }
 
-      function getQty(){
+      function getEducationItems() {
+        const all = (window.FS_CONFIG && Array.isArray(window.FS_CONFIG.catalog))
+          ? window.FS_CONFIG.catalog
+          : [];
+        return all.filter(it => it && it.kind === "edu");
+      }
+
+      function getQty(id) {
         const cart = window.FS_CART.loadCart();
-        const item = cart.find(x => x.id === "soil-kit-1");
+        const item = cart.find(x => x.id === id);
         return item ? item.qty : 0;
       }
 
-      function render(){
-        document.getElementById("soilQty").textContent = getQty();
+      function cardHTML(it) {
+        // Use shared renderer if it exists
+        if (window.FS_CART && typeof window.FS_CART.cardHTML === "function") {
+          return window.FS_CART.cardHTML(it);
+        }
+
+        const qty = getQty(it.key);
+        const name = String(it.name || "");
+        const desc = String(it.desc || "");
+        const img  = it.image || "images/placeholder.jpg";
+
+        return `
+          <div class="card reveal">
+            <img class="shop-img" src="${img}" alt="${name}">
+            <div class="shop-body">
+              <div class="pill">Education</div>
+              <h3>${name}</h3>
+              <p class="small">${desc}</p>
+
+              <div class="divider"></div>
+
+              <div class="qty-row">
+                <div>
+                  <strong>Quantity</strong>
+                  <div class="small">${it.inv && it.inv.note ? it.inv.note : ""}</div>
+                </div>
+                <div class="qty">
+                  <button type="button" data-dec="${it.key}">−</button>
+                  <span id="qty-${it.key}">${qty}</span>
+                  <button type="button" data-inc="${it.key}">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
       }
 
-      function bind(){
-        document.getElementById("soilInc").onclick = () => {
-          window.FS_CART.cartAddOrUpdate("soil-kit-1", "Soil Testing Kit", {}, +1, { maxPerItem: 1 });
-          render();
-        };
-        document.getElementById("soilDec").onclick = () => {
-          window.FS_CART.cartAddOrUpdate("soil-kit-1", "Soil Testing Kit", {}, -1, { maxPerItem: 1 });
-          render();
-        };
+      function render() {
+        const grid = document.getElementById("educationGrid");
+        if (!grid) return;
+
+        const items = getEducationItems();
+
+        const inv = (window.FS_CART && typeof window.FS_CART.loadInventory === "function")
+          ? window.FS_CART.loadInventory()
+          : null;
+        const liveItems = (inv && inv.items) || {};
+
+        const merged = items.map(it => {
+          const live = liveItems[it.key];
+          return live ? { ...it, inv: live } : it;
+        });
+
+        grid.innerHTML = merged.map(cardHTML).join("");
+      }
+
+      function bind() {
+        document.addEventListener("click", (e) => {
+          const inc = e.target && e.target.getAttribute && e.target.getAttribute("data-inc");
+          const dec = e.target && e.target.getAttribute && e.target.getAttribute("data-dec");
+          if (!inc && !dec) return;
+
+          const key = inc || dec;
+          const items = getEducationItems();
+          const it = items.find(x => x.key === key);
+          if (!it) return;
+
+          const delta = inc ? +1 : -1;
+          const cartName = `Education Resource — ${it.name}`;
+
+          window.FS_CART.cartAddOrUpdate(it.key, cartName, { kind: "edu" }, delta);
+
+          const qtyEl = document.getElementById(`qty-${it.key}`);
+          if (qtyEl) qtyEl.textContent = getQty(it.key);
+        });
+
         render();
       }
 
