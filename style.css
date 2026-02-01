@@ -1358,3 +1358,26 @@ footer a strong,
   margin-left: 0;
   margin-right: 0;
 }
+/* HERO: make content wider + more spacing */
+.hero .hero-container{
+  max-width: 1400px;          /* increase width of hero text area */
+  padding-top: 88px;          /* more vertical space */
+  padding-bottom: 88px;
+}
+
+/* let the paragraph use the full hero width (no narrow text column) */
+.hero .hero-container p{
+  max-width: none;            /* removes any 50-70ch style limits */
+  line-height: 1.6;           /* nicer readability */
+  margin-top: 14px;
+}
+
+/* a little more separation between elements */
+.hero .kicker{
+  margin-bottom: 14px;
+}
+
+.hero h1{
+  margin-bottom: 14px;
+}
+
