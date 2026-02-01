@@ -52,8 +52,9 @@
   }
 function ensureOrgLdJson() {
   const name = cfg.siteName || "FutureSprouts";
-  const siteUrl = (cfg.siteUrl || "https://www.futuresprouts.org").replace(/\/$/, "");
-  const logoUrl = `${siteUrl}/images/leaf-spring-icon_24911-115668.png`;
+  const siteUrl = (cfg.siteUrl || cfg.canonicalBase || "https://futuresprouts.org").replace(/\/$/, "");
+  const logoPath = cfg.logoPath || "/images/leaf-spring-icon_24911-115668.png";
+  const logoUrl = logoPath.startsWith("http") ? logoPath : `${siteUrl}${logoPath}`;
 
   const orgLd = {
     "@context": "https://schema.org",
@@ -64,12 +65,25 @@ function ensureOrgLdJson() {
     "email": cfg.contactEmail || "info@futuresprouts.org",
     "sameAs": [
       cfg.socials?.instagram,
-      cfg.socials?.tiktok,
-      cfg.socials?.youtube,
       cfg.socials?.x,
-      cfg.socials?.linkedin
+      cfg.socials?.linkedin,
+      cfg.socials?.youtube,
+      cfg.socials?.facebook,
+      cfg.socials?.tiktok
     ].filter(Boolean)
   };
+
+  const id = "fs-org-ldjson";
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement("script");
+    el.type = "application/ld+json";
+    el.id = id;
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(orgLd);
+}
+
 
   const id = "fs-org-ldjson";
   let el = document.getElementById(id);
@@ -1260,6 +1274,7 @@ ${payload.notes}`
   }
 
 })();
+
 
 
 
