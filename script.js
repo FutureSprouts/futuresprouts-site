@@ -50,6 +50,58 @@
   function saveJson(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   }
+function ensureOrgLdJson() {
+  const name = cfg.siteName || "FutureSprouts";
+  const siteUrl = (cfg.siteUrl || "https://www.futuresprouts.org").replace(/\/$/, "");
+  const logoUrl = `${siteUrl}/images/leaf-spring-icon_24911-115668.png`;
+
+  const orgLd = {
+    "@context": "https://schema.org",
+    "@type": "NonprofitOrganization",
+    "name": name,
+    "url": siteUrl,
+    "logo": logoUrl,
+    "email": cfg.contactEmail || "info@futuresprouts.org",
+    "sameAs": [
+      cfg.socials?.instagram,
+      cfg.socials?.tiktok,
+      cfg.socials?.youtube,
+      cfg.socials?.x,
+      cfg.socials?.linkedin
+    ].filter(Boolean)
+  };
+
+  const id = "fs-org-ldjson";
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement("script");
+    el.type = "application/ld+json";
+    el.id = id;
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(orgLd);
+}
+function ensureSiteIcons() {
+  const icons = [
+    { rel: "icon", href: "/favicon.ico" },
+    { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+    { rel: "icon", type: "image/png", sizes: "192x192", href: "/favicon-192.png" },
+    { rel: "apple-touch-icon", href: "/apple-touch-icon.png" }
+  ];
+
+  icons.forEach(attrs => {
+    const selector =
+      `link[rel="${attrs.rel}"]` +
+      (attrs.sizes ? `[sizes="${attrs.sizes}"]` : "") +
+      (attrs.type ? `[type="${attrs.type}"]` : "");
+
+    if (!document.head.querySelector(selector)) {
+      const link = document.createElement("link");
+      Object.entries(attrs).forEach(([k, v]) => link.setAttribute(k, v));
+      document.head.appendChild(link);
+    }
+  });
+}
 
   // ---------------------------
   // Modal
@@ -271,18 +323,25 @@
   // ---------------------------
   function headerHtml() {
     const name = cfg.siteName || "FutureSprouts";
-    const orgLd = {
-      "@context": "https://schema.org",
-      "@type": "NonprofitOrganization",
-      name,
-      email: cfg.contactEmail || "info@futuresprouts.org",
-      url: cfg.siteUrl || "",
-      sameAs: [
-        (cfg.socials && cfg.socials.instagram) || "",
-        (cfg.socials && cfg.socials.tiktok) || "",
-        (cfg.socials && cfg.socials.youtube) || ""
-      ].filter(Boolean)
-    };
+    const siteUrl = (cfg.siteUrl || "https://www.futuresprouts.org").replace(/\/$/, "");
+const logoUrl = `${siteUrl}/images/leaf-spring-icon_24911-115668.png`;
+
+const orgLd = {
+  "@context": "https://schema.org",
+  "@type": "NonprofitOrganization",
+  "name": name,
+  "url": siteUrl,
+  "logo": logoUrl,
+  "email": cfg.contactEmail || "info@futuresprouts.org",
+  "sameAs": [
+    cfg.socials?.instagram,
+    cfg.socials?.tiktok,
+    cfg.socials?.youtube,
+    cfg.socials?.x,
+    cfg.socials?.linkedin
+  ].filter(Boolean)
+};
+
 
     return `
 <header class="navbar">
@@ -348,8 +407,6 @@
       <span class="cart-badge" id="cartBadgeMobile">0</span>
     </a>
   </div>
-
-  <script type="application/ld+json">${JSON.stringify(orgLd)}</script>
 </header>`;
   }
 
@@ -1044,8 +1101,14 @@ function renderSeedPackets() {
   // Init (runs once)
   // ---------------------------
   function init() {
-    // Layout first
-    injectLayoutIfSlotsExist();
+   // Layout first
+injectLayoutIfSlotsExist();
+
+// SEO: logo + icons
+ensureOrgLdJson();
+ensureSiteIcons();
+
+
 
     // Theme
     applyTheme(getThemePref());
@@ -1197,6 +1260,7 @@ ${payload.notes}`
   }
 
 })();
+
 
 
 
