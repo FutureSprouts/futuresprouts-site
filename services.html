@@ -23,40 +23,58 @@
 
         <!-- Seeds -->
         <a class="card shop-card reveal" href="seed-packets.html" id="svcSeeds">
-          <img class="shop-img" src="https://images.unsplash.com/photo-1524593119773-28476c2c1d8f?auto=format&fit=crop&w=1600&q=80" alt="Seed packets">
+          <img
+            class="shop-img"
+            src="images/seed-packets.jpg"
+            alt="Seed packets"
+          >
           <div class="shop-body">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
               <div class="pill">Seeds</div>
               <span class="badge ok" id="badgeSeeds">Available</span>
             </div>
             <h3 style="margin-top:10px;">Seed Packets</h3>
-            <p class="small" id="subSeeds">Choose seed types and request brochures + packets.</p>
+            <p class="small" id="subSeeds">
+              Choose seed types and request brochures + packets.
+            </p>
           </div>
         </a>
 
         <!-- Beds -->
         <a class="card shop-card reveal" href="garden-beds.html" id="svcBeds">
-          <img class="shop-img" src="https://images.unsplash.com/photo-1598114801319-6f1aa4aefe72?auto=format&fit=crop&w=1600&q=80" alt="Garden bed">
+          <img
+            class="shop-img"
+            src="images/garden-beds.jpg"
+            alt="Garden bed"
+          >
           <div class="shop-body">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
               <div class="pill">Beds</div>
               <span class="badge ok" id="badgeBeds">Available</span>
             </div>
             <h3 style="margin-top:10px;">Garden Beds</h3>
-            <p class="small" id="subBeds">Request 2×4 or 4×4 beds (max 4 total per order).</p>
+            <p class="small" id="subBeds">
+              Request 2×4 or 4×4 beds (max 4 total per order).
+            </p>
           </div>
         </a>
 
         <!-- Soil -->
         <a class="card shop-card reveal" href="soil-kits.html" id="svcSoil">
-          <img class="shop-img" src="https://images.unsplash.com/photo-1617137984095-74e4e5b984b3?auto=format&fit=crop&w=1600&q=80" alt="Soil testing">
+          <img
+            class="shop-img"
+            src="images/soil-testing-kit.jpg"
+            alt="Soil testing kit"
+          >
           <div class="shop-body">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
               <div class="pill">Soil</div>
               <span class="badge ok" id="badgeSoil">Available</span>
             </div>
             <h3 style="margin-top:10px;">Soil Testing Kit</h3>
-            <p class="small" id="subSoil">One kit per order to prevent abuse.</p>
+            <p class="small" id="subSoil">
+              One kit per order to prevent abuse.
+            </p>
           </div>
         </a>
 
@@ -69,7 +87,8 @@
       <div class="card reveal" style="margin-top:14px;">
         <h3 style="margin-top:0;">Availability notes</h3>
         <p class="small" style="margin-bottom:0;">
-          Availability updates automatically based on your <strong>Admin → Inventory</strong> settings.
+          Availability updates automatically based on your
+          <strong>Admin → Inventory</strong> settings.
           If an item shows <strong>Out of stock</strong>, it will be temporarily disabled.
         </p>
       </div>
@@ -103,7 +122,9 @@
             if (available && it.remaining != null && it.remaining <= 10) anyLimited = true;
 
             if (available && it.remaining != null) {
-              bestRemaining = (bestRemaining == null) ? it.remaining : Math.min(bestRemaining, it.remaining);
+              bestRemaining = (bestRemaining == null)
+                ? it.remaining
+                : Math.min(bestRemaining, it.remaining);
             }
           });
 
@@ -153,7 +174,6 @@
         setCardStatus("svcSoil", "badgeSoil", "subSoil", soil);
       }
 
-      // Run now, and also once after DOM is fully ready (safe for slow loads)
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", run);
       } else {
