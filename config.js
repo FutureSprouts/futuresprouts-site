@@ -351,24 +351,7 @@ window.FS_CONFIG = {
     // -------------------------
     // SEASONAL / SPECIALTY PACKS
     // -------------------------
-    {
-      key: "seed-fall-pack",
-      name: "Fall Harvest Pack",
-      kind: "pack",
-      image: "images/seed-fall-pack.jpg",
-      desc: "Cool-season favorites for late-summer planting and fall harvests.",
-      tags: ["pack", "fall", "beginner", "vegetable"],
-      inv: { available: true, remaining: 200, note: "In stock" }
-    },
-    {
-      key: "seed-fall-greens-pack",
-      name: "Fall Greens Pack",
-      kind: "pack",
-      image: "images/seed-fall-greens-pack.jpg",
-      desc: "Cool-season favorites for fall planting: kale, spinach, arugula.",
-      tags: ["pack", "beginner", "fall", "vegetable", "planter", "container"],
-      inv: { available: true, remaining: 200, note: "In stock" }
-    },
+   
     {
       key: "seed-tea-herb-pack",
       name: "Herbal Tea Pack",
@@ -393,4 +376,5 @@ window.FS_CONFIG = {
     }
   ]
 };
+
 
