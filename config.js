@@ -16,7 +16,10 @@ window.FS_CONFIG = {
     facebook: "https://www.facebook.com/futuresprouts"
   },
   canonicalBase: "https://futuresprouts.org",
-  googlePlacesKey: "PASTE_YOUR_KEY_HERE",
+siteUrl: "https://futuresprouts.org",
+logoPath: "/images/leaf-spring-icon_24911-115668.png",
+googlePlacesKey: "PASTE_YOUR_KEY_HERE",
+
 
   // ✅ Single source of truth:
   // Add new items here and they show up on Catalog + Admin inventory defaults.
@@ -551,3 +554,4 @@ window.FS_CONFIG = {
     }
   ]
 };
+
