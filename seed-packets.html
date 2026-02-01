@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Seed Packets | FutureSprouts Services</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Request seed packets and brochures." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- Injected header -->
+  <div id="siteHeader"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="kicker reveal">Services • Seed Packets</div>
+      <h2 class="reveal">Choose seed types and quantities.</h2>
+      <p class="reveal">
+        Browse available seed packets and curated packs. Filter by category, season, or audience.
+      </p>
+
+      <!-- FILTER TAGS (no reveal - shows immediately) -->
+      <div class="tags" id="seedFilters" style="margin-top:14px;">
+        <button class="tag active" type="button" data-filter="all">All</button>
+        <button class="tag" type="button" data-filter="vegetable">Vegetables</button>
+        <button class="tag" type="button" data-filter="beginner">Beginner</button>
+        <button class="tag" type="button" data-filter="pollinator">Pollinator</button>
+        <button class="tag" type="button" data-filter="summer">Summer</button>
+        <button class="tag" type="button" data-filter="fall">Fall</button>
+        <button class="tag" type="button" data-filter="pack">Packs</button>
+      </div>
+
+      <!-- Filter count (no reveal - shows immediately) -->
+      <div class="small" id="seedFilterCount" style="margin-top:8px;"></div>
+
+      <!-- AUTO-RENDERED GRID (no reveal - seed cards show immediately) -->
+      <div class="grid cols-3" id="seedGrid"></div>
+
+      <div class="notice reveal">
+        After adding items, click the cart icon in the top-right and submit your request.
+      </div>
+    </div>
+  </section>
+
+  <!-- Injected footer -->
+  <div id="siteFooter"></div>
+
+  <!-- Core site script (does ALL rendering & cart logic) -->
+  <script src="script.js"></script>
+
+</body>
+</html>
+

@@ -23,67 +23,55 @@
 
         <!-- Seeds -->
         <a class="card shop-card reveal" href="seed-packets.html" id="svcSeeds">
-          <img
-            class="shop-img"
-            src="images/seed-packets.jpg"
-            alt="Seed packets"
-          >
+          <img class="shop-img" src="https://images.unsplash.com/photo-1524593119773-28476c2c1d8f?auto=format&fit=crop&w=1600&q=80" alt="Seed packets">
           <div class="shop-body">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
               <div class="pill">Seeds</div>
               <span class="badge ok" id="badgeSeeds">Available</span>
             </div>
             <h3 style="margin-top:10px;">Seed Packets</h3>
-            <p class="small" id="subSeeds">
-              Request seed packets for a variety of crops to support classroom and community growing projects.
-            </p>
+            <p class="small" id="subSeeds">Choose seed types and request brochures + packets.</p>
           </div>
         </a>
-        <!-- Garden Supplies -->
-        <a class="card shop-card reveal" href="garden-supplies.html" id="svcSupplies">
-          <img
-            class="shop-img"
-            src="images/garden-supplies.jpg"
-            alt="Garden supplies"
-          >
+
+        <!-- Beds -->
+        <a class="card shop-card reveal" href="garden-beds.html" id="svcBeds">
+          <img class="shop-img" src="https://images.unsplash.com/photo-1598114801319-6f1aa4aefe72?auto=format&fit=crop&w=1600&q=80" alt="Garden bed">
           <div class="shop-body">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-              <div class="pill">Supplies</div>
-              <span class="badge ok" id="badgeSupplies">Available</span>
+              <div class="pill">Beds</div>
+              <span class="badge ok" id="badgeBeds">Available</span>
             </div>
-            <h3 style="margin-top:10px;">Garden Supplies</h3>
-            <p class="small" id="subSupplies">
-              Request essential gardening supplies such as gloves, hand tools, planter trays, and buckets for classroom or community use.
-            </p>
+            <h3 style="margin-top:10px;">Garden Beds</h3>
+            <p class="small" id="subBeds">Request 2×4 or 4×4 beds (max 4 total per order).</p>
           </div>
         </a>
-           <!-- Education Resources -->
-      <a class="card shop-card reveal" href="education-resources.html" id="svcEducation">
-        <img
-          class="shop-img"
-          src="images/education-resources.jpg"
-          alt="Educational resources"
-        >
-        <div class="shop-body">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-            <div class="pill">Education</div>
-            <span class="badge ok" id="badgeEducation">Available</span>
+
+        <!-- Soil -->
+        <a class="card shop-card reveal" href="soil-kits.html" id="svcSoil">
+          <img class="shop-img" src="https://images.unsplash.com/photo-1617137984095-74e4e5b984b3?auto=format&fit=crop&w=1600&q=80" alt="Soil testing">
+          <div class="shop-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div class="pill">Soil</div>
+              <span class="badge ok" id="badgeSoil">Available</span>
+            </div>
+            <h3 style="margin-top:10px;">Soil Testing Kit</h3>
+            <p class="small" id="subSoil">One kit per order to prevent abuse.</p>
           </div>
-          <h3 style="margin-top:10px;">Educational Resources</h3>
-          <p class="small" id="subEducation">
-            Order brochures, activity sheets, and instructional kits that teach gardening concepts and hands-on growing skills.
-          </p>
-        </div>
-      </a>
+        </a>
+
       </div>
-      <div class="card reveal" style="margin-top:14px;">
-        <h3 style="margin-top:0;">Availability Notice</h3>
-        <p class="small" style="margin-bottom:0;">
-          All items are subject to availability. Requests are reviewed and fulfilled based on demonstrated need. We reserve the right to limit or withhold services to ensure fair and equitable distribution.
-        </p>
-      </div>
-       <div class="notice reveal">
+
+      <div class="notice reveal">
         You can view your cart any time using the “Cart” button in the top-right.
+      </div>
+
+      <div class="card reveal" style="margin-top:14px;">
+        <h3 style="margin-top:0;">Availability notes</h3>
+        <p class="small" style="margin-bottom:0;">
+          Availability updates automatically based on your <strong>Admin → Inventory</strong> settings.
+          If an item shows <strong>Out of stock</strong>, it will be temporarily disabled.
+        </p>
       </div>
     </div>
   </section>
@@ -115,9 +103,7 @@
             if (available && it.remaining != null && it.remaining <= 10) anyLimited = true;
 
             if (available && it.remaining != null) {
-              bestRemaining = (bestRemaining == null)
-                ? it.remaining
-                : Math.min(bestRemaining, it.remaining);
+              bestRemaining = (bestRemaining == null) ? it.remaining : Math.min(bestRemaining, it.remaining);
             }
           });
 
@@ -167,6 +153,7 @@
         setCardStatus("svcSoil", "badgeSoil", "subSoil", soil);
       }
 
+      // Run now, and also once after DOM is fully ready (safe for slow loads)
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", run);
       } else {
@@ -177,7 +164,3 @@
 
 </body>
 </html>
-
-
-
-
