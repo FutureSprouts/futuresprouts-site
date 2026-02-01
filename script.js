@@ -7,6 +7,7 @@
 // - Catalog-driven inventory defaults + auto-merge
 // - Seed Packets page auto-renders cards from FS_CONFIG.catalog + filter chips
 // - No duplicate footers, no duplicate theme code
+// - FIXED: Seed grid now renders correctly on services page
 
 (function () {
   const cfg = window.FS_CONFIG || {};
@@ -101,16 +102,103 @@
       ? window.FS_CONFIG.catalog
       : [];
     // keep only valid items with a string key
-    return list.filter(x => x && typeof x.key === "string" && x.key.trim());
+    const validItems = list.filter(x => x && typeof x.key === "string" && x.key.trim());
+    console.log(`getCatalog: Found ${list.length} total items, ${validItems.length} valid items`);
+    return validItems;
   }
 
-  function buildDefaultInv() {
-    // Base defaults (non-catalog items you still track)
-    const items = {
-      "bed-2x4":    { available: true, remaining: 25, note: "Limited" },
-      "bed-4x4":    { available: true, remaining: 12, note: "Limited" },
-      "soil-kit-1": { available: true, remaining: 30, note: "In stock" }
-    };
+ function buildDefaultInv() {
+  // Base defaults (non-catalog items you still track)
+  const items = {
+
+    // =========================
+    // GARDEN SUPPLIES
+    // =========================
+    "sup-gloves": {
+      available: true,
+      remaining: 120,
+      note: "In stock"
+    },
+    "sup-trowel": {
+      available: true,
+      remaining: 90,
+      note: "In stock"
+    },
+    "sup-hand-spade": {
+      available: true,
+      remaining: 70,
+      note: "In stock"
+    },
+    "sup-shovel": {
+      available: true,
+      remaining: 25,
+      note: "Limited"
+    },
+    "sup-spade": {
+      available: true,
+      remaining: 25,
+      note: "Limited"
+    },
+    "sup-watering-can": {
+      available: true,
+      remaining: 40,
+      note: "In stock"
+    },
+    "sup-pruners": {
+      available: true,
+      remaining: 35,
+      note: "In stock"
+    },
+
+    // =========================
+    // EDUCATION RESOURCES
+    // (mostly unlimited)
+    // =========================
+    "edu-brochure-tomato": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-brochure-lettuce": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-brochure-basil": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-coloring-pollinators": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-coloring-vegetables": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-manual-wicking-bucket": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-manual-raised-bed": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    },
+    "edu-manual-compost": {
+      available: true,
+      remaining: 999,
+      note: "Available"
+    }
+  };
+
+  return { items };
+}
+
 
     // Catalog-driven defaults
     getCatalog().forEach(p => {
@@ -479,6 +567,17 @@
   }
 
   // ---------------------------
+  // Disable reveal for seed cards
+  // ---------------------------
+  function disableSeedCardReveal() {
+    // Remove reveal class from any seed cards that might have it
+    document.querySelectorAll(".seed-card.reveal").forEach(card => {
+      card.classList.remove("reveal");
+      card.classList.add("show"); // Make them visible immediately
+    });
+  }
+
+  // ---------------------------
   // Impact count-up
   // ---------------------------
   function countUp(el, target) {
@@ -541,12 +640,30 @@
     const afterImg = document.querySelector(".ba-after");
     if (!range || !afterImg) return;
 
+    // Ensure range input is configured correctly
+    range.min = "0";
+    range.max = "100";
+    range.value = range.value || "50";
+
     const update = () => {
       const pct = parseInt(range.value || "50", 10);
-      afterImg.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+      // Clamp value between 0 and 100
+      const clampedPct = Math.max(0, Math.min(100, pct));
+      afterImg.style.clipPath = `inset(0 ${100 - clampedPct}% 0 0)`;
     };
+    
     range.addEventListener("input", update);
+    range.addEventListener("change", update);
+    
+    // Initialize on load
     update();
+    
+    // Re-initialize on window resize to ensure proper alignment
+    let resizeTimeout;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(update, 100);
+    });
   }
 
   // ---------------------------
@@ -718,12 +835,16 @@
 
   function renderSeedPackets() {
     const grid = document.getElementById("seedGrid");
-    if (!grid) return;
+    if (!grid) {
+      console.log("seedGrid element not found");
+      return;
+    }
 
     const catalog = getCatalog();
-    grid.innerHTML = "";
-
-    catalog.forEach(item => {
+    console.log(`Rendering ${catalog.length} seed packets`);
+    
+    // Build all HTML at once instead of inserting one by one
+    const cardsHtml = catalog.map(item => {
       const tags = Array.isArray(item.tags) ? item.tags.join(" ") : "";
       const kind = item.kind || item.type || "seed";
       const name = item.name || item.title || item.key;
@@ -733,7 +854,7 @@
       const st = classifyInvStatus(item.key);
       const disabledAttr = st.out ? "disabled" : "";
 
-      grid.insertAdjacentHTML("beforeend", `
+      return `
         <div class="card seed-card"
           data-kind="${escapeHtml(kind)}"
           data-tags="${escapeHtml(tags)}"
@@ -759,8 +880,12 @@
             </button>
           </div>
         </div>
-      `);
-    });
+      `;
+    }).join("");
+
+    // Insert all at once for better performance
+    grid.innerHTML = cardsHtml;
+    console.log(`Successfully rendered ${grid.children.length} seed cards`);
   }
 
   function initSeedFilters() {
@@ -768,6 +893,10 @@
     const countEl = document.getElementById("seedFilterCount");
     const grid = document.getElementById("seedGrid");
     if (!filters || !grid) return;
+
+    // Prevent duplicate event listeners
+    if (filters.__filtersWired) return;
+    filters.__filtersWired = true;
 
     const tagButtons = Array.from(filters.querySelectorAll(".tag"));
 
@@ -807,6 +936,10 @@
   function wireSeedAddToCart() {
     const grid = document.getElementById("seedGrid");
     if (!grid) return;
+
+    // Prevent duplicate event listeners
+    if (grid.__cartWired) return;
+    grid.__cartWired = true;
 
     grid.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-add]");
@@ -995,11 +1128,6 @@
     wireMobileMenu();
     highlightActiveNav();
 
-    // Seed packets page: render + wire (BEFORE reveal)
-    renderSeedPackets();
-    initSeedFilters();
-    wireSeedAddToCart();
-
     // Page features
     initReveal();
     initCountUps();
@@ -1012,6 +1140,26 @@
 
     // Cart page
     if (cartList) renderCart();
+
+    // Seed packets page: render with retry logic to ensure DOM is ready
+    const initSeedPacketsPage = () => {
+      const grid = document.getElementById("seedGrid");
+      if (grid) {
+        console.log("Initializing seed packets page");
+        renderSeedPackets();
+        initSeedFilters();
+        wireSeedAddToCart();
+        disableSeedCardReveal(); // Ensure seed cards don't have reveal animation
+      } else {
+        console.log("seedGrid not found during init");
+      }
+    };
+
+    // Try immediately
+    initSeedPacketsPage();
+
+    // Also try after a short delay in case DOM updates
+    setTimeout(initSeedPacketsPage, 100);
 
     // Form submit (only if present)
     if (cartForm) {
@@ -1102,7 +1250,7 @@ ${payload.notes}`
 
           setLockoutHours(6);
 
-          showModal("Request sent", "Thanks! Your request was sent. We’ll follow up by email.");
+          showModal("Request sent", "Thanks! Your request was sent. We'll follow up by email.");
           try { logEvent("order_submit_success", {}); } catch {}
         } catch {
           showModal("Error", "Network error. Please try again or email info@futuresprouts.org.");
@@ -1112,25 +1260,14 @@ ${payload.notes}`
     }
   }
 
+  // ---------------------------
+  // Ensure initialization happens after DOM is ready
+  // ---------------------------
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {
     init();
   }
-  document.addEventListener("DOMContentLoaded", () => {
-  // Only run on the seed packets page
-  if (document.getElementById("seedGrid")) {
-    renderSeedPackets();
-    initSeedFilters();
-    wireSeedAddToCart();
-  }
-
-  // Only run on cart page
-  if (document.getElementById("cartList")) {
-    renderCart();
-  }
-});
 
 })();
-
 
