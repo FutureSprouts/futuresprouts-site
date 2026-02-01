@@ -747,61 +747,75 @@
     if (remaining != null && remaining <= 10) return { label: "Limited", tone: "warn", out: false, remaining };
     return { label: "Available", tone: "ok", out: false, remaining };
   }
+// ✅ DROP-IN REPLACEMENT (keeps your “build HTML all at once” performance + your filter wiring)
+// Replace ONLY your existing renderSeedPackets() with this version.
+// You do NOT need to change initSeedFilters().
 
-  function renderSeedPackets() {
-    const grid = document.getElementById("seedGrid");
-    if (!grid) {
-      console.log("seedGrid element not found");
-      return;
-    }
-
-    const catalog = getCatalog();
-    console.log(`Rendering ${catalog.length} seed packets`);
-    
-    // Build all HTML at once instead of inserting one by one
-    const cardsHtml = catalog.map(item => {
-      const tags = Array.isArray(item.tags) ? item.tags.join(" ") : "";
-      const kind = item.kind || item.type || "seed";
-      const name = item.name || item.title || item.key;
-      const desc = item.desc || item.description || "";
-      const image = item.image || "images/placeholder.jpg";
-
-      const st = classifyInvStatus(item.key);
-      const disabledAttr = st.out ? "disabled" : "";
-
-      return `
-        <div class="card seed-card"
-          data-kind="${escapeHtml(kind)}"
-          data-tags="${escapeHtml(tags)}"
-          id="card-${escapeHtml(item.key)}">
-
-          <img class="shop-img" src="${escapeHtml(image)}" alt="${escapeHtml(name)}">
-
-          <div class="shop-body">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-              <div class="pill">${kind === "pack" ? "Seed Pack" : "Seed Package"}</div>
-              <span class="badge ${st.tone}" id="badge-${escapeHtml(item.key)}">${escapeHtml(st.label)}</span>
-            </div>
-
-            <h3 style="margin-top:10px;">${escapeHtml(name)}</h3>
-            <p class="small" id="desc-${escapeHtml(item.key)}" data-base="${escapeHtml(desc)}">
-              ${escapeHtml(desc)}
-            </p>
-
-            <div class="divider"></div>
-
-            <button class="btn primary" type="button" data-add="${escapeHtml(item.key)}" ${disabledAttr}>
-              ${st.out ? "Out of stock" : "Add to cart"}
-            </button>
-          </div>
-        </div>
-      `;
-    }).join("");
-
-    // Insert all at once for better performance
-    grid.innerHTML = cardsHtml;
-    console.log(`Successfully rendered ${grid.children.length} seed cards`);
+function renderSeedPackets() {
+  const grid = document.getElementById("seedGrid");
+  if (!grid) {
+    console.log("seedGrid element not found");
+    return;
   }
+
+  // Only include seed-related items:
+  // - preferred: category === "seeds" (new config)
+  // - fallback: kind === "seed" or kind === "pack" (works with your current config)
+  const catalog = getCatalog().filter(item => {
+    const kind = String(item.kind || item.type || "").toLowerCase();
+    const category = String(item.category || "").toLowerCase();
+
+    if (category) return category === "seeds";
+    return kind === "seed" || kind === "pack";
+  });
+
+  console.log(`Rendering ${catalog.length} seed packets`);
+
+  // Build all HTML at once (your old fast approach)
+  const cardsHtml = catalog.map(item => {
+    const tags = Array.isArray(item.tags) ? item.tags.join(" ") : "";
+    const kindRaw = item.kind || item.type || "seed";
+    const kind = String(kindRaw).toLowerCase();
+    const name = item.name || item.title || item.key;
+    const desc = item.desc || item.description || "";
+    const image = item.image || "images/placeholder.jpg";
+
+    const st = classifyInvStatus(item.key);
+    const disabledAttr = st.out ? "disabled" : "";
+
+    return `
+      <div class="card seed-card"
+        data-kind="${escapeHtml(kind)}"
+        data-tags="${escapeHtml(tags)}"
+        id="card-${escapeHtml(item.key)}">
+
+        <img class="shop-img" src="${escapeHtml(image)}" alt="${escapeHtml(name)}">
+
+        <div class="shop-body">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+            <div class="pill">${kind === "pack" ? "Seed Pack" : "Seed Packet"}</div>
+            <span class="badge ${st.tone}" id="badge-${escapeHtml(item.key)}">${escapeHtml(st.label)}</span>
+          </div>
+
+          <h3 style="margin-top:10px;">${escapeHtml(name)}</h3>
+          <p class="small" id="desc-${escapeHtml(item.key)}" data-base="${escapeHtml(desc)}">
+            ${escapeHtml(desc)}
+          </p>
+
+          <div class="divider"></div>
+
+          <button class="btn primary" type="button" data-add="${escapeHtml(item.key)}" ${disabledAttr}>
+            ${st.out ? "Out of stock" : "Add to cart"}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  grid.innerHTML = cardsHtml;
+  console.log(`Successfully rendered ${grid.children.length} seed cards`);
+}
+
 
   function initSeedFilters() {
     const filters = document.getElementById("seedFilters");
@@ -1185,3 +1199,4 @@ ${payload.notes}`
   }
 
 })();
+
