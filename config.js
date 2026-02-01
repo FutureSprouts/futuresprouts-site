@@ -28,7 +28,7 @@ window.FS_CONFIG = {
       name: "Beginner Garden Pack",
       kind: "pack",
       image: "images/seed-beginner-pack.jpg",
-      desc: "Includes: beginner-friendly seed packs and simple growing instructions. \n A best-of starter set for first-time gardeners.",
+      desc: "Includes: beginner-friendly seed packs and simple growing instructions.<br>A best-of starter set for first-time gardeners.",
       tags: ["pack", "beginner", "vegetable", "spring", "summer"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
@@ -37,7 +37,7 @@ window.FS_CONFIG = {
       name: "Pollinator Pack",
       kind: "pack",
       image: "images/seed-pollinator-pack.jpg",
-      desc: "Includes: pollinator-friendly flower seed packs and simple growing instructions. \n Helps support bees and butterflies all season.",
+      desc: "Includes: pollinator-friendly flower seed packs and simple growing instructions. Helps support bees and butterflies all season.",
       tags: ["pack", "pollinator", "beginner", "spring", "summer", "fall"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
@@ -363,6 +363,7 @@ window.FS_CONFIG = {
     // - Strawberry (Container) (seed-strawberry)
   ]
 };
+
 
 
 
