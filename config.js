@@ -37,7 +37,7 @@ window.FS_CONFIG = {
       name: "Pollinator Pack",
       kind: "pack",
       image: "images/seed-pollinator-pack.jpg",
-      desc: "Includes: pollinator-friendly flower seed packs and simple growing instructions.\nHelps support bees and butterflies all season.",
+      desc: "Includes: pollinator-friendly flower seed packs and simple growing instructions. \n Helps support bees and butterflies all season.",
       tags: ["pack", "pollinator", "beginner", "spring", "summer", "fall"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
@@ -363,5 +363,6 @@ window.FS_CONFIG = {
     // - Strawberry (Container) (seed-strawberry)
   ]
 };
+
 
 
