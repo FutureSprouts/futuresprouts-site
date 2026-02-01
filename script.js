@@ -289,7 +289,7 @@
   <div class="container nav-inner">
     <a class="brand" href="index.html" aria-label="${escapeHtml(name)} Home">
       <div class="brand-badge">
-        <img src="images/logo.png" alt="${escapeHtml(name)} logo">
+        <img src="images/ChatGPT Image Feb 1, 2026, 11_32_34 AM.ai" alt="${escapeHtml(name)} logo">
       </div>
       <div>${escapeHtml(name)}</div>
     </a>
@@ -1197,5 +1197,6 @@ ${payload.notes}`
   }
 
 })();
+
 
 
