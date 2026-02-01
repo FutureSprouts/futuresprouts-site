@@ -28,7 +28,7 @@ window.FS_CONFIG = {
       name: "Beginner Garden Pack",
       kind: "pack",
       image: "images/seed-beginner-pack.jpg",
-      desc: "Includes: beginner-friendly seed packs and simple growing instructions."\n"A best-of starter set for first-time gardeners.",
+      desc: "Includes: beginner-friendly seed packs and simple growing instructions. \n A best-of starter set for first-time gardeners.",
       tags: ["pack", "beginner", "vegetable", "spring", "summer"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
@@ -363,4 +363,5 @@ window.FS_CONFIG = {
     // - Strawberry (Container) (seed-strawberry)
   ]
 };
+
 
