@@ -345,7 +345,7 @@ window.FS_CONFIG = {
       tags: ["herb", "beginner", "spring", "summer", "fall", "planter", "container"],
       inv: { available: true, remaining: 200, note: "In stock" }
     },
-    {
+        {
       key: "seed-mint",
       name: "Mint",
       kind: "seed",
@@ -355,14 +355,151 @@ window.FS_CONFIG = {
       inv: { available: true, remaining: 180, note: "In stock" }
     },
 
-    // -------------------------
-    // FLOWERS / POLLINATORS (popular add-ons)
+    // =======================================
+    // EDUCATION RESOURCES (cards like seeds)
+    // =======================================
+    {
+      key: "edu-brochure-tomato",
+      name: "Tomato Brochure",
+      kind: "edu",
+      image: "images/edu-brochure-tomato.jpg",
+      desc: "Printable one-page guide: planting, watering, spacing, and harvest tips.",
+      tags: ["education", "brochure", "tomato", "beginner"],
+      inv: { available: true, remaining: 999, note: "Available" }
+    },
+    {
+      key: "edu-brochure-lettuce",
+      name: "Lettuce Brochure",
+      kind: "edu",
+      image: "images/edu-brochure-lettuce.jpg",
+      desc: "Quick-start guide for planter boxes and cut-and-come-again harvesting.",
+      tags: ["education", "brochure", "lettuce", "beginner"],
+      inv: { available: true, remaining: 999, note: "Available" }
+    },
+    {
+      key: "edu-brochure-basil",
+      name: "Basil Brochure",
+      kind: "edu",
+      image: "images/edu-brochure-basil.jpg",
+      desc: "Container-friendly herb guide with pruning tips for bigger yields.",
+      tags: ["education", "brochure", "basil", "herb"],
+      inv: { available: true, remaining: 999, note: "Available" }
+    },
+    {
+      key: "edu-coloring-pollinators",
+      name: "Pollinator Coloring Sheet Pack",
+      kind: "edu",
+      image: "images/edu-coloring-pollinators.jpg",
+      desc: "Kid-friendly pages featuring bees, butterflies, and flowers.",
+      tags: ["education", "coloring", "kids", "pollinator"],
+      inv: { available: true, remaining: 999, note: "Available" }
+    },
+    {
+      key: "edu-coloring-vegetables",
+      name: "Vegetables Coloring Sheet Pack",
+      kind: "edu",
+      image: "images/edu-coloring-vegetables.jpg",
+      desc: "Classroom-ready sheets that match the crops you can request.",
+      tags: ["education", "coloring", "kids"],
+      inv: { available: true, remaining: 999, note: "Available" }
+    },
+    {
+      key: "edu-manual-wicking-bucket",
+      name: "Wicking Bucket Manual",
+      kind: "edu",
+      image: "images/edu-manual-wicking-bucket.jpg",
+      desc: "Step-by-step build guide with materials list and diagrams.",
+      tags: ["education", "manual", "container", "wicking"],
+      inv: { available: true, remaining: 999, note: "Available" }
+    },
+    {
+      key: "edu-manual-raised-bed",
+      name: "Raised Bed Build Manual",
+      kind: "edu",
+      image: "images/edu-manual-raised-bed.jpg",
+      desc: "How to assemble, fill, and plant a basic raised bed for schools.",
+      tags: ["education", "manual", "raised-bed", "beginner"],
+      inv: { available: true, remaining: 999, note: "Available" }
+    },
+    {
+      key: "edu-manual-compost",
+      name: "Composting Basics Guide",
+      kind: "edu",
+      image: "images/edu-manual-compost.jpg",
+      desc: "Simple composting guide designed for classrooms and clubs.",
+      tags: ["education", "manual", "compost"],
+      inv: { available: true, remaining: 999, note: "Available" }
+    },
 
-    // ✅ Removed:
-    // - Herbal Tea Pack (seed-tea-herb-pack)
-    // - Strawberry (Container) (seed-strawberry)
+    // =======================================
+    // GARDEN SUPPLIES (tools, gloves, etc.)
+    // =======================================
+    {
+      key: "sup-gloves",
+      name: "Gardening Gloves (Pair)",
+      kind: "supply",
+      image: "images/sup-gloves.jpg",
+      desc: "Durable gloves for school gardens and community plots.",
+      tags: ["supply", "tools", "beginner"],
+      inv: { available: true, remaining: 120, note: "In stock" }
+    },
+    {
+      key: "sup-trowel",
+      name: "Hand Trowel",
+      kind: "supply",
+      image: "images/sup-trowel.jpg",
+      desc: "Great for transplanting seedlings and container gardens.",
+      tags: ["supply", "tools", "container", "beginner"],
+      inv: { available: true, remaining: 90, note: "In stock" }
+    },
+    {
+      key: "sup-hand-spade",
+      name: "Hand Spade",
+      kind: "supply",
+      image: "images/sup-hand-spade.jpg",
+      desc: "Stronger digging tool for beds and tougher soil.",
+      tags: ["supply", "tools", "raised-bed"],
+      inv: { available: true, remaining: 70, note: "In stock" }
+    },
+    {
+      key: "sup-shovel",
+      name: "Shovel",
+      kind: "supply",
+      image: "images/sup-shovel.jpg",
+      desc: "For moving soil/compost and bed prep (limited per order).",
+      tags: ["supply", "tools", "garden"],
+      inv: { available: true, remaining: 25, note: "Limited" }
+    },
+    {
+      key: "sup-spade",
+      name: "Spade",
+      kind: "supply",
+      image: "images/sup-spade.jpg",
+      desc: "Edge-cutting + digging tool—ideal for bed layout work.",
+      tags: ["supply", "tools", "garden"],
+      inv: { available: true, remaining: 25, note: "Limited" }
+    },
+    {
+      key: "sup-watering-can",
+      name: "Watering Can",
+      kind: "supply",
+      image: "images/sup-watering-can.jpg",
+      desc: "Simple watering solution for classrooms and small beds.",
+      tags: ["supply", "tools", "beginner"],
+      inv: { available: true, remaining: 40, note: "In stock" }
+    },
+    {
+      key: "sup-pruners",
+      name: "Hand Pruners",
+      kind: "supply",
+      image: "images/sup-pruners.jpg",
+      desc: "For harvesting herbs and trimming tomato suckers safely.",
+      tags: ["supply", "tools", "harvest"],
+      inv: { available: true, remaining: 35, note: "In stock" }
+    }
   ]
 };
+
 
 
 
