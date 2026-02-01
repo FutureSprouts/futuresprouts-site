@@ -289,7 +289,7 @@
   <div class="container nav-inner">
     <a class="brand" href="index.html" aria-label="${escapeHtml(name)} Home">
       <div class="brand-badge">
-        <img src="images/logo.ai" alt="${escapeHtml(name)} logo">
+        <img src="images/logo.png" alt="${escapeHtml(name)} logo">
       </div>
       <div>${escapeHtml(name)}</div>
     </a>
@@ -1197,6 +1197,7 @@ ${payload.notes}`
   }
 
 })();
+
 
 
 
