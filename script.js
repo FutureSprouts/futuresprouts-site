@@ -1131,7 +1131,7 @@ ${payload.notes}`
   } else {
     init();
   }
-  document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
   // Only run on the seed packets page
   if (document.getElementById("seedGrid")) {
     renderSeedPackets();
@@ -1144,9 +1144,6 @@ ${payload.notes}`
     renderCart();
   }
 });
-
-})();
-
 
 
 
