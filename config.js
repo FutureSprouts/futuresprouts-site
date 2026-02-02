@@ -463,7 +463,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       name: "Raised Bed Build Manual",
       category: "education",
       kind: "edu",
-      image: "images/edu-manual-raised-bed.jpg",
+      image: "4x4-garden-bed.jpg",
       desc: "How to assemble, fill, and plant a basic raised bed for schools.",
       tags: ["education", "manual", "raised-bed", "beginner"],
       inv: { available: true, remaining: 999, note: "Available" }
@@ -554,4 +554,5 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
     }
   ]
 };
+
 
