@@ -365,7 +365,7 @@
   <div class="container footer-grid">
     <div>
       <h3>${site}</h3>
-      <p>Youth-led sustainable farming education and environmental stewardship.</p>
+      <p>Inspiring the next generation to grow food, communities, and a greener future.</p>
       <p style="margin-top:10px;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
     </div>
 
@@ -1197,6 +1197,7 @@ ${payload.notes}`
   }
 
 })();
+
 
 
 
