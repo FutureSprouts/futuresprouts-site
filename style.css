@@ -1375,57 +1375,6 @@ footer a strong,
 .hero h1{
   margin-bottom: 14px;
 }
-/* ===== CART LINE (entire row) ===== */
-.cart-line {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;                   /* space between left/right sections */
-  padding: 16px 18px;          /* space inside the border */
-  border: 2px solid var(--border) !important;
-  border-radius: 18px;
-  background: var(--card);
-  overflow: hidden;
-}
-
-/* ===== Inner children spacing ===== */
-.cart-line > * {
-  margin: 0;                   /* remove any default margin */
-  padding: 0;                  /* remove any default padding */
-}
-
-/* Mini edit forms / meta-edit inside cart */
-.cart-line .meta-edit {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;                   /* consistent spacing inside meta-edit */
-  margin: 0;                    /* reset margin */
-  padding: 0;                   /* reset padding */
-  border: 0 !important;         /* remove accidental borders */
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* Individual cards / panels inside cart-line */
-.cart-line .card,
-.cart-line .panel,
-.cart-line .box {
-  border: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-  margin: 0;
-  padding: 0;
-}
-
-/* Quantity buttons / other small elements */
-.cart-line .qty {
-  gap: 8px;                    /* consistent spacing for buttons + number */
-}
-
-/* Remove any weird nested outlines */
-.cart-line * {
-  outline: none !important;
-}
 
 
 
