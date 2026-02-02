@@ -878,7 +878,9 @@ footer a strong,
 .card, .cart-line, .mini-cart {
   border: 2px solid var(--border) !important; /* Forces a visible border */
 }
-
+.cart-line {
+  border-radius: 18px !important; /* force rounding */
+}
 /* Ensure the cart wrap allows the dropdown to show on hover */
 .cart-wrap {
   position: relative;
@@ -1380,4 +1382,5 @@ footer a strong,
 .hero h1{
   margin-bottom: 14px;
 }
+
 
