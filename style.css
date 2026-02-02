@@ -1145,31 +1145,24 @@ footer a strong,
   overflow: hidden; /* prevents inner edges from showing */
 }
 
-/* Kill any accidental borders/outlines on direct children */
-.cart-line > div{
-  border: 0 !important;
-  outline: 0 !important;
-  box-shadow: none !important;
-}
-
-/* If your meta editor wrapper is drawing a box, remove it */
-.cart-line .meta-edit{
-  border: 0 !important;
-  outline: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
-.cart-line .card,
-.cart-line .panel,
-.cart-line .box{
-  border: 0 !important;
-  box-shadow: none !important;
-}
 /* Seed cards should NEVER use reveal-on-scroll */
 .seed-card.reveal{
   opacity: 1 !important;
   transform: none !important;
   filter: none !important;
+}
+.cart-line {
+  display: flex;                /* layout items horizontally */
+  align-items: center;          /* vertically center content */
+  justify-content: space-between; /* push edges apart */
+  gap: 12px;                    /* space between children */
+  
+  padding: 14px 18px;           /* space inside the border */
+  border: 2px solid var(--border) !important; /* visible border */
+  border-radius: 18px !important;
+  background: var(--card);
+  
+  overflow: hidden;             /* ensures inner content stays inside border */
 }
 
 
@@ -1382,5 +1375,6 @@ footer a strong,
 .hero h1{
   margin-bottom: 14px;
 }
+
 
 
