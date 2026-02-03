@@ -487,7 +487,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       name: "Gardening Gloves (Pair)",
       category: "supplies",
       kind: "supply",
-      image: "images/sup-gloves.jpg",
+      image: "images/hybrid-storytellers-qHD4Yj8E6WQ-unsplash.jpg",
       desc: "Durable gloves for school gardens and community plots.",
       tags: ["supply", "tools", "beginner"],
       inv: { available: true, remaining: 120, note: "In stock" }
@@ -497,7 +497,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       name: "Hand Trowel",
       category: "supplies",
       kind: "supply",
-      image: "images/sup-trowel.jpg",
+      image: "images/gryffyn-m-JR7IPWMMXcc-unsplash.jpg",
       desc: "Great for transplanting seedlings and container gardens.",
       tags: ["supply", "tools", "container", "beginner"],
       inv: { available: true, remaining: 90, note: "In stock" }
@@ -507,7 +507,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       name: "Hand Spade",
       category: "supplies",
       kind: "supply",
-      image: "images/sup-hand-spade.jpg",
+      image: "images/pexels-teona-swift-6912843.jpg",
       desc: "Stronger digging tool for beds and tougher soil.",
       tags: ["supply", "tools", "raised-bed"],
       inv: { available: true, remaining: 70, note: "In stock" }
@@ -517,7 +517,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       name: "Shovel",
       category: "supplies",
       kind: "supply",
-      image: "images/sup-shovel.jpg",
+      image: "images/alexey-golubev-rzvN8rx2lEo-unsplash.jpg",
       desc: "For moving soil/compost and bed prep (limited per order).",
       tags: ["supply", "tools", "garden"],
       inv: { available: true, remaining: 25, note: "Limited" }
@@ -527,7 +527,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       name: "Spade",
       category: "supplies",
       kind: "supply",
-      image: "images/sup-spade.jpg",
+      image: "images/pexels-falcons-8993775.jpg",
       desc: "Edge-cutting + digging tool—ideal for bed layout work.",
       tags: ["supply", "tools", "garden"],
       inv: { available: true, remaining: 25, note: "Limited" }
@@ -537,7 +537,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       name: "Watering Can",
       category: "supplies",
       kind: "supply",
-      image: "images/sup-watering-can.jpg",
+      image: "images/pexels-rdne-7782086.jpg",
       desc: "Simple watering solution for classrooms and small beds.",
       tags: ["supply", "tools", "beginner"],
       inv: { available: true, remaining: 40, note: "In stock" }
@@ -547,12 +547,13 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       name: "Hand Pruners",
       category: "supplies",
       kind: "supply",
-      image: "images/sup-pruners.jpg",
+      image: "images/pexels-tamara-elnova-218645958-12142540.jpg",
       desc: "For harvesting herbs and trimming plants safely.",
       tags: ["supply", "tools", "harvest"],
       inv: { available: true, remaining: 35, note: "In stock" }
     }
   ]
 };
+
 
 
