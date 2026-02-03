@@ -497,7 +497,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       name: "Hand Trowel",
       category: "supplies",
       kind: "supply",
-      image: "images/gryffyn-m-JR7IPWMMXcc-unsplash.jpg",
+      image: "images/gryffyn-m-JR7IPWMMXcc-unsplash1 (1).jpg",
       desc: "Great for transplanting seedlings and container gardens.",
       tags: ["supply", "tools", "container", "beginner"],
       inv: { available: true, remaining: 90, note: "In stock" }
@@ -554,6 +554,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
     }
   ]
 };
+
 
 
 
