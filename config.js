@@ -503,46 +503,6 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       inv: { available: true, remaining: 90, note: "In stock" }
     },
     {
-      key: "sup-hand-spade",
-      name: "Hand Spade",
-      category: "supplies",
-      kind: "supply",
-      image: "images/pexels-teona-swift-6912843.jpg",
-      desc: "Stronger digging tool for beds and tougher soil.",
-      tags: ["supply", "tools", "raised-bed"],
-      inv: { available: true, remaining: 70, note: "In stock" }
-    },
-    {
-      key: "sup-shovel",
-      name: "Shovel",
-      category: "supplies",
-      kind: "supply",
-      image: "images/alexey-golubev-rzvN8rx2lEo-unsplash.jpg",
-      desc: "For moving soil/compost and bed prep (limited per order).",
-      tags: ["supply", "tools", "garden"],
-      inv: { available: true, remaining: 25, note: "Limited" }
-    },
-    {
-      key: "sup-spade",
-      name: "Spade",
-      category: "supplies",
-      kind: "supply",
-      image: "images/pexels-falcons-8993775.jpg",
-      desc: "Edge-cutting + digging tool—ideal for bed layout work.",
-      tags: ["supply", "tools", "garden"],
-      inv: { available: true, remaining: 25, note: "Limited" }
-    },
-    {
-      key: "sup-watering-can",
-      name: "Watering Can",
-      category: "supplies",
-      kind: "supply",
-      image: "images/pexels-rdne-7782086.jpg",
-      desc: "Simple watering solution for classrooms and small beds.",
-      tags: ["supply", "tools", "beginner"],
-      inv: { available: true, remaining: 40, note: "In stock" }
-    },
-    {
       key: "sup-pruners",
       name: "Hand Pruners",
       category: "supplies",
@@ -552,8 +512,140 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       tags: ["supply", "tools", "harvest"],
       inv: { available: true, remaining: 35, note: "In stock" }
     }
+    {
+  key: "sup-cultivator",
+  name: "Hand Cultivator (3-Tine)",
+  category: "supplies",
+  kind: "supply",
+  image: "images/hand-cultivator.jpg",
+  desc: "Compact 3-tine cultivator for loosening soil and removing weeds.",
+  tags: ["supply", "tools", "soil", "beginner"],
+  inv: { available: true, remaining: 75, note: "In stock" }
+},
+{
+  key: "sup-soil-scoop",
+  name: "Soil Scoop",
+  category: "supplies",
+  kind: "supply",
+  image: "images/soil-scoop.jpg",
+  desc: "Lightweight scoop for potting mix, compost, and soil transfer.",
+  tags: ["supply", "tools", "potting"],
+  inv: { available: true, remaining: 110, note: "In stock" }
+},
+{
+  key: "sup-soil-pucks",
+  name: "Compressed Soil Pucks (Coco Coir)",
+  category: "supplies",
+  kind: "supply",
+  image: "images/soil-pucks.jpg",
+  desc: "Peat-free coco coir pucks that expand with water for seed starting.",
+  tags: ["supply", "soil", "eco", "classroom"],
+  inv: { available: true, remaining: 500, note: "In stock" }
+},
+{
+  key: "sup-seed-tray",
+  name: "Seedling Starter Tray",
+  category: "supplies",
+  kind: "supply",
+  image: "images/seedling-tray.jpg",
+  desc: "Reusable seed starter tray with 6 or 12 cells for seedlings.",
+  tags: ["supply", "seed-starting", "beginner"],
+  inv: { available: true, remaining: 140, note: "In stock" }
+},
+{
+  key: "sup-ph-strips",
+  name: "Soil pH Test Strips",
+  category: "supplies",
+  kind: "supply",
+  image: "images/ph-strips.jpg",
+  desc: "Strip-based soil pH tests for learning and garden planning.",
+  tags: ["supply", "education", "soil"],
+  inv: { available: true, remaining: 200, note: "In stock" }
+},
+{
+  key: "sup-spacing-ruler",
+  name: "Plant Spacing Ruler",
+  category: "supplies",
+  kind: "supply",
+  image: "images/spacing-ruler.jpg",
+  desc: "Marked ruler showing ideal spacing for common garden crops.",
+  tags: ["supply", "planning", "beginner"],
+  inv: { available: true, remaining: 95, note: "In stock" }
+},
+{
+  key: "sup-jute-twine",
+  name: "Jute Twine Spool",
+  category: "supplies",
+  kind: "supply",
+  image: "images/jute-twine.jpg",
+  desc: "Biodegradable jute twine for tying plants and garden projects.",
+  tags: ["supply", "eco", "garden-accessory"],
+  inv: { available: true, remaining: 180, note: "In stock" }
+},
+{
+  key: "sup-mesh-bag",
+  name: "Reusable Mesh Produce Bag",
+  category: "supplies",
+  kind: "supply",
+  image: "images/mesh-produce-bag.jpg",
+  desc: "Washable mesh bag for harvesting, storing, and washing produce.",
+  tags: ["supply", "harvest", "sustainable"],
+  inv: { available: true, remaining: 85, note: "In stock" }
+},
+{
+  key: "sup-garden-markers",
+  name: "Garden Markers (Set)",
+  category: "supplies",
+  kind: "supply",
+  image: "images/garden-markers.jpg",
+  desc: "Reusable garden markers for labeling plants and seedlings.",
+  tags: ["supply", "seed-starting", "organization"],
+  inv: { available: true, remaining: 300, note: "In stock" }
+},
+
+/* ======================
+   STARTER KITS
+   ====================== */
+
+{
+  key: "kit-beginner-garden",
+  name: "Beginner Garden Starter Kit",
+  category: "kits",
+  kind: "kit",
+  image: "images/beginner-kit.jpg",
+  desc: "An affordable starter kit with everything needed to begin gardening.",
+  tags: ["kit", "beginner", "classroom", "gift"],
+  includes: [
+    "Compressed Soil Pucks (6–8)",
+    "Seedling Starter Tray",
+    "Garden Markers (5–10)",
+    "Plant Spacing Ruler",
+    "Jute Twine Spool",
+    "Printed Planting Guide"
+  ],
+  inv: { available: true, remaining: 40, note: "Limited stock" }
+},
+{
+  key: "kit-soil-setup",
+  name: "Soil & Setup Starter Kit",
+  category: "kits",
+  kind: "kit",
+  image: "images/soil-setup-kit.jpg",
+  desc: "Educational kit focused on soil prep and garden setup fundamentals.",
+  tags: ["kit", "education", "soil"],
+  includes: [
+    "Hand Cultivator",
+    "Soil Scoop",
+    "Soil pH Test Strips",
+    "Compressed Soil Pucks",
+    "Plant Spacing Ruler"
+  ],
+  inv: { available: true, remaining: 30, note: "Limited stock" }
+}
+
   ]
 };
+
 
 
 
