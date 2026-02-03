@@ -511,8 +511,8 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       desc: "For harvesting herbs and trimming plants safely.",
       tags: ["supply", "tools", "harvest"],
       inv: { available: true, remaining: 35, note: "In stock" }
-    }
-    {
+    }, 
+{
   key: "sup-cultivator",
   name: "Hand Cultivator (3-Tine)",
   category: "supplies",
@@ -642,7 +642,6 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   ],
   inv: { available: true, remaining: 30, note: "Limited stock" }
 }
-
   ]
 };
 
