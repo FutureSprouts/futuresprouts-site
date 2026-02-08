@@ -520,18 +520,18 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 },
 
 /* ======================
-   STARTER KITS
+   STARTER 
    ====================== */
 
 {
   key: "kit-beginner-garden",
   name: "Beginner Garden Starter Kit",
-  category: "kits",
+  category: "supplies",
   kind: "supply",
   image: "images/beginner-kit.jpg",
   desc: "An affordable starter kit with everything needed to begin gardening.",
   tags: ["kits"],
-  inv: { available: true, remaining: 40, note: "Limited stock" }
+  inv: { available: true, remaining: 40, note: "In Stock" }
 },
 {
   key: "kit-soil-setup",
@@ -671,6 +671,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 
   ]
 };
+
 
 
 
