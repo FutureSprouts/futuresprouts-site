@@ -527,7 +527,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   key: "kit-beginner-garden",
   name: "Beginner Garden Starter Kit",
   category: "kits",
-  kind: "kit",
+  kind: "supply",
   image: "images/beginner-kit.jpg",
   desc: "An affordable starter kit with everything needed to begin gardening.",
   tags: ["kits"],
@@ -537,7 +537,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   key: "kit-soil-setup",
   name: "Soil & Setup Starter Kit",
   category: "kits",
-  kind: "kit",
+  kind: "supply",
   image: "images/soil-setup-kit.jpg",
   desc: "Educational kit focused on soil prep and garden setup fundamentals.",
   tags: ["kits"],
@@ -671,6 +671,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 
   ]
 };
+
 
 
 
