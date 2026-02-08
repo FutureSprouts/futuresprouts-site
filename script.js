@@ -265,6 +265,30 @@
       try { logEvent("theme_change", { pref: next }); } catch {}
     });
   }
+// ---------------------------
+// Favicons (universal, injected dynamically)
+// ---------------------------
+(function() {
+  const favicons = [
+    { rel: "icon", href: "/favicon.ico" },
+    { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+    { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+    { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
+    { rel: "icon", sizes: "48x48", href: "/favicon.ico" },
+    { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+    { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" }
+  ];
+
+  // Remove any existing favicons
+  document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach(el => el.remove());
+
+  // Inject all favicons into <head>
+  favicons.forEach(f => {
+    const link = document.createElement('link');
+    Object.entries(f).forEach(([key, value]) => link.setAttribute(key, value));
+    document.head.appendChild(link);
+  });
+})();
 
   // ---------------------------
   // Header / Footer HTML
@@ -1197,6 +1221,7 @@ ${payload.notes}`
   }
 
 })();
+
 
 
 
