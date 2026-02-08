@@ -449,6 +449,16 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   inv: { available: true, remaining: 110, note: "In stock" }
 },
 {
+  key: "sup-garden-markers",
+  name: "Garden Markers",
+   category: "supplies",
+  kind: "supply",
+  image: "images/garden-markers.jpg",
+  desc: "Reusable garden markers for labeling plants and seedlings.",
+  tags: ["tools", "starting"],
+  inv: { available: true, remaining: 30, note: "In stock" }
+},
+{
   key: "sup-soil-pucks",
   name: "Compressed Soil Pucks",
   category: "supplies",
@@ -507,16 +517,6 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   desc: "Washable mesh bag for harvesting, storing, and washing produce.",
   tags: ["harvest"],
   inv: { available: true, remaining: 85, note: "In stock" }
-},
-{
-  key: "sup-garden-markers",
-  name: "Garden Markers",
-  category: "supplies",
-  kind: "supply",
-  image: "images/garden-markers.jpg",
-  desc: "Reusable garden markers for labeling plants and seedlings.",
-  tags: ["tools", "starting"],
-  inv: { available: true, remaining: 300, note: "In stock" }
 },
 
 /* ======================
@@ -671,6 +671,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 
   ]
 };
+
 
 
 
