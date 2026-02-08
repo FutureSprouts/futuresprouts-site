@@ -531,14 +531,6 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/beginner-kit.jpg",
   desc: "An affordable starter kit with everything needed to begin gardening.",
   tags: ["kits"],
-  includes: [
-    "Compressed Soil Pucks (6–8)",
-    "Seedling Starter Tray",
-    "Garden Markers (5–10)",
-    "Plant Spacing Ruler",
-    "Jute Twine Spool",
-    "Printed Planting Guide"
-  ],
   inv: { available: true, remaining: 40, note: "Limited stock" }
 },
 {
@@ -549,13 +541,6 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/soil-setup-kit.jpg",
   desc: "Educational kit focused on soil prep and garden setup fundamentals.",
   tags: ["kits"],
-  includes: [
-    "Hand Cultivator",
-    "Soil Scoop",
-    "Soil pH Test Strips",
-    "Compressed Soil Pucks",
-    "Plant Spacing Ruler"
-  ],
   inv: { available: true, remaining: 30, note: "Limited stock" }
 },
     /* ======================
@@ -686,6 +671,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 
   ]
 };
+
 
 
 
