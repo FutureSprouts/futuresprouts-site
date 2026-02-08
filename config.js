@@ -465,7 +465,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/seedling-tray.jpg",
   desc: "Reusable seed starter tray with 6 or 12 cells for seedlings.",
-  tags: ["seed-starting"],
+  tags: ["seed starting"],
   inv: { available: true, remaining: 140, note: "In stock" }
 },
 {
@@ -485,7 +485,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/spacing-ruler.jpg",
   desc: "Marked ruler showing ideal spacing for common garden crops.",
-  tags: ["seed-starting"],
+  tags: ["seed starting"],
   inv: { available: true, remaining: 95, note: "In stock" }
 },
 {
@@ -530,7 +530,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "kit",
   image: "images/beginner-kit.jpg",
   desc: "An affordable starter kit with everything needed to begin gardening.",
-  tags: ["bundle"],
+  tags: ["kit"],
   includes: [
     "Compressed Soil Pucks (6–8)",
     "Seedling Starter Tray",
@@ -548,7 +548,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "kit",
   image: "images/soil-setup-kit.jpg",
   desc: "Educational kit focused on soil prep and garden setup fundamentals.",
-  tags: ["bundle"],
+  tags: ["kit"],
   includes: [
     "Hand Cultivator",
     "Soil Scoop",
@@ -686,6 +686,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 
   ]
 };
+
 
 
 
