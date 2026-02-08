@@ -1386,11 +1386,11 @@ footer a strong,
 }
 
 .about-text {
-  max-width: 800px;
+  max-width: 780px;
 }
 
 .about-logo img {
-  max-width: 220px;
+  max-width: 200px;
   height: auto;
 }
 
@@ -1404,6 +1404,7 @@ footer a strong,
     margin-top: 20px;
   }
 }
+
 
 
 
