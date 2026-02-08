@@ -555,7 +555,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/crop-brochures.jpg",
   desc: "Selectable educational brochures for each crop, covering growing basics, nutrition, and uses.",
   tags: ["classroom", "grow"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-elementary-activity-plans",
@@ -565,7 +565,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/elementary-activity-plans.jpg",
   desc: "Hands-on activity plans designed for elementary classrooms using gardening concepts.",
   tags: ["classroom"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-garden-calendar",
@@ -575,7 +575,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/garden-calendar.jpg",
   desc: "Seasonal planting and harvest calendar for common garden crops.",
   tags: ["grow"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-raised-bed-instructions",
@@ -585,7 +585,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/raised-bed-instructions.jpg",
   desc: "Step-by-step instructions for building and setting up raised garden beds.",
   tags: ["instruct", "grow"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-wicking-bucket-instructions",
@@ -593,9 +593,9 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   category: "education",
   kind: "resource",
   image: "images/wicking-bucket-instructions.jpg",
-  desc: "Illustrated guide for creating self-watering wicking bucket gardens.",
+  desc: "Step-by-step instructions for building and setting up wicking buckets.",
   tags: ["instruct", "grow", "sustainability"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-composting-guide",
@@ -603,9 +603,9 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   category: "education",
   kind: "resource",
   image: "images/composting-guide.jpg",
-  desc: "Beginner-friendly guide explaining composting basics and best practices.",
+  desc: "Beginner-friendly guide explaining composting basics.",
   tags: ["instruct", "sustainability"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-soil-health-guide",
@@ -615,7 +615,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/soil-health-guide.jpg",
   desc: "Educational overview of soil types, nutrients, and soil improvement methods.",
   tags: ["grow", "sustainability"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-seed-starting-guide",
@@ -625,7 +625,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/seed-starting-guide.jpg",
   desc: "Instructions for starting seeds indoors and outdoors successfully.",
   tags: ["instruct", "grow"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-canning-guide",
@@ -635,7 +635,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/canning-guide.jpg",
   desc: "Introductory guide to safe food preservation and basic canning methods.",
   tags: ["instructions", "sustainability"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-coloring-sheets",
@@ -645,7 +645,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/coloring-sheets.jpg",
   desc: "Educational coloring pages featuring plants, tools, and garden themes.",
   tags: ["classroom"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-garden-journals",
@@ -653,9 +653,9 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   category: "education",
   kind: "resource",
   image: "images/garden-journals.jpg",
-  desc: "Printable journals for tracking plant growth and garden observations.",
+  desc: "Journals for tracking plant growth and garden observations.",
   tags: ["classroom", "grow"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
 {
   key: "edu-water-conservation-guide",
@@ -663,12 +663,13 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   category: "education",
   kind: "resource",
   image: "images/water-conservation-guide.jpg",
-  desc: "Guide focused on efficient watering and sustainable water practices.",
+  desc: "Educational guide to storing rainwater and sustainable water use.",
   tags: ["sustainability"],
-  inv: { available: true, remaining: 10, note: "In Stock" }
+  inv: { available: true, remaining: 100, note: "In Stock" }
 },
   ]
 };
+
 
 
 
