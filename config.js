@@ -530,7 +530,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "kit",
   image: "images/beginner-kit.jpg",
   desc: "An affordable starter kit with everything needed to begin gardening.",
-  tags: ["kit"],
+  tags: ["kits"],
   includes: [
     "Compressed Soil Pucks (6–8)",
     "Seedling Starter Tray",
@@ -548,7 +548,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "kit",
   image: "images/soil-setup-kit.jpg",
   desc: "Educational kit focused on soil prep and garden setup fundamentals.",
-  tags: ["kit"],
+  tags: ["kits"],
   includes: [
     "Hand Cultivator",
     "Soil Scoop",
@@ -686,6 +686,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 
   ]
 };
+
 
 
 
