@@ -1378,6 +1378,33 @@ footer a strong,
 .hero h1{
   margin-bottom: 14px;
 }
+.about-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.about-text {
+  max-width: 600px;
+}
+
+.about-logo img {
+  max-width: 260px;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .about-layout {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about-logo {
+    margin-top: 40px;
+  }
+}
+
 
 
 
