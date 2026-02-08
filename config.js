@@ -641,9 +641,165 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
     "Plant Spacing Ruler"
   ],
   inv: { available: true, remaining: 30, note: "Limited stock" }
+},
+    /* ======================
+   EDUCATIONAL RESOURCES
+   ====================== */
+
+{
+  key: "edu-crop-brochures",
+  name: "Crop Education Brochures",
+  category: "education",
+  kind: "resource",
+  image: "images/crop-brochures.jpg",
+  desc: "Selectable educational brochures for each crop, covering growing basics, nutrition, and uses.",
+  tags: ["education", "brochures", "crops", "classroom"],
+  inv: { available: true, remaining: null, note: "Digital resource" }
+},
+{
+  key: "edu-elementary-activity-plans",
+  name: "Elementary Classroom Activity Plans",
+  category: "education",
+  kind: "resource",
+  image: "images/elementary-activity-plans.jpg",
+  desc: "Hands-on activity plans designed for elementary classrooms using gardening concepts.",
+  tags: ["education", "classroom", "elementary"],
+  inv: { available: true, remaining: null, note: "Digital resource" }
+},
+{
+  key: "edu-garden-calendar",
+  name: "Garden Planting Calendar",
+  category: "education",
+  kind: "resource",
+  image: "images/garden-calendar.jpg",
+  desc: "Seasonal planting and harvest calendar for common garden crops.",
+  tags: ["education", "planning", "seasonal"],
+  inv: { available: true, remaining: null, note: "Printable PDF" }
+},
+{
+  key: "edu-raised-bed-instructions",
+  name: "Raised Garden Bed Instructions",
+  category: "education",
+  kind: "resource",
+  image: "images/raised-bed-instructions.jpg",
+  desc: "Step-by-step instructions for building and setting up raised garden beds.",
+  tags: ["education", "garden-build", "beginner"],
+  inv: { available: true, remaining: null, note: "Printable guide" }
+},
+{
+  key: "edu-wicking-bucket-instructions",
+  name: "Wicking Bucket Instructions",
+  category: "education",
+  kind: "resource",
+  image: "images/wicking-bucket-instructions.jpg",
+  desc: "Illustrated guide for creating self-watering wicking bucket gardens.",
+  tags: ["education", "container-gardening", "water-saving"],
+  inv: { available: true, remaining: null, note: "Printable guide" }
+},
+{
+  key: "edu-composting-guide",
+  name: "Composting Guide",
+  category: "education",
+  kind: "resource",
+  image: "images/composting-guide.jpg",
+  desc: "Beginner-friendly guide explaining composting basics and best practices.",
+  tags: ["education", "compost", "sustainability"],
+  inv: { available: true, remaining: null, note: "Printable PDF" }
+},
+{
+  key: "edu-soil-health-guide",
+  name: "Soil Health Guide",
+  category: "education",
+  kind: "resource",
+  image: "images/soil-health-guide.jpg",
+  desc: "Educational overview of soil types, nutrients, and soil improvement methods.",
+  tags: ["education", "soil", "garden-basics"],
+  inv: { available: true, remaining: null, note: "Digital resource" }
+},
+{
+  key: "edu-seed-starting-guide",
+  name: "Seed Starting Guide",
+  category: "education",
+  kind: "resource",
+  image: "images/seed-starting-guide.jpg",
+  desc: "Instructions for starting seeds indoors and outdoors successfully.",
+  tags: ["education", "seed-starting", "beginner"],
+  inv: { available: true, remaining: null, note: "Printable guide" }
+},
+{
+  key: "edu-garden-safety-guide",
+  name: "Garden Safety Guide",
+  category: "education",
+  kind: "resource",
+  image: "images/garden-safety-guide.jpg",
+  desc: "Safety guidelines for gardening activities in classrooms and community spaces.",
+  tags: ["education", "safety", "classroom"],
+  inv: { available: true, remaining: null, note: "Printable PDF" }
+},
+{
+  key: "edu-canning-guide",
+  name: "Food Preservation & Canning Guide",
+  category: "education",
+  kind: "resource",
+  image: "images/canning-guide.jpg",
+  desc: "Introductory guide to safe food preservation and basic canning methods.",
+  tags: ["education", "food-preservation", "harvest"],
+  inv: { available: true, remaining: null, note: "Educational reference" }
+},
+{
+  key: "edu-coloring-sheets",
+  name: "Garden Coloring Sheets",
+  category: "education",
+  kind: "resource",
+  image: "images/coloring-sheets.jpg",
+  desc: "Educational coloring pages featuring plants, tools, and garden themes.",
+  tags: ["education", "kids", "activity"],
+  inv: { available: true, remaining: null, note: "Printable activity" }
+},
+{
+  key: "edu-plant-life-cycle-chart",
+  name: "Plant Life Cycle Charts",
+  category: "education",
+  kind: "resource",
+  image: "images/plant-life-cycle-chart.jpg",
+  desc: "Visual charts illustrating the stages of plant growth from seed to harvest.",
+  tags: ["education", "science", "visual-aid"],
+  inv: { available: true, remaining: null, note: "Printable chart" }
+},
+{
+  key: "edu-garden-journals",
+  name: "Garden Journals & Observation Sheets",
+  category: "education",
+  kind: "resource",
+  image: "images/garden-journals.jpg",
+  desc: "Printable journals for tracking plant growth and garden observations.",
+  tags: ["education", "journaling", "classroom"],
+  inv: { available: true, remaining: null, note: "Printable resource" }
+},
+{
+  key: "edu-water-conservation-guide",
+  name: "Water Conservation Guide",
+  category: "education",
+  kind: "resource",
+  image: "images/water-conservation-guide.jpg",
+  desc: "Guide focused on efficient watering and sustainable water practices.",
+  tags: ["education", "water", "sustainability"],
+  inv: { available: true, remaining: null, note: "Digital resource" }
+},
+{
+  key: "edu-seed-to-table-guide",
+  name: "Seed-to-Table Education Guide",
+  category: "education",
+  kind: "resource",
+  image: "images/seed-to-table-guide.jpg",
+  desc: "Educational overview of the journey food takes from planting to consumption.",
+  tags: ["education", "food-systems", "learning"],
+  inv: { available: true, remaining: null, note: "Educational guide" }
 }
+
   ]
 };
+
 
 
 
