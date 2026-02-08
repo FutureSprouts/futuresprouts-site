@@ -400,7 +400,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
     // =========================
     {
       key: "sup-gloves",
-      name: "Gardening Gloves (Pair)",
+      name: "Gardening Gloves",
       category: "supplies",
       kind: "supply",
       image: "images/hybrid-storytellers-qHD4Yj8E6WQ-unsplash.jpg",
@@ -430,7 +430,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
     }, 
 {
   key: "sup-cultivator",
-  name: "Hand Cultivator (3-Tine)",
+  name: "Hand Rake",
   category: "supplies",
   kind: "supply",
   image: "images/hand-cultivator.jpg",
@@ -450,7 +450,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 },
 {
   key: "sup-soil-pucks",
-  name: "Compressed Soil Pucks (Coco Coir)",
+  name: "Compressed Soil Pucks",
   category: "supplies",
   kind: "supply",
   image: "images/soil-pucks.jpg",
@@ -500,7 +500,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 },
 {
   key: "sup-mesh-bag",
-  name: "Reusable Mesh Produce Bag",
+  name: "Mesh Produce Bag",
   category: "supplies",
   kind: "supply",
   image: "images/mesh-produce-bag.jpg",
@@ -510,7 +510,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 },
 {
   key: "sup-garden-markers",
-  name: "Garden Markers (Set)",
+  name: "Garden Markers",
   category: "supplies",
   kind: "supply",
   image: "images/garden-markers.jpg",
@@ -570,7 +570,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/crop-brochures.jpg",
   desc: "Selectable educational brochures for each crop, covering growing basics, nutrition, and uses.",
   tags: ["education", "brochures", "crops", "classroom"],
-  inv: { available: true, remaining: null, note: "Digital resource" }
+  inv: { available: true, remaining: 10, note: "Digital resource" }
 },
 {
   key: "edu-elementary-activity-plans",
@@ -580,7 +580,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/elementary-activity-plans.jpg",
   desc: "Hands-on activity plans designed for elementary classrooms using gardening concepts.",
   tags: ["education", "classroom", "elementary"],
-  inv: { available: true, remaining: null, note: "Digital resource" }
+  inv: { available: true, remaining: 10, note: "Digital resource" }
 },
 {
   key: "edu-garden-calendar",
@@ -590,7 +590,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/garden-calendar.jpg",
   desc: "Seasonal planting and harvest calendar for common garden crops.",
   tags: ["education", "planning", "seasonal"],
-  inv: { available: true, remaining: null, note: "Printable PDF" }
+  inv: { available: true, remaining: 10, note: "Printable PDF" }
 },
 {
   key: "edu-raised-bed-instructions",
@@ -600,7 +600,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/raised-bed-instructions.jpg",
   desc: "Step-by-step instructions for building and setting up raised garden beds.",
   tags: ["education", "garden-build", "beginner"],
-  inv: { available: true, remaining: null, note: "Printable guide" }
+  inv: { available: true, remaining: 10, note: "Printable guide" }
 },
 {
   key: "edu-wicking-bucket-instructions",
@@ -610,7 +610,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/wicking-bucket-instructions.jpg",
   desc: "Illustrated guide for creating self-watering wicking bucket gardens.",
   tags: ["education", "container-gardening", "water-saving"],
-  inv: { available: true, remaining: null, note: "Printable guide" }
+  inv: { available: true, remaining: 10, note: "Printable guide" }
 },
 {
   key: "edu-composting-guide",
@@ -620,7 +620,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/composting-guide.jpg",
   desc: "Beginner-friendly guide explaining composting basics and best practices.",
   tags: ["education", "compost", "sustainability"],
-  inv: { available: true, remaining: null, note: "Printable PDF" }
+  inv: { available: true, remaining: 10, note: "Printable PDF" }
 },
 {
   key: "edu-soil-health-guide",
@@ -630,7 +630,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/soil-health-guide.jpg",
   desc: "Educational overview of soil types, nutrients, and soil improvement methods.",
   tags: ["education", "soil", "garden-basics"],
-  inv: { available: true, remaining: null, note: "Digital resource" }
+  inv: { available: true, remaining: 10, note: "Digital resource" }
 },
 {
   key: "edu-seed-starting-guide",
@@ -640,7 +640,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/seed-starting-guide.jpg",
   desc: "Instructions for starting seeds indoors and outdoors successfully.",
   tags: ["education", "seed-starting", "beginner"],
-  inv: { available: true, remaining: null, note: "Printable guide" }
+  inv: { available: true, remaining: 10, note: "Printable guide" }
 },
 {
   key: "edu-canning-guide",
@@ -650,7 +650,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/canning-guide.jpg",
   desc: "Introductory guide to safe food preservation and basic canning methods.",
   tags: ["education", "food-preservation", "harvest"],
-  inv: { available: true, remaining: null, note: "Educational reference" }
+  inv: { available: true, remaining: 10, note: "Educational reference" }
 },
 {
   key: "edu-coloring-sheets",
@@ -660,32 +660,33 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   image: "images/coloring-sheets.jpg",
   desc: "Educational coloring pages featuring plants, tools, and garden themes.",
   tags: ["education", "kids", "activity"],
-  inv: { available: true, remaining: null, note: "Printable activity" }
+  inv: { available: true, remaining: 10, note: "Printable activity" }
 },
 
 {
   key: "edu-garden-journals",
-  name: "Garden Journals & Observation Sheets",
+  name: "Garden Journal",
   category: "education",
   kind: "resource",
   image: "images/garden-journals.jpg",
   desc: "Printable journals for tracking plant growth and garden observations.",
   tags: ["education", "journaling", "classroom"],
-  inv: { available: true, remaining: null, note: "Printable resource" }
+  inv: { available: true, remaining: 10, note: "Printable resource" }
 },
 {
   key: "edu-water-conservation-guide",
-  name: "Water Conservation Guide",
+  name: "Rainwater Conservation Guide",
   category: "education",
   kind: "resource",
   image: "images/water-conservation-guide.jpg",
   desc: "Guide focused on efficient watering and sustainable water practices.",
   tags: ["education", "water", "sustainability"],
-  inv: { available: true, remaining: null, note: "Digital resource" }
+  inv: { available: true, remaining: 10, note: "Digital resource" }
 },
 
   ]
 };
+
 
 
 
