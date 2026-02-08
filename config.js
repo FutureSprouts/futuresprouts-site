@@ -546,17 +546,6 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
     /* ======================
    EDUCATIONAL RESOURCES
    ====================== */
-
-{
-  key: "edu-crop-brochures",
-  name: "Crop Education Brochures",
-  category: "education",
-  kind: "resource",
-  image: "images/crop-brochures.jpg",
-  desc: "Selectable educational brochures for each crop, covering growing basics, nutrition, and uses.",
-  tags: ["classroom", "grow"],
-  inv: { available: true, remaining: 100, note: "In Stock" }
-},
 {
   key: "edu-elementary-activity-plans",
   name: "Elementary Classroom Activity Plans",
@@ -669,6 +658,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 },
   ]
 };
+
 
 
 
