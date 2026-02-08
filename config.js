@@ -405,7 +405,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       kind: "supply",
       image: "images/hybrid-storytellers-qHD4Yj8E6WQ-unsplash.jpg",
       desc: "Durable gloves for school gardens and community plots.",
-      tags: ["supply", "tools", "beginner"],
+      tags: ["tools"],
       inv: { available: true, remaining: 120, note: "In stock" }
     },
     {
@@ -415,7 +415,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       kind: "supply",
       image: "images/gryffyn-m-JR7IPWMMXcc-unsplash1 (1).jpg",
       desc: "Great for transplanting seedlings and container gardens.",
-      tags: ["supply", "tools", "container", "beginner"],
+      tags: ["tools"],
       inv: { available: true, remaining: 90, note: "In stock" }
     },
     {
@@ -425,7 +425,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
       kind: "supply",
       image: "images/pexels-tamara-elnova-218645958-12142540.jpg",
       desc: "For harvesting herbs and trimming plants safely.",
-      tags: ["supply", "tools", "harvest"],
+      tags: ["tools", "harvest"],
       inv: { available: true, remaining: 35, note: "In stock" }
     }, 
 {
@@ -435,7 +435,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/hand-cultivator.jpg",
   desc: "Compact 3-tine cultivator for loosening soil and removing weeds.",
-  tags: ["supply", "tools", "soil", "beginner"],
+  tags: ["tools"],
   inv: { available: true, remaining: 75, note: "In stock" }
 },
 {
@@ -445,7 +445,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/soil-scoop.jpg",
   desc: "Lightweight scoop for potting mix, compost, and soil transfer.",
-  tags: ["supply", "tools", "potting"],
+  tags: ["tools"],
   inv: { available: true, remaining: 110, note: "In stock" }
 },
 {
@@ -455,7 +455,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/soil-pucks.jpg",
   desc: "Peat-free coco coir pucks that expand with water for seed starting.",
-  tags: ["supply", "soil", "eco", "classroom"],
+  tags: ["soil"],
   inv: { available: true, remaining: 500, note: "In stock" }
 },
 {
@@ -465,7 +465,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/seedling-tray.jpg",
   desc: "Reusable seed starter tray with 6 or 12 cells for seedlings.",
-  tags: ["supply", "seed-starting", "beginner"],
+  tags: ["seed-starting"],
   inv: { available: true, remaining: 140, note: "In stock" }
 },
 {
@@ -475,7 +475,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/ph-strips.jpg",
   desc: "Strip-based soil pH tests for learning and garden planning.",
-  tags: ["supply", "education", "soil"],
+  tags: ["soil"],
   inv: { available: true, remaining: 200, note: "In stock" }
 },
 {
@@ -485,7 +485,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/spacing-ruler.jpg",
   desc: "Marked ruler showing ideal spacing for common garden crops.",
-  tags: ["supply", "planning", "beginner"],
+  tags: ["seed-starting"],
   inv: { available: true, remaining: 95, note: "In stock" }
 },
 {
@@ -495,7 +495,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/jute-twine.jpg",
   desc: "Biodegradable jute twine for tying plants and garden projects.",
-  tags: ["supply", "eco", "garden-accessory"],
+  tags: ["tools"],
   inv: { available: true, remaining: 180, note: "In stock" }
 },
 {
@@ -505,7 +505,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/mesh-produce-bag.jpg",
   desc: "Washable mesh bag for harvesting, storing, and washing produce.",
-  tags: ["supply", "harvest", "sustainable"],
+  tags: ["harvest"],
   inv: { available: true, remaining: 85, note: "In stock" }
 },
 {
@@ -515,7 +515,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "supply",
   image: "images/garden-markers.jpg",
   desc: "Reusable garden markers for labeling plants and seedlings.",
-  tags: ["supply", "seed-starting", "organization"],
+  tags: ["seed-starting"],
   inv: { available: true, remaining: 300, note: "In stock" }
 },
 
@@ -530,7 +530,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "kit",
   image: "images/beginner-kit.jpg",
   desc: "An affordable starter kit with everything needed to begin gardening.",
-  tags: ["kit", "beginner", "classroom", "gift"],
+  tags: ["bundle"],
   includes: [
     "Compressed Soil Pucks (6–8)",
     "Seedling Starter Tray",
@@ -548,7 +548,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "kit",
   image: "images/soil-setup-kit.jpg",
   desc: "Educational kit focused on soil prep and garden setup fundamentals.",
-  tags: ["kit", "education", "soil"],
+  tags: ["bundle"],
   includes: [
     "Hand Cultivator",
     "Soil Scoop",
@@ -686,6 +686,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 
   ]
 };
+
 
 
 
