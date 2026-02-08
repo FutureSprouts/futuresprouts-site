@@ -396,90 +396,6 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
     },
 
     // =========================
-    // EDUCATION RESOURCES
-    // =========================
-    {
-      key: "edu-brochure-tomato",
-      name: "Tomato Brochure",
-      category: "education",
-      kind: "edu",
-      image: "images/edu-brochure-tomato.jpg",
-      desc: "Printable one-page guide: planting, watering, spacing, and harvest tips.",
-      tags: ["education", "brochure", "tomato", "beginner"],
-      inv: { available: true, remaining: 999, note: "Available" }
-    },
-    {
-      key: "edu-brochure-lettuce",
-      name: "Lettuce Brochure",
-      category: "education",
-      kind: "edu",
-      image: "images/edu-brochure-lettuce.jpg",
-      desc: "Quick-start guide for planter boxes and cut-and-come-again harvesting.",
-      tags: ["education", "brochure", "lettuce", "beginner"],
-      inv: { available: true, remaining: 999, note: "Available" }
-    },
-    {
-      key: "edu-brochure-basil",
-      name: "Basil Brochure",
-      category: "education",
-      kind: "edu",
-      image: "images/edu-brochure-basil.jpg",
-      desc: "Container-friendly herb guide with pruning tips for bigger yields.",
-      tags: ["education", "brochure", "basil", "herb"],
-      inv: { available: true, remaining: 999, note: "Available" }
-    },
-    {
-      key: "edu-coloring-pollinators",
-      name: "Pollinator Coloring Sheet Pack",
-      category: "education",
-      kind: "edu",
-      image: "images/edu-coloring-pollinators.jpg",
-      desc: "Kid-friendly pages featuring bees, butterflies, and flowers.",
-      tags: ["education", "coloring", "kids", "pollinator"],
-      inv: { available: true, remaining: 999, note: "Available" }
-    },
-    {
-      key: "edu-coloring-vegetables",
-      name: "Vegetables Coloring Sheet Pack",
-      category: "education",
-      kind: "edu",
-      image: "images/edu-coloring-vegetables.jpg",
-      desc: "Classroom-ready sheets that match the crops you can request.",
-      tags: ["education", "coloring", "kids"],
-      inv: { available: true, remaining: 999, note: "Available" }
-    },
-    {
-      key: "edu-manual-wicking-bucket",
-      name: "Wicking Bucket Manual",
-      category: "education",
-      kind: "edu",
-      image: "images/edu-manual-wicking-bucket.jpg",
-      desc: "Step-by-step build guide with materials list and diagrams.",
-      tags: ["education", "manual", "container", "wicking"],
-      inv: { available: true, remaining: 999, note: "Available" }
-    },
-    {
-      key: "edu-manual-raised-bed",
-      name: "Raised Bed Build Manual",
-      category: "education",
-      kind: "edu",
-      image: "4x4-garden-bed.jpg",
-      desc: "How to assemble, fill, and plant a basic raised bed for schools.",
-      tags: ["education", "manual", "raised-bed", "beginner"],
-      inv: { available: true, remaining: 999, note: "Available" }
-    },
-    {
-      key: "edu-manual-compost",
-      name: "Composting Basics Guide",
-      category: "education",
-      kind: "edu",
-      image: "images/edu-manual-compost.jpg",
-      desc: "Simple composting guide designed for classrooms and clubs.",
-      tags: ["education", "manual", "compost"],
-      inv: { available: true, remaining: 999, note: "Available" }
-    },
-
-    // =========================
     // GARDEN SUPPLIES
     // =========================
     {
@@ -727,16 +643,6 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   inv: { available: true, remaining: null, note: "Printable guide" }
 },
 {
-  key: "edu-garden-safety-guide",
-  name: "Garden Safety Guide",
-  category: "education",
-  kind: "resource",
-  image: "images/garden-safety-guide.jpg",
-  desc: "Safety guidelines for gardening activities in classrooms and community spaces.",
-  tags: ["education", "safety", "classroom"],
-  inv: { available: true, remaining: null, note: "Printable PDF" }
-},
-{
   key: "edu-canning-guide",
   name: "Food Preservation & Canning Guide",
   category: "education",
@@ -756,16 +662,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   tags: ["education", "kids", "activity"],
   inv: { available: true, remaining: null, note: "Printable activity" }
 },
-{
-  key: "edu-plant-life-cycle-chart",
-  name: "Plant Life Cycle Charts",
-  category: "education",
-  kind: "resource",
-  image: "images/plant-life-cycle-chart.jpg",
-  desc: "Visual charts illustrating the stages of plant growth from seed to harvest.",
-  tags: ["education", "science", "visual-aid"],
-  inv: { available: true, remaining: null, note: "Printable chart" }
-},
+
 {
   key: "edu-garden-journals",
   name: "Garden Journals & Observation Sheets",
@@ -786,19 +683,10 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   tags: ["education", "water", "sustainability"],
   inv: { available: true, remaining: null, note: "Digital resource" }
 },
-{
-  key: "edu-seed-to-table-guide",
-  name: "Seed-to-Table Education Guide",
-  category: "education",
-  kind: "resource",
-  image: "images/seed-to-table-guide.jpg",
-  desc: "Educational overview of the journey food takes from planting to consumption.",
-  tags: ["education", "food-systems", "learning"],
-  inv: { available: true, remaining: null, note: "Educational guide" }
-}
 
   ]
 };
+
 
 
 
