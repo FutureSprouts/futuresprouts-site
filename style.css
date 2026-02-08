@@ -115,16 +115,19 @@ p a:hover{ opacity: .85; }
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
 }
-
 /* Important for mini-cart positioning */
-.navbar, .nav-inner, .nav-links{ overflow: visible; }
+.navbar, .nav-inner, .nav-links {
+  overflow: visible;
+}
 
-.nav-inner{
+.nav-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 14px 0;
   gap: 18px;
+}
+
 .brand {
   display: inline-flex;
   align-items: center; /* vertically centers badge and text */
@@ -152,11 +155,12 @@ p a:hover{ opacity: .85; }
   display: block;      /* removes inline spacing issues */
 }
 
-.nav-right{
+.nav-right {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 
 .icon-btn{
   border: 1px solid var(--border);
