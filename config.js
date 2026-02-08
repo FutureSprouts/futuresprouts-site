@@ -124,7 +124,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
     },
     {
       key: "seed-bell-pepper",
-      name: "Bell Pepper (Compact)",
+      name: "Bell Pepper",
       category: "seeds",
       kind: "seed",
       image: "images/seed-bell-pepper.jpg",
@@ -144,7 +144,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
     },
     {
       key: "seed-cucumber-bush",
-      name: "Cucumber (Bush)",
+      name: "Cucumber",
       category: "seeds",
       kind: "seed",
       image: "images/seed-cucumber-bush.jpg",
@@ -302,7 +302,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
     },
     {
       key: "seed-green-onion",
-      name: "Green Onion (Scallion)",
+      name: "Green Onion",
       category: "seeds",
       kind: "seed",
       image: "images/seed-green-onion.jpg",
@@ -554,7 +554,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "resource",
   image: "images/crop-brochures.jpg",
   desc: "Selectable educational brochures for each crop, covering growing basics, nutrition, and uses.",
-  tags: ["classroom", "growing"],
+  tags: ["classroom", "grow"],
   inv: { available: true, remaining: 10, note: "In Stock" }
 },
 {
@@ -574,7 +574,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "resource",
   image: "images/garden-calendar.jpg",
   desc: "Seasonal planting and harvest calendar for common garden crops.",
-  tags: ["growing"],
+  tags: ["grow"],
   inv: { available: true, remaining: 10, note: "In Stock" }
 },
 {
@@ -584,7 +584,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "resource",
   image: "images/raised-bed-instructions.jpg",
   desc: "Step-by-step instructions for building and setting up raised garden beds.",
-  tags: ["instructions", "growing"],
+  tags: ["instruct", "grow"],
   inv: { available: true, remaining: 10, note: "In Stock" }
 },
 {
@@ -594,7 +594,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "resource",
   image: "images/wicking-bucket-instructions.jpg",
   desc: "Illustrated guide for creating self-watering wicking bucket gardens.",
-  tags: ["instructions", "growing", "sustainability"],
+  tags: ["instruct", "grow", "sustainability"],
   inv: { available: true, remaining: 10, note: "In Stock" }
 },
 {
@@ -604,7 +604,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "resource",
   image: "images/composting-guide.jpg",
   desc: "Beginner-friendly guide explaining composting basics and best practices.",
-  tags: ["instructions", "sustainability"],
+  tags: ["instruct", "sustainability"],
   inv: { available: true, remaining: 10, note: "In Stock" }
 },
 {
@@ -614,7 +614,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "resource",
   image: "images/soil-health-guide.jpg",
   desc: "Educational overview of soil types, nutrients, and soil improvement methods.",
-  tags: ["growing", "sustainability"],
+  tags: ["grow", "sustainability"],
   inv: { available: true, remaining: 10, note: "In Stock" }
 },
 {
@@ -624,7 +624,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "resource",
   image: "images/seed-starting-guide.jpg",
   desc: "Instructions for starting seeds indoors and outdoors successfully.",
-  tags: ["instructions", "growing"],
+  tags: ["instruct", "grow"],
   inv: { available: true, remaining: 10, note: "In Stock" }
 },
 {
@@ -654,7 +654,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
   kind: "resource",
   image: "images/garden-journals.jpg",
   desc: "Printable journals for tracking plant growth and garden observations.",
-  tags: ["classroom", "growing"],
+  tags: ["classroom", "grow"],
   inv: { available: true, remaining: 10, note: "In Stock" }
 },
 {
@@ -669,6 +669,7 @@ googlePlacesKey: "PASTE_YOUR_KEY_HERE",
 },
   ]
 };
+
 
 
 
