@@ -125,7 +125,16 @@ p a:hover{ opacity: .85; }
   align-items: center;
   padding: 14px 0;
   gap: 18px;
+.brand {
+  display: inline-flex;
+  align-items: center; /* vertically centers badge and text */
+  gap: 10px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  vertical-align: middle; /* just in case */
 }
+
 .brand-badge {
   width: 50px;
   height: 50px;
@@ -139,8 +148,8 @@ p a:hover{ opacity: .85; }
 .brand-badge img {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain; /* keeps aspect ratio and fits within badge */
-  display: block;      /* removes any inline spacing */
+  object-fit: contain; /* keeps image aspect ratio */
+  display: block;      /* removes inline spacing issues */
 }
 
 .nav-right{
@@ -1365,6 +1374,7 @@ footer a strong,
 .hero h1{
   margin-bottom: 14px;
 }
+
 
 
 
