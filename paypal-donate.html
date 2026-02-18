@@ -6,21 +6,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
   <script src="config.js"></script>
+  <!-- PayPal SDK -->
   <script 
     src="https://www.paypal.com/sdk/js?client-id=BAAeotQ9awtpo5SDqJts6T287c188QBZ2fp_ZgK3JQUUO3F3JH7Ytoqn-sS4VkcOzGFjhvWnp7WmiT-4KE&components=hosted-buttons&enable-funding=venmo&currency=USD">
   </script>
 </head>
 <body>
+  <!-- Injected Header -->
   <div id="siteHeader"></div>
-
   <section class="section donation-page">
     <div class="container donation-container">
+      
+      <div class="kicker">Secure Contribution</div>
+      <h1>Support FutureSprouts</h1>
+      <p class="small muted">
+        You will be securely redirected to PayPal to complete your donation.
+      </p>
+      </section>
       <div class="paypal-wrapper">
         <div id="paypal-container-EKVRGYUU6WLDJ"></div>
       </div>
+      
+      <p class="disclaimer">
+        Please note: Contributions are currently not tax-deductible.
+      </p>
     </div>
   </section>
-
+  <!-- Injected Footer -->
   <div id="siteFooter"></div>
   <script>
     paypal.HostedButtons({
