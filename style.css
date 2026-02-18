@@ -1404,6 +1404,44 @@ footer a strong,
     margin-top: 20px;
   }
 }
+.donation-page {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.donation-container {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  opacity: 0.7;
+}
+
+.lead {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 20px 0;
+}
+
+.paypal-wrapper {
+  margin: 40px 0 20px;
+}
+
+.disclaimer {
+  font-size: 0.85rem;
+  margin-top: 30px;
+  opacity: 0.7;
+}
+
+.muted {
+  opacity: 0.75;
+}
+
 
 
 
