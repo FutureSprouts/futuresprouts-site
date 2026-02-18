@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Donate via PayPal | FutureSprouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+
+  <!-- PayPal Hosted Button SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAeotQ9awtpo5SDqJts6I28rcl88QBZ2fp_Zgk3JQUUO3F3JH7Ytqon-sS4VkcOzGfJhVwhp7WmiT-4KE&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
+</head>
+<body>
+
+  <!-- Injected header -->
+  <div id="siteHeader"></div>
+
+  <section class="section">
+    <div class="container" style="max-width:600px; text-align:center;">
+      <div class="kicker">Secure Donation</div>
+      <h2>Complete Your Contribution</h2>
+      <p class="small">You will be redirected securely through PayPal.</p>
+
+      <div style="margin-top:30px;">
+        <div id="paypal-container-EKVRGYUU6WLDJ"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Injected footer -->
+  <div id="siteFooter"></div>
+
+  <script>
+    paypal.HostedButtons({
+      hostedButtonId: "EKVRGYUU6WLDJ"
+    }).render("#paypal-container-EKVRGYUU6WLDJ");
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>
