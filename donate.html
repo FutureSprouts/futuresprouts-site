@@ -7,6 +7,7 @@
   <meta name="description" content="Support FutureSprouts: PayPal donations, monthly giving, and in-kind support." />
   <link rel="stylesheet" href="style.css" />
   <script src="config.js"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=AfmvNxs63TkNmqoftm8qwg91SvUnQtLqlloZdaHx-Eni8IRZxtuUF9BJSfDiPeE2u_m8JyAZ0x6tW-Eh&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 </head>
 <body>
   <!-- Injected header -->
@@ -45,12 +46,12 @@
           <h3>Become a Monthly Supporter</h3>
           <p class="card-desc">Sustain our programs year-round. Cancel anytime.</p>
           <div class="amount-options">
-            <button class="amount-chip">$5/mo</button>
-            <button class="amount-chip active">$10/mo</button>
-            <button class="amount-chip">$25/mo</button>
-            <button class="amount-chip">$50/mo</button>
+            <button class="amount-chip active" data-plan="P-2M927126G2694500NNGOIDHI">🌱 $5/mo</button>
+            <button class="amount-chip" data-plan="P-6DK91425HV724361DNGOIEDQ">🌿 $10/mo</button>
+            <button class="amount-chip" data-plan="P-85X48833091729338NGOIE2Q">🌻 $25/mo</button>
+            <button class="amount-chip" data-plan="P-3SX05852LF679813WNGOIFJI">🌳 $50/mo</button>
           </div>
-          <a class="btn primary" id="monthlyBtn" href="paypal-donate.html">Give Monthly via PayPal</a>
+          <div id="paypal-button-container"></div>
         </div>
 
         <!-- In-Kind -->
@@ -74,12 +75,40 @@
   <div id="siteFooter"></div>
   <script src="script.js"></script>
   <script>
+    let activePlan = 'P-2M927126G2694500NNGOIDHI';
+
     document.querySelectorAll('.amount-chip').forEach(chip => {
       chip.addEventListener('click', () => {
         document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
+        activePlan = chip.dataset.plan;
+        renderPayPal();
       });
     });
+
+    function renderPayPal() {
+      document.getElementById('paypal-button-container').innerHTML = '';
+      paypal.Buttons({
+        style: {
+          shape: 'pill',
+          color: 'white',
+          layout: 'horizontal',
+          label: 'subscribe',
+          tagline: false
+        },
+        createSubscription: function(data, actions) {
+          return actions.subscription.create({ plan_id: activePlan });
+        },
+        onApprove: function(data, actions) {
+          window.location.href = 'thankyou.html';
+        },
+        onCancel: function(data) {
+          window.location.href = 'cancel.html';
+        }
+      }).render('#paypal-button-container');
+    }
+
+    renderPayPal();
   </script>
 </body>
 </html>
