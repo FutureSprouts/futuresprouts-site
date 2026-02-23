@@ -1580,6 +1580,50 @@ footer a strong,
     transform: none;
   }
 }
+/* =========================
+   CANCEL DROPDOWN
+========================= */
+.cancel-details {
+  margin-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 12px;
+}
+
+.cancel-details summary {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cancel-details summary::before {
+  content: '▸';
+  transition: transform 0.2s ease;
+  font-size: 10px;
+}
+
+.cancel-details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.cancel-details summary:hover {
+  color: rgba(255,255,255,0.8);
+}
+
+.cancel-details p {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 10px;
+  line-height: 1.7;
+}
+
+.cancel-details strong {
+  color: rgba(255,255,255,0.75);
+}
 
 
 
