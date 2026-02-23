@@ -4,16 +4,13 @@
   <meta charset="UTF-8" />
   <title>Donate | FutureSprouts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Support FutureSprouts: PayPal donations, Stripe payment links, donor tiers, and in-kind support." />
-
+  <meta name="description" content="Support FutureSprouts: PayPal donations, monthly giving, and in-kind support." />
   <link rel="stylesheet" href="style.css" />
   <script src="config.js"></script>
 </head>
 <body>
-
   <!-- Injected header -->
   <div id="siteHeader"></div>
-
   <div class="container mobile-menu">
     <a href="about.html">About</a>
     <a href="programs.html">Programs</a>
@@ -31,40 +28,37 @@
       <h2 class="reveal">Support farming education and environmental education.</h2>
       <p class="reveal">Choose a method below.</p>
 
-      <div class="grid cols-3" style="margin-top:18px;">
+      <div class="donate-cards">
 
-        <!-- PayPal -->
-        <div class="card reveal">
-          <div class="pill">PayPal</div>
-          <h3>Donate with PayPal</h3>
-          <p class="small">Secure checkout via PayPal or Venmo.</p>
-          <div style="margin-top:12px;">
-            <a class="btn primary" href="paypal-donate.html">
-              Donate via PayPal
-            </a>
-          </div>
+        <!-- PayPal: One-Time -->
+        <div class="donate-card reveal">
+          <div class="donate-pill">PayPal</div>
+          <h3>One-Time Gift</h3>
+          <p class="card-desc">Secure checkout via PayPal or Venmo. Every dollar goes directly to the garden.</p>
+          <a class="btn primary" href="paypal-donate.html">Donate via PayPal</a>
         </div>
 
-        <!-- Stripe -->
-        <div class="card reveal">
-          <div class="pill">Stripe</div>
-          <h3>Stripe payment links</h3>
-          <p class="small">Clean checkout experience.</p>
-          <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:10px;">
-            <a id="stripeSmall" class="btn primary" href="#" target="_blank" rel="noopener">Give (Small)</a>
-            <a id="stripeKit" class="btn" style="border:1px solid var(--border);background:var(--card);" href="#" target="_blank" rel="noopener">Sponsor a Kit</a>
-            <a id="stripeBed" class="btn" style="border:1px solid var(--border);background:var(--card);" href="#" target="_blank" rel="noopener">Sponsor a Bed</a>
+        <!-- Monthly Giving: Featured -->
+        <div class="donate-card featured reveal">
+          <div class="featured-star">⭐ Most Impactful</div>
+          <div class="donate-pill">Monthly Giving</div>
+          <h3>Become a Monthly Supporter</h3>
+          <p class="card-desc">Sustain our programs year-round. Cancel anytime.</p>
+          <div class="amount-options">
+            <button class="amount-chip">$5/mo</button>
+            <button class="amount-chip active">$10/mo</button>
+            <button class="amount-chip">$25/mo</button>
+            <button class="amount-chip">$50/mo</button>
           </div>
+          <a class="btn primary" id="monthlyBtn" href="paypal-donate.html">Give Monthly via PayPal</a>
         </div>
 
-        <!-- In-kind -->
-        <div class="card reveal">
-          <div class="pill">In-kind</div>
-          <h3>Donate materials</h3>
-          <p class="small">Seeds, gloves, bags, and tools.</p>
-          <div style="margin-top:12px;">
-            <a class="btn primary" href="wishlist.html">View wishlist</a>
-          </div>
+        <!-- In-Kind -->
+        <div class="donate-card reveal">
+          <div class="donate-pill">In-Kind</div>
+          <h3>Donate Materials</h3>
+          <p class="card-desc">Seeds, gloves, bags, and tools. View our Amazon wishlist to ship directly.</p>
+          <a class="btn primary" href="wishlist.html">View Wishlist</a>
         </div>
 
       </div>
@@ -73,13 +67,19 @@
         At this time, contributions to FutureSprouts are not tax-deductible.
         Our 501(c)(3) application is currently pending.
       </div>
-
     </div>
   </section>
 
   <!-- Injected footer -->
   <div id="siteFooter"></div>
-
   <script src="script.js"></script>
+  <script>
+    document.querySelectorAll('.amount-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>
