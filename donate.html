@@ -89,10 +89,11 @@
     function renderPayPal() {
       document.getElementById('paypal-button-container').innerHTML = '';
       paypal.Buttons({
+        fundingSource: paypal.FUNDING.PAYPAL,
         style: {
           shape: 'pill',
           color: 'white',
-          layout: 'horizontal',
+          layout: 'vertical',
           label: 'subscribe',
           tagline: false
         },
