@@ -1423,6 +1423,163 @@ footer a strong,
     max-width: 350px;      /* Prevents the button from being too wide */
     margin-top: 20px;
 }
+/* =========================
+   DONATE PAGE — CARD LAYOUT
+========================= */
+
+.donate-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+  margin-top: 28px;
+}
+
+/* Base donate card — overrides .card defaults for this layout */
+.donate-card {
+  background: var(--card);
+  border: 1.5px solid var(--border) !important;
+  border-radius: 16px;
+  padding: 28px 24px;
+  position: relative;
+  transition: box-shadow 0.2s;
+  box-shadow: none;
+}
+
+.donate-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  border-color: var(--green) !important;
+}
+
+/* Featured middle card */
+.donate-card.featured {
+  background: #1e3d1e;
+  border-color: #1e3d1e !important;
+  color: #fff;
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(30,61,30,0.25);
+}
+
+.donate-card.featured:hover {
+  box-shadow: 0 16px 48px rgba(30,61,30,0.35);
+  border-color: #1e3d1e !important;
+}
+
+/* "Most Impactful" label */
+.featured-star {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #4a9e4a;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* Pill badges inside donate cards */
+.donate-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+  background: color-mix(in oklab, var(--green) 14%, transparent);
+  color: var(--green);
+}
+
+.donate-card.featured .donate-pill {
+  background: rgba(255,255,255,0.15);
+  color: #a8d5a8;
+}
+
+/* Headings + descriptions inside donate cards */
+.donate-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: inherit;
+  letter-spacing: -0.01em;
+}
+
+.donate-card .card-desc {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  color: var(--muted);
+}
+
+.donate-card.featured .card-desc {
+  color: #a8c4a8;
+}
+
+/* Amount chips */
+.amount-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.amount-chip {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.amount-chip:hover,
+.amount-chip.active {
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.6);
+}
+
+/* Button overrides for featured card */
+.donate-card.featured .btn.primary {
+  background: #fff;
+  color: #1e3d1e;
+  border-color: #fff;
+}
+
+.donate-card.featured .btn.primary:hover {
+  background: #e8f5e8;
+  border-color: #e8f5e8;
+}
+
+.donate-card.featured .btn.secondary {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.35);
+}
+
+.donate-card.featured .btn.secondary:hover {
+  border-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.08);
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .donate-cards {
+    grid-template-columns: 1fr;
+  }
+  .donate-card.featured {
+    transform: none;
+  }
+}
 
 
 
