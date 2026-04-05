@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Events | FutureSprouts</title>
+  <title>Event Updates | FutureSprouts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="FutureSprouts events: upcoming events, RSVP for updates, and community impact." />
-  <meta property="og:title" content="Events | FutureSprouts" />
-  <meta property="og:description" content="Upcoming events, RSVP, and community highlights." />
+  <meta name="description" content="Sign up for FutureSprouts event updates and notifications." />
+  <meta property="og:title" content="Event Updates | FutureSprouts" />
+  <meta property="og:description" content="Stay informed about upcoming FutureSprouts events." />
   <meta property="og:type" content="website" />
   <link rel="stylesheet" href="style.css" />
   <script src="config.js"></script>
@@ -17,9 +17,11 @@
   <section class="section section-tight">
     <div class="container">
       <div class="kicker reveal">Events</div>
-      <h2 class="reveal">Upcoming events</h2>
+      <h2 class="reveal">Stay in the loop.</h2>
       <p class="reveal">
-        Take a look at some of the events we're planning, RSVP for updates!
+        Dates and locations for our upcoming events are still being finalized.
+        Fill out the form below and we'll reach out as soon as details are confirmed.
+        No commitment to attend — just a way to stay informed.
       </p>
     </div>
   </section>
@@ -27,34 +29,59 @@
   <section class="section alt">
     <div class="container">
       <div class="grid cols-2">
-
-        <!-- EVENT RSVP (full width) -->
         <div class="card reveal" style="grid-column: 1 / -1;">
-          <div class="pill">RSVP & Updates</div>
-          <h3>Join an Upcoming Event</h3>
-          <p class="small">Sign up to receive details and updates about our upcoming events.</p>
+          <div class="pill">Get Notified</div>
+          <h3>Sign up for event updates</h3>
+          <p class="small">
+            We'll email you when times, dates, and locations are confirmed for
+            our Community Cleanup, Seed Swap, and any future events.
+          </p>
 
           <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
-            <input type="hidden" name="_subject" value="New Event RSVP - FutureSprouts">
+            <input type="hidden" name="_subject" value="Event Updates Signup - FutureSprouts">
+
             <div class="form-row">
               <input class="input" type="text" name="name" placeholder="Full name" required>
-              <input class="input" type="email" name="email" placeholder="Email" required>
+              <input class="input" type="email" name="email" placeholder="Email address" required>
             </div>
+
+            <div class="form-row">
+              <input class="input" type="text" name="city" placeholder="City / Town">
+              <input class="input" type="text" name="age_group" placeholder="Age group (e.g. adult, teen, family)">
+            </div>
+
             <div class="form-row">
               <select class="input" name="event-interest" required style="cursor: pointer;">
-                <option value="" disabled selected>Which event(s) are you interested in?</option>
+                <option value="" disabled selected>Which event(s) would you like updates on?</option>
                 <option value="Community Cleanup">Community Cleanup</option>
-                <option value="Seed Swap">Seed Swap & Workshop</option>
-                <option value="Both Events">Both Upcoming Events</option>
-                <option value="General Interest">Just notify me of future events</option>
+                <option value="Seed Swap">Seed Swap &amp; Workshop</option>
+                <option value="Both">Both upcoming events</option>
+                <option value="All Future Events">All future FutureSprouts events</option>
+              </select>
+              <select class="input" name="how_heard" style="cursor: pointer;">
+                <option value="" disabled selected>How did you hear about us?</option>
+                <option value="Instagram">Instagram</option>
+                <option value="TikTok">TikTok</option>
+                <option value="Friend or Family">Friend or family</option>
+                <option value="School">School</option>
+                <option value="Search">Web search</option>
+                <option value="Other">Other</option>
               </select>
             </div>
-            <textarea name="message" placeholder="Any specific questions or accessibility needs we should know about?"></textarea>
-            <button class="btn primary" type="submit">Submit RSVP</button>
+
+            <textarea name="message" placeholder="Questions, accessibility needs, or topics you'd love to see at a future event?"></textarea>
+
+            <button class="btn primary" type="submit">Notify me about events</button>
           </form>
         </div>
-
       </div>
+
+      <div class="notice reveal">
+        Want FutureSprouts at your school or organization?
+        Email <a href="mailto:info@futuresprouts.org">info@futuresprouts.org</a>
+        or use the School Partnership form on <a href="get-involved.html">Get Involved</a>.
+      </div>
+
     </div>
   </section>
 
