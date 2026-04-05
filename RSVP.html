@@ -1,0 +1,31 @@
+<div class="card reveal">
+  <div class="pill">RSVP & Updates</div>
+  <h3>Join an Upcoming Event</h3>
+  <p class="small">Sign up to receive deatils and updates about our upcoming events.</p>
+
+  <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
+    <input type="hidden" name="_subject" value="New Event RSVP - FutureSprouts">
+
+    <div class="form-row">
+      <input class="input" type="text" name="name" placeholder="Full name" required>
+      <input class="input" type="email" name="email" placeholder="Email" required>
+    </div>
+
+    <div class="form-row">
+      <select class="input" name="event-interest" required style="cursor: pointer;">
+        <option value="" disabled selected>Which event(s) are you interested in?</option>
+        <option value="Community Cleanup">Community Cleanup</option>
+        <option value="Seed Swap">Seed Swap & Workshop</option>
+        
+        <option value="Both Events">Both Upcoming Events</option>
+        <option value="General Interest">Just notify me of future events</option>
+      </select>
+      
+      <input class="input" type="number" name="guests" placeholder="# of guests" min="1">
+    </div>
+
+    <textarea name="message" placeholder="Any specific questions or accessibility needs we should know about?"></textarea>
+    
+    <button class="btn primary" type="submit" style="width: 100%;">Submit RSVP</button>
+  </form>
+</div>
