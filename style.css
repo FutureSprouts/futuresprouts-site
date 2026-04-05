@@ -81,17 +81,7 @@ body{
 .section.alt{ background: var(--bg2); }
 
 .section-tight{ padding-bottom: 32px; }
-.section{
-  padding: 64px 0;
-}
 
-.section-tight{
-  padding: 40px 0;
-}
-
-.grid{
-  margin-top: 20px;
-}
 
 h1{ font-size: var(--h1); letter-spacing: -0.035em; line-height: 1.03; }
 h2{ font-size: var(--h2); letter-spacing: -0.02em; line-height: 1.15; }
