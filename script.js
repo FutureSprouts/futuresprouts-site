@@ -325,8 +325,8 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="about.html">About</a>
       <a href="services.html">Services</a>
-      <a href="events.html">Events</a>
-      <a href="impact.html">Impact</a>
+      // <a href="events.html">Events</a>
+      // <a href="impact.html">Impact</a>
       <a href="get-involved.html">Get Involved</a>
       <a href="donate.html" class="donate-btn">Donate</a>
       <a href="contact.html">Contact</a>
