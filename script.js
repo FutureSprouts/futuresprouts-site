@@ -411,7 +411,9 @@
   </div>
 
   <div class="container footer-bottom">
-    <div class="footer-copy">© ${new Date().getFullYear()} ${site}</div>
+    <div class="footer-copy">
+  © ${new Date().getFullYear()} ${site} &nbsp;·&nbsp; 501(c)(3) Nonprofit &nbsp;·&nbsp; EIN: 41-3415589.
+</div>
 
     <div class="footer-actions">
       <div class="theme-control" id="themeControl">
