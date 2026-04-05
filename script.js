@@ -331,7 +331,7 @@
       <a href="contact.html">Contact</a>
 
       <div class="cart-wrap">
-        <a href="cart.html" class="cart-link" aria-label="View cart">
+        <a href="cart.html" class="cart-link" aria-label="View Request">
           <span class="cart-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
               <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
@@ -343,14 +343,14 @@
           <span class="cart-badge" id="cartBadge">0</span>
         </a>
 
-        <div class="mini-cart" id="miniCart" aria-label="Cart preview">
+        <div class="mini-cart" id="miniCart" aria-label="Request preview">
           <div class="mini-cart-header">
-            <strong>Cart Preview</strong>
+            <strong>Request Preview</strong>
             <span class="small" id="miniCartCount">0 items</span>
           </div>
           <div class="mini-cart-items" id="miniCartItems"></div>
           <div class="mini-cart-footer">
-            <a class="btn primary mini-cart-btn" href="cart.html">View Cart</a>
+            <a class="btn primary mini-cart-btn" href="cart.html">View Request</a>
           </div>
         </div>
       </div>
@@ -365,7 +365,7 @@
     <a href="contact.html">Contact</a>
     <a href="donate.html" class="donate-btn">Donate</a>
 
-    <a href="cart.html" class="cart-link" aria-label="View cart">
+    <a href="cart.html" class="cart-link" aria-label="View Request">
       <span style="font-weight:700;">Cart</span>
       <span class="cart-badge" id="cartBadgeMobile">0</span>
     </a>
@@ -394,7 +394,7 @@
     <div>
       <h3>Quick Links</h3>
       <p><a href="services.html">Services</a></p>
-      <p><a href="cart.html">Cart</a></p>
+      <p><a href="cart.html">Request</a></p>
       <p><a href="events.html">Events</a></p>
       <p><a href="donate.html">Donate</a></p>
       <p><a href="wishlist.html">Wishlist</a></p>
@@ -619,7 +619,7 @@
     miniCount.textContent = `${total} item${total === 1 ? "" : "s"}`;
 
     if (cart.length === 0) {
-      miniItems.innerHTML = `<div class="small">Your cart is empty.</div>`;
+      miniItems.innerHTML = `<div class="small">Your request is empty.</div>`;
       return;
     }
 
