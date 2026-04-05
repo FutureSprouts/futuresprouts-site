@@ -28,41 +28,44 @@
 
   <section class="section alt">
     <div class="container">
-      <div class="grid cols-2">
-        <div class="card reveal" style="grid-column: 1 / -1;">
-          <div class="pill">Get Notified</div>
-          <h3>Sign up for event updates</h3>
-          <p class="small">
-            We'll email you when times, dates, and locations are confirmed for
-            our Community Cleanup, Seed Swap, and any future events.
-          </p>
 
-          <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
-            <input type="hidden" name="_subject" value="Event Updates Signup - FutureSprouts">
+      <!-- ✅ FIX: wrapper div added to prevent spacing issue -->
+      <div>
+        <div class="grid cols-2">
+          <div class="card reveal" style="grid-column: 1 / -1;">
+            <div class="pill">Get Notified</div>
+            <h3>Sign up for event updates</h3>
+            <p class="small">
+              We'll email you when times, dates, and locations are confirmed for
+              our Community Cleanup, Seed Swap, and any future events.
+            </p>
 
-            <div class="form-row">
-              <input class="input" type="text" name="name" placeholder="Full name" required>
-              <input class="input" type="email" name="email" placeholder="Email address" required>
-            </div>
+            <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
+              <input type="hidden" name="_subject" value="Event Updates Signup - FutureSprouts">
 
-  
-            <div class="form-row">
-              <select class="input" name="event-interest" required style="cursor: pointer;">
-                <option value="" disabled selected>Which event(s) would you like updates on?</option>
-                <option value="Community Cleanup">Community Cleanup</option>
-                <option value="Seed Swap">Seed Swap &amp; Workshop</option>
-                <option value="Both">Both upcoming events</option>
-                <option value="All Future Events">All future FutureSprouts events</option>
-              </select>
-          
-            </div>
+              <div class="form-row">
+                <input class="input" type="text" name="name" placeholder="Full name" required>
+                <input class="input" type="email" name="email" placeholder="Email address" required>
+              </div>
 
-            <textarea name="message" placeholder="Questions, accessibility needs, or topics you'd love to see at a future event?"></textarea>
+              <div class="form-row">
+                <select class="input" name="event-interest" required style="cursor: pointer;">
+                  <option value="" disabled selected>Which event(s) would you like updates on?</option>
+                  <option value="Community Cleanup">Community Cleanup</option>
+                  <option value="Seed Swap">Seed Swap &amp; Workshop</option>
+                  <option value="Both">Both upcoming events</option>
+                  <option value="All Future Events">All future FutureSprouts events</option>
+                </select>
+              </div>
 
-            <button class="btn primary" type="submit">Notify me about events</button>
-          </form>
+              <textarea name="message" placeholder="Questions, accessibility needs, or topics you'd love to see at a future event?"></textarea>
+
+              <button class="btn primary" type="submit">Notify me about events</button>
+            </form>
+          </div>
         </div>
       </div>
+      <!-- ✅ END FIX -->
 
       <div class="notice reveal">
         Want FutureSprouts at your school or organization?
