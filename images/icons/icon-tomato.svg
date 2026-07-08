@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Tomato seeds">
+  <circle cx="60" cy="60" r="56" fill="#A9C4A4"/>
+  <circle cx="60" cy="60" r="52" fill="none" stroke="#2D5B3C" stroke-width="2.5" opacity="0.85"/>
+  <g fill="none" stroke="#2D5B3C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 44 C 40 44, 30 58, 32 72 C 34 86, 46 94, 60 94 C 74 94, 86 86, 88 72 C 90 58, 80 44, 60 44 Z"/>
+    <path d="M60 44 C 58 36, 60 30, 64 26"/>
+    <path d="M60 44 C 52 40, 46 40, 42 43 M60 44 C 68 40, 74 40, 78 43 M60 44 C 58 38, 62 36, 66 40 M60 44 C 54 46, 50 50, 49 54" stroke-width="3"/>
+  </g>
+</svg>

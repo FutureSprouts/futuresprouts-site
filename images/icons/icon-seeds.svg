@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Seed packets">
+  <circle cx="60" cy="60" r="56" fill="#A9C4A4"/>
+  <circle cx="60" cy="60" r="52" fill="none" stroke="#2D5B3C" stroke-width="2.5" opacity="0.85"/>
+  <g fill="none" stroke="#2D5B3C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M38 34 H 82 L 78 90 H 42 Z"/>
+    <path d="M38 34 L 42 26 H 78 L 82 34" stroke-width="3"/>
+    <path d="M60 76 C 60 68, 60 62, 60 56 M 60 66 C 54 64, 51 59, 51 53 C 57 55, 60 60, 60 64 Z M 60 62 C 66 60, 69 55, 69 49 C 63 51, 60 56, 60 60 Z"/>
+  </g>
+</svg>

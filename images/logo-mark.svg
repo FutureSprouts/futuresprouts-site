@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="FutureSprouts logo">
+  <circle cx="100" cy="100" r="96" fill="#A9C4A4"/>
+  <!-- hand-drawn double vine ring -->
+  <g fill="none" stroke="#2D5B3C" stroke-width="4" stroke-linecap="round">
+    <path d="M100 14 C 152 12, 186 52, 185 100 C 184 150, 148 187, 99 186 C 50 185, 14 149, 15 99 C 16 51, 52 16, 100 14 Z"/>
+    <path d="M92 19 C 140 8, 183 42, 188 92 C 193 140, 158 182, 108 188 C 60 194, 18 158, 13 108 C 8 62, 44 26, 92 19 Z" stroke-width="3" opacity="0.9"/>
+  </g>
+  <!-- botanical script F -->
+  <g fill="none" stroke="#2D5B3C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <!-- main stem: sweeping f with descender loop -->
+    <path d="M88 158 C 84 168, 92 174, 98 168 C 104 162, 102 148, 100 132 C 97 108, 95 84, 99 64 C 102 49, 112 40, 124 40"/>
+    <!-- crossbar -->
+    <path d="M74 112 C 90 106, 112 104, 128 108"/>
+  </g>
+  <!-- leaves -->
+  <g fill="none" stroke="#2D5B3C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- top-right large leaf -->
+    <path d="M124 40 C 138 26, 158 24, 168 34 C 160 52, 142 60, 124 54 C 122 49, 122 44, 124 40 Z"/>
+    <path d="M126 48 C 140 42, 152 38, 164 36" stroke-width="2.5"/>
+    <!-- upper-left leaf -->
+    <path d="M96 66 C 84 54, 68 52, 58 60 C 64 74, 80 80, 94 74 C 96 71, 96 68, 96 66 Z"/>
+    <path d="M92 70 C 82 66, 72 62, 62 62" stroke-width="2.5"/>
+    <!-- lower-right leaf off the crossbar -->
+    <path d="M128 108 C 142 98, 158 98, 166 108 C 156 122, 140 124, 128 116 C 127 113, 127 110, 128 108 Z"/>
+    <path d="M132 112 C 142 108, 152 106, 160 106" stroke-width="2.5"/>
+  </g>
+</svg>

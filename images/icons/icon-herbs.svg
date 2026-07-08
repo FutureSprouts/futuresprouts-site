@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Herb seeds">
+  <circle cx="60" cy="60" r="56" fill="#A9C4A4"/>
+  <circle cx="60" cy="60" r="52" fill="none" stroke="#2D5B3C" stroke-width="2.5" opacity="0.85"/>
+  <g fill="none" stroke="#2D5B3C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 96 C 60 76, 60 58, 60 42"/>
+    <path d="M60 66 C 48 62, 40 52, 40 40 C 52 42, 60 52, 60 64 Z"/>
+    <path d="M60 56 C 72 52, 80 42, 80 30 C 68 32, 60 42, 60 54 Z"/>
+    <path d="M60 84 C 50 82, 44 76, 43 68 C 52 70, 58 76, 60 82 Z"/>
+  </g>
+</svg>
