@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Soil Testing Kits | FutureSprouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Request free soil testing and soil setup kits to get your school or community garden growing right." />
+  <link rel="canonical" href="https://futuresprouts.org/soil-kits.html" />
+  <meta property="og:title" content="Soil Testing Kits | FutureSprouts" />
+  <meta property="og:description" content="Request free soil testing and soil setup kits to get your school or community garden growing right." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://futuresprouts.org/soil-kits.html" />
+  <meta property="og:image" content="https://futuresprouts.org/images/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- Injected header (from script.js) -->
+  <div id="siteHeader"></div>
+
+
+  <section class="section">
+    <div class="container">
+      <div class="kicker reveal">Services • Soil Testing</div>
+      <h2 class="reveal">Soil testing kit (1 per order).</h2>
+      <p class="reveal">To prevent abuse, we limit soil kits to one per request.</p>
+
+      <div class="rulebox reveal">
+        Abuse prevention rule: <strong>Soil testing kits are limited to 1 per order.</strong>
+      </div>
+
+      <div class="grid cols-2">
+        <div class="card reveal">
+          <div class="icon-panel"><img src="images/icons/icon-soil.svg" alt="" width="96" height="96"></div>
+          <div class="shop-body">
+            <div class="pill">Soil</div>
+            <h3>Soil Testing Kit</h3>
+            <p class="small">Basic kit for sampling guidance + results process (details you can refine).</p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div><strong>Quantity</strong><div class="small">Max 1 per order</div></div>
+              <div class="qty">
+                <button type="button" id="soilDec">−</button>
+                <span id="soilQty">0</span>
+                <button type="button" id="soilInc">+</button>
+              </div>
+            </div>
+
+            <div class="cart-actions" style="margin-top:14px;">
+              <a class="btn outline" href="services.html">Back</a>
+              <a class="btn primary" href="cart.html">View Cart</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card reveal">
+          <div class="pill">Note</div>
+          <h3>What happens next?</h3>
+          <p class="small">
+            After you submit your request, FutureSprouts will confirm eligibility, delivery method, and timing.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Injected footer (from script.js) -->
+  <div id="siteFooter"></div>
+
+  <script src="script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      function readyCart() {
+        return window.FS_CART
+          && typeof window.FS_CART.loadCart === "function"
+          && typeof window.FS_CART.cartAddOrUpdate === "function";
+      }
+
+      function getQty(){
+        const cart = window.FS_CART.loadCart();
+        const item = cart.find(x => x.id === "soil-kit-1");
+        return item ? item.qty : 0;
+      }
+
+      function render(){
+        document.getElementById("soilQty").textContent = getQty();
+      }
+
+      function bind(){
+        document.getElementById("soilInc").onclick = () => {
+          window.FS_CART.cartAddOrUpdate("soil-kit-1", "Soil Testing Kit", {}, +1, { maxPerItem: 1 });
+          render();
+        };
+        document.getElementById("soilDec").onclick = () => {
+          window.FS_CART.cartAddOrUpdate("soil-kit-1", "Soil Testing Kit", {}, -1, { maxPerItem: 1 });
+          render();
+        };
+        render();
+      }
+
+      if (readyCart()) bind();
+      else {
+        const t0 = Date.now();
+        const timer = setInterval(() => {
+          if (readyCart() || Date.now() - t0 > 1500) {
+            clearInterval(timer);
+            if (readyCart()) bind();
+          }
+        }, 50);
+      }
+    });
+  </script>
+
+</body>
+</html>

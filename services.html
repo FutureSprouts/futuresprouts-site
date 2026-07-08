@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Free Seeds & Garden Supplies | FutureSprouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Request free seed packets, garden kits, raised beds, and educational materials for your school, classroom, or community." />
+  <link rel="canonical" href="https://futuresprouts.org/services.html" />
+  <meta property="og:title" content="Free Seeds & Garden Supplies | FutureSprouts" />
+  <meta property="og:description" content="Request free seed packets, garden kits, raised beds, and educational materials for your school, classroom, or community." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://futuresprouts.org/services.html" />
+  <meta property="og:image" content="https://futuresprouts.org/images/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- Injected header (from script.js) -->
+  <div id="siteHeader"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="kicker reveal">Services</div>
+      <h2 class="reveal">Request supplies for your school or community.</h2>
+      <p class="reveal">Choose a package below and add what you need to your cart.</p>
+
+      <div class="grid cols-3">
+
+        <!-- Seeds -->
+        <a class="card shop-card reveal" href="seed-packets.html" id="svcSeeds">
+          <div class="icon-panel"><img src="images/icons/icon-seeds.svg" alt="" width="96" height="96"></div>
+          <div class="shop-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div class="pill">Seeds</div>
+              <span class="badge ok" id="badgeSeeds">Available</span>
+            </div>
+            <h3 style="margin-top:10px;">Seed Packets</h3>
+            <p class="small" id="subSeeds">Request seed packets for a variety of crops to support classroom and community growing projects.</p>
+          </div>
+        </a>
+
+        <!-- Beds -->
+        <a class="card shop-card reveal" href="garden-supplies.html" id="svcBeds">
+          <div class="icon-panel"><img src="images/icons/icon-bed.svg" alt="" width="96" height="96"></div>
+          <div class="shop-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div class="pill">Supplies</div>
+              <span class="badge ok" id="badgeBeds">Available</span>
+            </div>
+            <h3 style="margin-top:10px;">Garden Supplies</h3>
+            <p class="small" id="subBeds">Request essential gardening supplies such as gloves, hand tools, planter trays, and buckets for classroom or community use.</p>
+          </div>
+        </a>
+
+        <!-- Soil -->
+        <a class="card shop-card reveal" href="education.html" id="svcSoil">
+          <div class="icon-panel"><img src="images/icons/icon-soil.svg" alt="" width="96" height="96"></div>
+          <div class="shop-body">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div class="pill">Education</div>
+              <span class="badge ok" id="badgeSoil">Available</span>
+            </div>
+            <h3 style="margin-top:10px;">Educational Resources</h3>
+            <p class="small" id="subSoil">Order brochures, activity sheets, and instructional kits that teach gardening concepts and hands-on growing skills.</p>
+          </div>
+        </a>
+
+      </div>
+
+      
+
+      <div class="card reveal" style="margin-top:14px;">
+        <h3 style="margin-top:0;">Availability Note</h3>
+        <p class="small" style="margin-bottom:0;">
+          All items are subject to availability. Requests are reviewed and fulfilled based on demonstrated need. We reserve the right to limit or withhold services to ensure fair and equitable distribution.
+        </p>
+      </div>
+      <div class="card reveal" style="margin-top:14px;">
+        <h3 style="margin-top:0;">Product Disclaimer</h3>
+        <p class="small" style="margin-bottom:0;">
+         Images shown are for illustrative purposes only and represent example products. Actual items received may vary in appearance, brand, or components based on availability and sourcing at the time of fulfillment.
+        </p>
+      </div>
+      <div class="notice reveal">
+        You can view your cart any time using the “Cart” button in the top-right.
+      </div>
+    </div>
+  </section>
+
+  <!-- Injected footer (from script.js) -->
+  <div id="siteFooter"></div>
+
+  <script src="script.js"></script>
+
+  <script>
+    // Services availability logic (uses inventory from script.js)
+    (function () {
+      function run() {
+        if (!window.FS_CART || !window.FS_CART.loadInventory) return;
+
+        function groupStatus(keys) {
+          const inv = window.FS_CART.loadInventory();
+          const items = (inv && inv.items) || {};
+
+          let anyAvailable = false;
+          let anyLimited = false;
+          let bestRemaining = null;
+
+          keys.forEach(k => {
+            const it = items[k] || { available: true, remaining: 999 };
+            const available = !!it.available && (it.remaining == null || it.remaining > 0);
+
+            if (available) anyAvailable = true;
+            if (available && it.remaining != null && it.remaining <= 10) anyLimited = true;
+
+            if (available && it.remaining != null) {
+              bestRemaining = (bestRemaining == null) ? it.remaining : Math.min(bestRemaining, it.remaining);
+            }
+          });
+
+          if (!anyAvailable) return { label: "Out of stock", tone: "danger", remaining: 0 };
+          if (anyLimited) return { label: "Limited", tone: "warn", remaining: bestRemaining };
+          return { label: "Available", tone: "ok", remaining: bestRemaining };
+        }
+
+        function setCardStatus(cardId, badgeId, subId, status) {
+          const card = document.getElementById(cardId);
+          const badge = document.getElementById(badgeId);
+          const sub = document.getElementById(subId);
+          if (!card || !badge) return;
+
+          badge.textContent = status.label;
+          badge.classList.remove("ok", "warn", "danger");
+          badge.classList.add(status.tone);
+
+          if (sub) {
+            const base = sub.getAttribute("data-base") || sub.textContent;
+            sub.setAttribute("data-base", base);
+            if (status.label === "Limited" && typeof status.remaining === "number") {
+              sub.textContent = base + ` • Remaining: ${status.remaining}`;
+            } else {
+              sub.textContent = base;
+            }
+          }
+
+          const out = status.label === "Out of stock";
+          if (out) {
+            card.setAttribute("aria-disabled", "true");
+            card.style.opacity = "0.55";
+            card.style.pointerEvents = "none";
+          } else {
+            card.removeAttribute("aria-disabled");
+            card.style.opacity = "";
+            card.style.pointerEvents = "";
+          }
+        }
+
+        const seeds = groupStatus(["seed-tomato", "seed-corn", "seed-multi"]);
+        const beds  = groupStatus(["bed-2x4", "bed-4x4"]);
+        const soil  = groupStatus(["soil-kit-1"]);
+
+        setCardStatus("svcSeeds", "badgeSeeds", "subSeeds", seeds);
+        setCardStatus("svcBeds", "badgeBeds", "subBeds", beds);
+        setCardStatus("svcSoil", "badgeSoil", "subSoil", soil);
+      }
+
+      // Run now, and also once after DOM is fully ready (safe for slow loads)
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", run);
+      } else {
+        run();
+      }
+    })();
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+

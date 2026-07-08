@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Donate via PayPal | FutureSprouts</title>
+  <meta name="description" content="Make a secure one-time donation to FutureSprouts via PayPal or Venmo. Tax-deductible 501(c)(3), EIN 41-3415589." />
+  <link rel="canonical" href="https://futuresprouts.org/paypal-donate.html" />
+  <meta property="og:title" content="Donate via PayPal | FutureSprouts" />
+  <meta property="og:description" content="Make a secure one-time donation to FutureSprouts via PayPal or Venmo. Tax-deductible 501(c)(3), EIN 41-3415589." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://futuresprouts.org/paypal-donate.html" />
+  <meta property="og:image" content="https://futuresprouts.org/images/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+  <!-- PayPal SDK -->
+  <script 
+    src="https://www.paypal.com/sdk/js?client-id=BAAeotQ9awtpo5SDqJts6T287c188QBZ2fp_ZgK3JQUUO3F3JH7Ytoqn-sS4VkcOzGFjhvWnp7WmiT-4KE&components=hosted-buttons&enable-funding=venmo&currency=USD">
+  </script>
+</head>
+<body>
+  <!-- Injected Header -->
+  <div id="siteHeader"></div>
+  <section class="section donation-page">
+    <div class="container donation-container">
+      
+      <div class="kicker">Secure Contribution</div>
+      <h1>Support FutureSprouts</h1>
+    
+      <div class="paypal-wrapper">
+        <div id="paypal-container-EKVRGYUU6WLDJ"></div>
+      </div>
+      
+      <p class="notice">
+        FutureSprouts is a 501(c)(3) tax-exempt organization (EIN: 41-3415589). Contributions are tax-deductible to the full extent allowed by law, and you will receive an emailed receipt.
+      </p>
+    </div>
+  </section>
+  <!-- Injected Footer -->
+  <div id="siteFooter"></div>
+  <script>
+    paypal.HostedButtons({
+      hostedButtonId: "EKVRGYUU6WLDJ"
+    }).render("#paypal-container-EKVRGYUU6WLDJ");
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

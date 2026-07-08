@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Free Raised Garden Beds | FutureSprouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Request a raised garden bed for your school or community space, built and delivered by FutureSprouts volunteers." />
+  <link rel="canonical" href="https://futuresprouts.org/garden-beds.html" />
+  <meta property="og:title" content="Free Raised Garden Beds | FutureSprouts" />
+  <meta property="og:description" content="Request a raised garden bed for your school or community space, built and delivered by FutureSprouts volunteers." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://futuresprouts.org/garden-beds.html" />
+  <meta property="og:image" content="https://futuresprouts.org/images/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- Injected header (from script.js) -->
+  <div id="siteHeader"></div>
+
+
+  <section class="section">
+    <div class="container">
+      <div class="kicker reveal">Services • Garden Beds</div>
+      <h2 class="reveal">Request raised garden beds.</h2>
+      <p class="reveal">Choose a size and add it to your cart.</p>
+
+      <div class="rulebox reveal">
+        Abuse prevention rule: <strong>Max 4 total garden beds per order</strong> (any combination of sizes).
+      </div>
+
+      <div class="grid cols-2">
+        <!-- 2x4 -->
+        <div class="card reveal">
+          <img loading="lazy" class="shop-img" src="images/garden-bed.jpg" alt="2x4 garden bed">
+          <div class="shop-body">
+            <div class="pill">Garden Bed</div>
+            <h3>2×4 Bed</h3>
+            <p class="small">Compact bed for schools and small spaces.</p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div><strong>Quantity</strong><div class="small">Up to 4 total beds across both sizes</div></div>
+              <div class="qty">
+                <button type="button" data-bed-dec="bed-2x4">−</button>
+                <span id="bed2x4Qty">0</span>
+                <button type="button" data-bed-inc="bed-2x4">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4x4 -->
+        <div class="card reveal">
+          <img loading="lazy" class="shop-img" src="images/4x4-garden-bed.jpg" alt="4x4 garden bed">
+          <div class="shop-body">
+            <div class="pill">Garden Bed</div>
+            <h3>4×4 Bed</h3>
+            <p class="small">Larger bed suitable for class projects and community gardens.</p>
+
+            <div class="divider"></div>
+
+            <div class="qty-row">
+              <div><strong>Quantity</strong><div class="small">Up to 4 total beds across both sizes</div></div>
+              <div class="qty">
+                <button type="button" data-bed-dec="bed-4x4">−</button>
+                <span id="bed4x4Qty">0</span>
+                <button type="button" data-bed-inc="bed-4x4">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-actions reveal">
+        <a class="btn outline" href="services.html">Back to Services</a>
+        <a class="btn primary" href="cart.html">View Cart</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Injected footer (from script.js) -->
+  <div id="siteFooter"></div>
+
+  <script src="script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      function readyCart() {
+        return window.FS_CART && typeof window.FS_CART.loadCart === "function" && typeof window.FS_CART.cartAddOrUpdate === "function";
+      }
+
+      function getQty(id){
+        const cart = window.FS_CART.loadCart();
+        const item = cart.find(x => x.id === id);
+        return item ? item.qty : 0;
+      }
+
+      function render(){
+        document.getElementById("bed2x4Qty").textContent = getQty("bed-2x4");
+        document.getElementById("bed4x4Qty").textContent = getQty("bed-4x4");
+      }
+
+      function inc(id, name){
+        window.FS_CART.cartAddOrUpdate(id, name, {}, +1, { bedMaxTotal: 4 });
+        render();
+      }
+
+      function dec(id, name){
+        window.FS_CART.cartAddOrUpdate(id, name, {}, -1, { bedMaxTotal: 4 });
+        render();
+      }
+
+      function bind(){
+        document.querySelectorAll("[data-bed-inc='bed-2x4']").forEach(b => b.onclick = () => inc("bed-2x4","Garden Bed — 2×4"));
+        document.querySelectorAll("[data-bed-dec='bed-2x4']").forEach(b => b.onclick = () => dec("bed-2x4","Garden Bed — 2×4"));
+
+        document.querySelectorAll("[data-bed-inc='bed-4x4']").forEach(b => b.onclick = () => inc("bed-4x4","Garden Bed — 4×4"));
+        document.querySelectorAll("[data-bed-dec='bed-4x4']").forEach(b => b.onclick = () => dec("bed-4x4","Garden Bed — 4×4"));
+
+        render();
+      }
+
+      // If script.js initializes FS_CART slightly later, wait briefly
+      if (readyCart()) bind();
+      else {
+        const t0 = Date.now();
+        const timer = setInterval(() => {
+          if (readyCart() || Date.now() - t0 > 1500) {
+            clearInterval(timer);
+            if (readyCart()) bind();
+          }
+        }, 50);
+      }
+    });
+  </script>
+
+</body>
+</html>

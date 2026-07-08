@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Event Updates | FutureSprouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sign up for FutureSprouts event updates — community cleanups, seed swaps, and more in Chester County, PA." />
+  <link rel="canonical" href="https://futuresprouts.org/rsvp.html" />
+  <meta property="og:title" content="Event Updates | FutureSprouts" />
+  <meta property="og:description" content="Stay informed about upcoming FutureSprouts events." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+  <div id="siteHeader"></div>
+
+  <section class="section section-tight">
+    <div class="container">
+      <div class="kicker reveal">Events</div>
+      <h2 class="reveal">Stay in the loop.</h2>
+      <p class="reveal">
+        Dates and locations for our upcoming events are still being finalized.
+        Fill out the form below and we'll reach out as soon as details are confirmed.
+        No commitment to attend, just a way to stay informed.
+      </p>
+    </div>
+  </section>
+
+  <!-- ✅ HARD FIX: force correct spacing -->
+  <section class="section alt" style="padding-top: 0; margin-top: 0;">
+    <div class="container">
+      <div class="grid cols-2" style="margin-top: 0;">
+        <div class="card reveal" style="grid-column: 1 / -1; margin-top: 0;">
+          <div class="pill">Get Notified</div>
+          <h3>Sign up for event updates</h3>
+          <p class="small">
+            We'll email you when times, dates, and locations are confirmed for
+            our Community Cleanup, Seed Swap, and any future events.
+          </p>
+
+          <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
+            <input type="hidden" name="_subject" value="Event Updates Signup - FutureSprouts">
+
+            <div class="form-row">
+              <input class="input" type="text" name="name" placeholder="Full name" required>
+              <input class="input" type="email" name="email" placeholder="Email address" required>
+            </div>
+
+            <div class="form-row">
+              <select class="input" name="event-interest" required style="cursor: pointer;">
+                <option value="" disabled selected>Which event(s) would you like updates on?</option>
+                <option value="Community Cleanup">Community Cleanup</option>
+                <option value="Seed Swap">Seed Swap &amp; Workshop</option>
+                <option value="Both">Both upcoming events</option>
+                <option value="All Future Events">All future FutureSprouts events</option>
+              </select>
+            </div>
+
+            <textarea name="message" placeholder="Questions, accessibility needs, or topics you'd love to see at a future event?"></textarea>
+
+            <button class="btn primary" type="submit">Notify me about events</button>
+            <p class="small" style="margin-top:10px;">We'll only use your email for event updates. Unsubscribe anytime. See our <a href="privacy.html">privacy policy</a>.</p>
+          </form>
+        </div>
+      </div>
+
+      <div class="notice reveal" style="margin-top: 24px;">
+        Want FutureSprouts at your school or organization?
+        Email <a href="mailto:info@futuresprouts.org">info@futuresprouts.org</a>
+        or use the School Partnership form on <a href="get-involved.html">Get Involved</a>.
+      </div>
+
+    </div>
+  </section>
+
+  <div id="siteFooter"></div>
+  <script src="script.js"></script>
+</body>
+</html>
