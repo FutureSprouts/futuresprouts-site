@@ -25,7 +25,8 @@
   font-family: "Nunito Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   color: var(--pcal-text);
   background: var(--pcal-card);
-  border: 1px solid var(--pcal-bg2);
+  border: 1.5px solid color-mix(in oklab, var(--pcal-soil, #7A5233) 32%, transparent);
+  box-shadow: 0 8px 22px rgba(74, 58, 34, 0.09);
   border-radius: 14px;
   padding: 1rem;
   max-width: 100%;
@@ -71,7 +72,7 @@
   min-height: 44px;
   padding: 0.35rem 0.5rem;
   border-radius: 10px;
-  border: 1.5px solid var(--pcal-bg2);
+  border: 1.5px solid color-mix(in oklab, var(--pcal-soil, #7A5233) 26%, transparent);
   background: var(--pcal-bg);
   color: var(--pcal-text);
   cursor: pointer;
@@ -330,4 +331,9 @@
   .fs-pcal__table th {
     transition: background-color 160ms ease;
   }
+}
+
+:root[data-theme="dark"] .fs-pcal {
+  border-color: color-mix(in oklab, var(--sun, #E7C77F) 24%, transparent);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
 }

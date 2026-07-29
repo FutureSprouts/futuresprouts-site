@@ -8,7 +8,7 @@
    ========================================================= */
 
 .fs-grow {
-  --fsg-bg: var(--bg2, #EFE6CF);
+  --fsg-bg: color-mix(in oklab, var(--soil, #7A5233) 14%, var(--bg2, #EFE6CF));
   --fsg-card: var(--card, #FFFDF6);
   --fsg-text: var(--text, #29321F);
   --fsg-muted: var(--muted, #5D6450);
@@ -22,8 +22,9 @@
   font-family: var(--font, "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
   color: var(--fsg-text);
   background: var(--fsg-bg);
-  border: 1px solid var(--fsg-border);
+  border: 1.5px solid color-mix(in oklab, var(--fsg-soil) 42%, transparent);
   border-radius: var(--fsg-radius);
+  box-shadow: 0 10px 26px rgba(74, 58, 34, 0.10);
   line-height: 1.55;
 }
 
@@ -183,10 +184,11 @@
 
 .fs-grow-card {
   background: var(--fsg-card);
-  border: 1px solid var(--fsg-border);
-  border-left: 4px solid var(--fsg-green);
+  border: 1.5px solid color-mix(in oklab, var(--fsg-soil) 30%, transparent);
+  border-left: 5px solid var(--fsg-green-dark);
   border-radius: 12px;
   padding: 16px;
+  box-shadow: 0 4px 12px rgba(74, 58, 34, 0.08);
 }
 
 .fs-grow-card-head {
@@ -387,4 +389,16 @@
   .fs-grow-add {
     width: auto;
   }
+}
+
+/* Dark theme: the mixed panel goes muddy against the night-field bg2,
+   so lift it instead of deepening it. */
+:root[data-theme="dark"] .fs-grow {
+  --fsg-bg: color-mix(in oklab, var(--sun, #E7C77F) 7%, var(--bg2, #1A1E13));
+  border-color: color-mix(in oklab, var(--sun, #E7C77F) 26%, transparent);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+:root[data-theme="dark"] .fs-grow-card {
+  border-color: color-mix(in oklab, var(--sun, #E7C77F) 22%, transparent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
