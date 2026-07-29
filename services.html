@@ -16,6 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="grow-widget.css" />
+  <link rel="stylesheet" href="planting-calendar.css" />
   <script src="config.js"></script>
 </head>
 <body>
@@ -109,6 +111,13 @@
   <div id="siteFooter"></div>
 
   <script src="script.js"></script>
+    <script src="grow-data.js"></script>
+  <script src="grow-widget.js"></script>
+  <script src="planting-calendar.js"></script>
+  <script>
+    window.initGrowWidget("grow-widget-mount");
+    window.initPlantingCalendar("planting-calendar-mount");
+  </script>
 
   <script>
     // Services availability logic (uses inventory from script.js)
