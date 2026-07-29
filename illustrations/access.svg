@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="ill-acc-title">
+<title id="ill-acc-title">Wooden produce crate holding leafy greens, a seed packet and a gourd</title>
+<g fill="none" stroke="#29321F" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+<path fill="#275634" stroke="#29321F" d="M31.5 64 C27.8 58.6 27.2 51.4 30.8 45.4 C36.2 50.2 37.6 58 35.4 64 Z"/>
+<path fill="#3E7C4B" stroke="#275634" d="M40 64 C34.8 55.6 35.4 46 41.4 38.4 C47.6 45.4 49 55.6 45 64 Z"/>
+<path fill="#275634" stroke="#29321F" d="M49.5 64 C48 53.8 52.4 44.6 60.6 40.4 C62.8 50 58.6 60 52.6 64 Z"/>
+<path fill="#C3752B" d="M82 64 C82 54.8 87 49 93 49 C99 49 104 54.8 104 64 Z"/>
+<path stroke-width="2.6" d="M93 49 C92.6 46.2 93.4 44 95.4 42.6"/>
+<g>
+<path fill="#FFFDF6" d="M62.6 35.4 L86.2 37.6 L84.2 64.6 L60.8 62.2 Z" transform="rotate(4 73 50)"/>
+<path stroke-width="2.4" d="M63.4 42.6 C70.6 44 78 44.6 85.4 44.2" transform="rotate(4 73 50)"/>
+<g fill="#C3752B" stroke="none" transform="rotate(4 73 50)">
+<circle cx="69.6" cy="51.4" r="2.1"/><circle cx="76.4" cy="53.6" r="2.1"/><circle cx="71.6" cy="58.2" r="2.1"/>
+</g>
+</g>
+<path fill="#7A5233" d="M19.4 62.6 C46 60.8 74 60.8 100.6 62.6 L96.9 98.6 C96.7 100.7 95 102 92.9 102 L27.4 102 C25.3 102 23.6 100.7 23.4 98.6 Z"/>
+<path stroke-width="2.7" d="M46.8 64.2 C46.2 76.6 45.9 88.8 45.9 100.2 M73.6 64.2 C74.1 76.6 74.4 88.8 74.4 100.2"/>
+<path stroke-width="2.7" d="M22 72.4 C48 70.4 72 70.4 98.1 72.4"/>
+</g>
+</svg>

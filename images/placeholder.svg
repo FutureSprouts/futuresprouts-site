@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Seed packet placeholder">
+  <rect width="400" height="300" fill="#FFFDF6"/>
+  <g transform="translate(140 60)">
+    <rect x="0" y="0" width="120" height="170" rx="8" fill="#FFFDF6" stroke="#7A5233" stroke-width="4"/>
+    <path d="M0 26 L120 26" stroke="#7A5233" stroke-width="3" stroke-dasharray="6 5"/>
+    <path d="M60 128 C60 128 34 116 34 92 C34 76 46 66 60 64 C74 66 86 76 86 92 C86 116 60 128 60 128 Z" fill="#3E7C4B"/>
+    <path d="M60 128 L60 74" stroke="#FFFDF6" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="42" cy="150" r="4" fill="#7A5233"/>
+    <circle cx="60" cy="154" r="4" fill="#7A5233"/>
+    <circle cx="78" cy="150" r="4" fill="#7A5233"/>
+  </g>
+  <path d="M110 252 C160 238 240 238 290 252" stroke="#3E7C4B" stroke-width="5" fill="none" stroke-linecap="round"/>
+</svg>

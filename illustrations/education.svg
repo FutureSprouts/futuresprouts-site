@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="ill-edu-title">
+<title id="ill-edu-title">Open book with a young sprout growing from its spine</title>
+<g fill="none" stroke="#29321F" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+<path fill="#FFFDF6" d="M60 66.5 C50.2 59.4 34 56.2 19.2 60.2 C16.7 60.9 15 62.6 15.2 65 L16 89 C16.1 91.6 18.4 93.1 20.8 92.5 C34.2 89.3 48.6 91.6 60 99.4 C71.4 91.6 85.8 89.3 99.2 92.5 C101.6 93.1 103.9 91.6 104 89 L104.8 65 C105 62.6 103.3 60.9 100.8 60.2 C86 56.2 69.8 59.4 60 66.5 Z"/>
+<path d="M60 67 C59.6 78 60.3 88.6 60 99"/>
+<path stroke="#7A5233" stroke-width="2.3" d="M26.8 69 C33 67.3 40.2 67.3 47 69.2 M27.4 76.4 C33.4 74.9 40 75 46.6 76.8 M28 83.6 C33.6 82.4 39.4 82.5 45.2 84"/>
+<path stroke="#7A5233" stroke-width="2.3" d="M93.2 69 C87 67.3 79.8 67.3 73 69.2 M92.6 76.4 C86.6 74.9 80 75 73.4 76.8 M92 83.6 C86.4 82.4 80.6 82.5 74.8 84"/>
+<path stroke="#275634" stroke-width="3.4" d="M60 60 C58.4 51 61.6 42.6 60 32"/>
+<path fill="#3E7C4B" stroke="#275634" d="M59.4 45.5 C51.4 45.8 44 41 41 31.8 C50.6 30.4 58.2 36 59.4 45.5 Z"/>
+<path fill="#3E7C4B" stroke="#275634" d="M60.8 39.6 C68.4 39.2 75.4 34 77.8 25.2 C68.6 24.6 61.6 30.2 60.8 39.6 Z"/>
+</g>
+</svg>

@@ -1320,6 +1320,36 @@ function renderSeedPackets() {
   }
 
   // ---------------------------
+  // Land on a #hash target reliably.
+  // A cross-page link like services.html#growNow can miss: the browser
+  // scrolls at parse time, then JS-rendered content above the target
+  // (the grow widget) mounts and shifts it, and a smooth scroll still
+  // in flight gets cut short. So land once now and correct once after
+  // the widgets settle, unless the visitor has taken over scrolling.
+  // ---------------------------
+  function initHashLanding() {
+    if (!location.hash || location.hash === "#main") return;
+    let el = null;
+    try { el = document.querySelector(location.hash); } catch { return; }
+    if (!el) return;
+
+    let userScrolled = false;
+    const yield_ = () => { userScrolled = true; };
+    window.addEventListener("wheel", yield_, { passive: true, once: true });
+    window.addEventListener("touchstart", yield_, { passive: true, once: true });
+    window.addEventListener("keydown", yield_, { once: true });
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const land = (behavior) => {
+      if (userScrolled) return;
+      el.scrollIntoView({ behavior, block: "start" });
+    };
+
+    requestAnimationFrame(() => land(reduce ? "auto" : "smooth"));
+    setTimeout(() => land("auto"), 700);
+  }
+
+  // ---------------------------
   // Condense the sticky header once the page scrolls
   // ---------------------------
   function initStickyNav() {
@@ -1399,37 +1429,6 @@ function renderSeedPackets() {
     hero.appendChild(layer);
   }
 
-  // ---------------------------
-  // Sticky mobile action bar (index.html only; markup lives there).
-  // Shows after the hero scrolls out of view, hides again while the
-  // footer is on screen so it never covers the theme controls.
-  // Visibility above 760px is killed in CSS; show/hide transition is
-  // CSS-only and gated behind prefers-reduced-motion there.
-  // ---------------------------
-  function initMobileCtaBar() {
-    const bar = document.getElementById("mobileCtaBar");
-    const hero = document.querySelector(".hero");
-    const footerSlot = document.getElementById("siteFooter");
-    if (!bar || !hero || !("IntersectionObserver" in window)) return;
-
-    let heroGone = false;
-    let footerVisible = false;
-    const update = () => bar.classList.toggle("show", heroGone && !footerVisible);
-
-    const heroObs = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { heroGone = !e.isIntersecting; });
-      update();
-    }, { threshold: 0 });
-    heroObs.observe(hero);
-
-    if (footerSlot) {
-      const footObs = new IntersectionObserver((entries) => {
-        entries.forEach((e) => { footerVisible = e.isIntersecting; });
-        update();
-      }, { threshold: 0 });
-      footObs.observe(footerSlot);
-    }
-  }
 
   // ---------------------------
   // Scroll-growth plant (Donate page)
@@ -1503,7 +1502,6 @@ function renderSeedPackets() {
     renderTestimonials();
     renderGallery();
     initHeroSeeds();
-    initMobileCtaBar();
     initScrollGrowth();
 
     // Page features
@@ -1511,6 +1509,7 @@ function renderSeedPackets() {
     initCountUps();
     initProgramFilter();
     initBeforeAfter();
+    initHashLanding();
 
     // Cart UI
     try { lastCartTotal = loadCart().reduce((s, it) => s + (it.qty || 0), 0); } catch { lastCartTotal = 0; }

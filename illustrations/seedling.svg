@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="ill-sdl-title">
+<title id="ill-sdl-title">Unfurling seedling rising from the soil line</title>
+<!--
+Animation targets (all stroke-only paths, safe for stroke-dasharray /
+stroke-dashoffset draw-on animation):
+  #seedling-ground      soil line at the base
+  #seedling-stem        main stem, drawn bottom to top
+  #seedling-tip         unfurling hook at the top of the stem
+  #seedling-leaf-left   left cotyledon outline (closed path)
+  #seedling-leaf-right  right cotyledon outline (closed path)
+  .seedling-vein        leaf veins (two short paths)
+-->
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path id="seedling-ground" stroke="#7A5233" stroke-width="3.6" d="M20 101.4 C34 99 48 100.8 60 100.6 C72 100.4 86 98.8 100 101.2"/>
+<path id="seedling-stem" stroke="#275634" stroke-width="4" d="M58.8 100.4 C57.4 89 61.6 79.6 59.8 66 C59 60.2 59.4 53.4 61.2 47.6"/>
+<path id="seedling-tip" stroke="#275634" stroke-width="4" d="M61.2 47.6 C62.6 42.2 67 39 72 40.8"/>
+<path id="seedling-leaf-left" stroke="#3E7C4B" stroke-width="3.6" d="M59.4 71 C48 70.4 38.8 63.6 35.2 52 C47.6 51.4 57.4 58.6 59.4 71 Z"/>
+<path id="seedling-leaf-right" stroke="#3E7C4B" stroke-width="3.6" d="M60.6 62.6 C71.2 61.4 79.8 54.6 83.2 43.8 C71.4 43.2 62.2 50.6 60.6 62.6 Z"/>
+<path class="seedling-vein" stroke="#3E7C4B" stroke-width="2.4" d="M55.4 67 C49.6 63.6 45.2 59.2 42.4 54.2"/>
+<path class="seedling-vein" stroke="#3E7C4B" stroke-width="2.4" d="M64.4 59 C69.8 55.4 74 51 76.6 46"/>
+</g>
+</svg>

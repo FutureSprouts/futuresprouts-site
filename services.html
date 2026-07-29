@@ -31,6 +31,11 @@
       <h2 class="reveal">Request supplies for your school or community.</h2>
       <p class="free-banner reveal" role="note">Everything here is free. No payment, no card.</p>
       <p class="reveal">Choose a package below and add what you need to your request list.</p>
+      <p class="reveal" style="margin-top:10px;">
+        Not sure what to plant? <a class="jump-link" href="#growNow">See what grows this month
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 3v9M4.5 8.5 8 12l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </p>
 
       <div class="grid cols-3">
 
@@ -74,10 +79,26 @@
         </a>
 
       </div>
+    </div>
+  </section>
 
-      
+  <section class="section alt" id="growNow">
+    <div class="container">
+      <div class="kicker reveal">Grow with us</div>
+      <h2 class="reveal">Plan your planting</h2>
+      <p class="reveal" style="max-width: 720px;">Pick a month and a growing space to see crops suited to Chester County, then add the matching seed packs to your Request List.</p>
+      <div id="grow-widget-mount" class="reveal" style="margin-top: 22px;"></div>
 
-      <div class="card reveal" style="margin-top:14px;">
+      <details class="pcal-details reveal" id="plantingCalendarDetails">
+        <summary>Browse the full 12-month planting calendar</summary>
+        <div class="pcal-details-body" id="planting-calendar-mount"></div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card reveal">
         <h3 style="margin-top:0;">Availability Note</h3>
         <p class="small" style="margin-bottom:0;">
           All items are subject to availability. Requests are reviewed and fulfilled based on demonstrated need. We reserve the right to limit or withhold services to ensure fair and equitable distribution.
@@ -95,19 +116,6 @@
     </div>
   </section>
 
-  <section class="section alt" id="growNow">
-    <div class="container">
-      <div class="kicker reveal">Grow with us</div>
-      <h2 class="reveal">Plan your planting</h2>
-      <p class="reveal" style="max-width: 720px;">Pick a month and a growing space to see crops suited to Chester County, then add the matching seed packs to your Request List.</p>
-      <div id="grow-widget-mount" class="reveal" style="margin-top: 22px;"></div>
-
-      <details class="pcal-details reveal" id="plantingCalendarDetails">
-        <summary>Browse the full 12-month planting calendar</summary>
-        <div class="pcal-details-body" id="planting-calendar-mount"></div>
-      </details>
-    </div>
-  </section>
 
   <!-- Injected footer (from script.js) -->
   <div id="siteFooter"></div>
