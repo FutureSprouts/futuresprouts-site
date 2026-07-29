@@ -1,0 +1,160 @@
+/* =========================================================
+   Donation Impact Slider (illustrative only)
+   Loaded only by donate.html. Depends on the site palette
+   custom properties defined in style.css (:root).
+   ========================================================= */
+
+.impact-slider{
+  margin-top: 16px;
+  display: grid;
+  gap: 18px;
+}
+
+@media (min-width: 700px){
+  .impact-slider{
+    grid-template-columns: 150px 1fr;
+    align-items: center;
+  }
+}
+
+/* ---- Illustration ---- */
+.impact-figure{
+  width: 130px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.impact-figure svg{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.impact-stage{
+  opacity: 0;
+  transform: scale(0.6);
+  transform-origin: 80px 140px;
+}
+.impact-stage.on{
+  opacity: 1;
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: no-preference){
+  .impact-stage{
+    transition: opacity 260ms ease, transform 320ms ease;
+  }
+}
+
+/* ---- Controls ---- */
+.impact-slider-label{
+  display: block;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.impact-readout{
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--greenDark);
+  line-height: 1.2;
+}
+:root[data-theme="dark"] .impact-readout{
+  color: var(--green);
+}
+
+.impact-line{
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: var(--small);
+  min-height: 2.6em;
+}
+
+.impact-scale{
+  position: relative;
+  height: 1.4em;
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.impact-scale span{
+  position: absolute;
+  transform: translateX(-50%);
+}
+.impact-scale span:nth-child(1){ left: 0; transform: none; }
+.impact-scale span:nth-child(2){ left: 21%; }
+.impact-scale span:nth-child(3){ left: 47.4%; }
+.impact-scale span:nth-child(4){ left: 100%; transform: translateX(-100%); }
+
+/* ---- Range input ---- */
+.impact-range{
+  --is-fill: 25%;
+  --is-track: color-mix(in oklab, var(--soil) 28%, var(--bg2));
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 30px;
+  margin: 12px 0 2px;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* WebKit / Blink */
+.impact-range::-webkit-slider-runnable-track{
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: linear-gradient(to right,
+    var(--green) 0%,
+    var(--green) var(--is-fill),
+    var(--is-track) var(--is-fill),
+    var(--is-track) 100%);
+}
+.impact-range::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 3px solid var(--greenDark);
+  box-shadow: 0 2px 6px rgba(41, 50, 31, 0.35);
+}
+
+/* Firefox */
+.impact-range::-moz-range-track{
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--is-track);
+}
+.impact-range::-moz-range-progress{
+  height: 10px;
+  border-radius: 999px;
+  background: var(--green);
+}
+.impact-range::-moz-range-thumb{
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 3px solid var(--greenDark);
+  box-shadow: 0 2px 6px rgba(41, 50, 31, 0.35);
+}
+
+:root[data-theme="dark"] .impact-range::-webkit-slider-thumb{
+  border-color: var(--green);
+}
+:root[data-theme="dark"] .impact-range::-moz-range-thumb{
+  border-color: var(--green);
+}
+
+/* Visible keyboard focus */
+.impact-range:focus{
+  outline: none;
+}
+.impact-range:focus-visible{
+  outline: 3px solid var(--harvest);
+  outline-offset: 4px;
+  border-radius: 999px;
+}

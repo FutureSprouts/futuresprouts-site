@@ -1,5 +1,5 @@
 /* =========================================
-   FutureSprouts — Clean Style.css (FULL REPLACE)
+   FutureSprouts - Clean Style.css (FULL REPLACE)
    - No duplicates
    - Stable header/footer injection
    - Clean theme system (light/dark via data-theme)
@@ -20,7 +20,7 @@ input, textarea, select { font: inherit; }
    THEME VARIABLES
 ========================= */
 :root{
-  /* Light — "oat & orchard" */
+  /* Light - "oat & orchard" */
   --bg: #F8F3E7;          /* oat / parchment */
   --bg2: #EFE6CF;         /* dried straw */
   --card: #FFFDF6;        /* cream paper */
@@ -54,7 +54,7 @@ input, textarea, select { font: inherit; }
 
 /* Dark */
 :root[data-theme="dark"]{
-  /* Dark — "night field" */
+  /* Dark - "night field" */
   --bg: #14170F;
   --bg2: #1A1E13;
   --card: #191D12;
@@ -766,6 +766,8 @@ textarea{ min-height: 140px; resize: vertical; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 
 /* Mobile footer */
@@ -854,7 +856,7 @@ footer a strong,
 .footer a strong {
   font-weight: 400;
 }
-/* Skip to content — fully hidden by default */
+/* Skip to content - fully hidden by default */
 .skip-link {
   position: fixed;
   top: 0;
@@ -1435,7 +1437,7 @@ footer a strong,
     margin-top: 20px;
 }
 /* =========================
-   DONATE PAGE — CARD LAYOUT
+   DONATE PAGE - CARD LAYOUT
 ========================= */
 
 .donate-cards {
@@ -1446,7 +1448,7 @@ footer a strong,
   margin-top: 28px;
 }
 
-/* Base donate card — overrides .card defaults for this layout */
+/* Base donate card - overrides .card defaults for this layout */
 .donate-card {
   background: var(--card);
   border: 1.5px solid var(--border) !important;
@@ -1645,7 +1647,7 @@ footer a strong,
 
 
 /* ==========================================================
-   ORGANIC LAYER — farm-stand character
+   ORGANIC LAYER - farm-stand character
    (appended overrides; equal specificity wins by order)
 ========================================================== */
 
@@ -1848,7 +1850,7 @@ input:focus, textarea:focus, select:focus{
 }
 
 /* ==========================================================
-   DONOR EXPERIENCE — impact cards, story, FAQ, CTA band
+   DONOR EXPERIENCE - impact cards, story, FAQ, CTA band
 ========================================================== */
 
 .accent-word{
@@ -1909,7 +1911,7 @@ input:focus, textarea:focus, select:focus{
 .faq-item summary:hover{ color: var(--green); }
 .faq-item p{ margin-top: 8px; }
 
-/* Homepage CTA band — harvest sunset strip above the footer */
+/* Homepage CTA band - harvest sunset strip above the footer */
 .cta-band{
   background:
     linear-gradient(150deg, color-mix(in oklab, var(--harvest) 88%, black) 0%, var(--harvest) 55%, color-mix(in oklab, var(--sun) 70%, var(--harvest)) 100%);
@@ -1965,7 +1967,7 @@ input:focus, textarea:focus, select:focus{
 }
 
 /* ==========================================================
-   TESTIMONIALS & GALLERY (groundwork — render via config.js)
+   TESTIMONIALS & GALLERY (groundwork - render via config.js)
 ========================================================== */
 
 .testimonial-card{
@@ -2033,7 +2035,7 @@ input:focus, textarea:focus, select:focus{
 }
 
 /* ==========================================================
-   VISUAL FEATURES — growth plant, county map, seeds, animals,
+   VISUAL FEATURES - growth plant, county map, seeds, animals,
    icon panels, seasonal dividers, hero video
 ========================================================== */
 
@@ -2205,4 +2207,1415 @@ input:focus, textarea:focus, select:focus{
   .growth-stage{ transition: none; }
   .growth-bloom.grown{ animation: none; }
   .animal-card:hover img{ transform: none; }
+}
+
+/* ==========================================================
+   FIELD LAYER - visual + interaction polish (append last)
+   Homepage-first, safe site-wide. Earth tones only.
+   Pure CSS except .card-icon, which needs a container div.
+========================================================== */
+
+/* ----------------------------------------------------------
+   1. FOCUS - one visible ring everywhere, ochre on earth
+---------------------------------------------------------- */
+:root{
+  --ring: 0 0 0 3px color-mix(in oklab, var(--harvest) 55%, transparent);
+  --ringOffset: 0 0 0 2px var(--bg);
+  --lift: 0 14px 30px rgba(74, 58, 34, 0.16);
+}
+:root[data-theme="dark"]{
+  --lift: 0 16px 38px rgba(0, 0, 0, 0.6);
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible{
+  outline: 3px solid var(--harvest);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+.btn:focus-visible,
+.donate-btn:focus-visible{
+  outline: 3px solid var(--harvest);
+  outline-offset: 3px;
+  box-shadow: var(--ringOffset);
+}
+/* kill the old ring-on-mouse-click behaviour */
+.btn:focus:not(:focus-visible){ box-shadow: none; outline: none; }
+
+/* ----------------------------------------------------------
+   2. BUTTONS - real tap targets, a press you can feel
+---------------------------------------------------------- */
+.btn{
+  min-height: 48px;
+  padding: 13px 24px;
+  gap: 8px;
+  position: relative;
+  transition:
+    transform 120ms cubic-bezier(.2,.9,.2,1),
+    box-shadow 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    filter 160ms ease;
+}
+.btn:hover{ transform: translateY(-2px) rotate(-0.4deg); }
+.btn:active{
+  transform: translateY(1px) scale(0.985) rotate(0deg);
+  filter: saturate(1.08);
+  transition-duration: 60ms;
+}
+
+.btn.primary{
+  box-shadow:
+    0 2px 0 color-mix(in oklab, var(--greenDark) 60%, black),
+    0 10px 22px color-mix(in oklab, var(--greenDark) 34%, transparent);
+}
+.btn.primary:hover{
+  box-shadow:
+    0 2px 0 color-mix(in oklab, var(--greenDark) 60%, black),
+    0 16px 30px color-mix(in oklab, var(--greenDark) 40%, transparent);
+}
+.btn.primary:active{
+  box-shadow:
+    0 0 0 color-mix(in oklab, var(--greenDark) 60%, black),
+    0 5px 12px color-mix(in oklab, var(--greenDark) 30%, transparent);
+}
+
+.btn.outline:active,
+.btn.secondary:active,
+.btn.harvest:active{ box-shadow: 0 3px 10px rgba(60, 32, 8, 0.24); }
+
+.btn.harvest{
+  box-shadow:
+    0 2px 0 rgba(120, 68, 20, 0.35),
+    0 10px 24px rgba(60, 32, 8, 0.30);
+}
+
+/* Donate always reads ochre, never green - one primary action per view */
+.card .btn.primary[href$="donate.html"],
+.card .btn.primary[href$="wishlist.html"]{
+  background: var(--harvest);
+  border-color: var(--harvest);
+  color: #2A1707;
+  box-shadow:
+    0 2px 0 color-mix(in oklab, var(--harvest) 55%, black),
+    0 10px 22px color-mix(in oklab, var(--harvest) 34%, transparent);
+}
+.card .btn.primary[href$="donate.html"]:hover,
+.card .btn.primary[href$="wishlist.html"]:hover{
+  background: color-mix(in oklab, var(--harvest) 88%, #FFE7B8);
+  border-color: color-mix(in oklab, var(--harvest) 88%, #FFE7B8);
+}
+
+/* ----------------------------------------------------------
+   3. HERO - plowed horizon instead of a hard cut
+---------------------------------------------------------- */
+.hero{
+  isolation: isolate;
+  background-attachment: scroll;
+  /* earth-toned base under the photo: correct colour while it loads, or if it 404s */
+  background-color: #2E3A22;
+}
+/* deepen the scrim at the bottom so type stays legible over any photo */
+.hero::before,
+.hero::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+/* back ridge: turned soil */
+.hero::before{
+  height: clamp(66px, 7.5vw, 96px);
+  background: color-mix(in oklab, var(--soil) 84%, black);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 110' preserveAspectRatio='none'%3E%3Cpath d='M0 46 C 150 14 300 62 470 40 C 640 18 760 58 940 36 C 1110 15 1280 50 1440 28 L1440 110 L0 110 Z' fill='%23fff'/%3E%3C/svg%3E") no-repeat bottom / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 110' preserveAspectRatio='none'%3E%3Cpath d='M0 46 C 150 14 300 62 470 40 C 640 18 760 58 940 36 C 1110 15 1280 50 1440 28 L1440 110 L0 110 Z' fill='%23fff'/%3E%3C/svg%3E") no-repeat bottom / 100% 100%;
+  z-index: 1;
+}
+/* front field: painted in the page background so the section below merges in */
+.hero::after{
+  height: clamp(52px, 6.6vw, 82px);
+  background: var(--bg);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'%3E%3Cpath d='M0 34 C 190 8 330 44 520 26 C 700 9 840 40 1010 24 C 1180 9 1310 32 1440 18 L1440 80 L0 80 Z' fill='%23fff'/%3E%3C/svg%3E") no-repeat bottom / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'%3E%3Cpath d='M0 34 C 190 8 330 44 520 26 C 700 9 840 40 1010 24 C 1180 9 1310 32 1440 18 L1440 80 L0 80 Z' fill='%23fff'/%3E%3C/svg%3E") no-repeat bottom / 100% 100%;
+  z-index: 2;
+}
+.hero .hero-container{
+  position: relative;
+  z-index: 3;
+  padding-bottom: clamp(110px, 15vh, 170px);
+}
+.hero h1{
+  text-shadow: 0 2px 18px rgba(18, 24, 12, 0.45);
+}
+.hero .hero-container > p{
+  text-shadow: 0 1px 10px rgba(18, 24, 12, 0.45);
+  max-width: 68ch;
+}
+.hero .btn.secondary{
+  backdrop-filter: blur(3px);
+  border-width: 1.5px;
+}
+
+/* ----------------------------------------------------------
+   4. CARDS - paper that lifts, presses, and holds its shape
+---------------------------------------------------------- */
+.card{
+  position: relative;
+  border: 1.5px solid color-mix(in oklab, var(--soil) 30%, transparent) !important;
+  /* warm paper: a touch of straw light falling across the top-left */
+  background: linear-gradient(158deg,
+    color-mix(in oklab, var(--sun) 9%, var(--card)) 0%,
+    var(--card) 46%);
+  transition:
+    transform 180ms cubic-bezier(.2,.9,.2,1),
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+.grid > .card:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--lift);
+  border-color: color-mix(in oklab, var(--green) 55%, transparent) !important;
+}
+.grid > .card:active{ transform: translateY(-1px); }
+.card:focus-within{
+  border-color: color-mix(in oklab, var(--harvest) 65%, transparent) !important;
+  box-shadow: var(--lift);
+}
+
+/* Buttons in a card grid line up on one baseline */
+.grid > .card{ display: flex; flex-direction: column; }
+.grid > .card > .pill,
+.grid > .card > .kicker{ align-self: flex-start; }
+.grid > .card > div:last-child:has(> .btn){ margin-top: auto !important; padding-top: 16px; }
+
+/* the section right under the hero starts closer, the field band already spaces it */
+.hero + .section{ padding-top: 44px; }
+
+/* ----------------------------------------------------------
+   5. CARD ICONS - needs <div class="card-icon">…svg…</div>
+---------------------------------------------------------- */
+.card-icon{
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50% 50% 50% 12px;
+  color: var(--greenDark);
+  background: color-mix(in oklab, var(--green) 14%, var(--card));
+  border: 1.5px solid color-mix(in oklab, var(--green) 30%, transparent);
+  transition: transform 220ms cubic-bezier(.34,1.4,.64,1), background 220ms ease;
+  z-index: 1;
+}
+.card-icon svg{ width: 30px; height: 30px; display: block; }
+:root[data-theme="dark"] .card-icon{
+  color: var(--green);
+  background: color-mix(in oklab, var(--green) 18%, var(--card));
+}
+.card:hover .card-icon{
+  transform: rotate(-6deg) scale(1.07);
+  background: color-mix(in oklab, var(--green) 24%, var(--card));
+}
+.card:has(.card-icon) h3{ padding-right: 62px; }
+
+/* ----------------------------------------------------------
+   6. NAV - larger targets, a leaf-green underline that grows
+---------------------------------------------------------- */
+.nav-links a{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 13px;
+  transition: background 160ms ease, color 160ms ease;
+}
+.nav-links a:not(.donate-btn)::after{
+  content: "";
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  bottom: 4px;
+  height: 2.5px;
+  border-radius: 2px;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 200ms cubic-bezier(.2,.9,.2,1);
+}
+.nav-links a:not(.donate-btn):hover::after,
+.nav-links a:not(.donate-btn):focus-visible::after,
+.nav-links a.active:not(.donate-btn)::after{ transform: scaleX(1); }
+
+.donate-btn{
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 130ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+.donate-btn:hover{ transform: translateY(-1.5px); }
+.donate-btn:active{ transform: translateY(1px) scale(0.98); }
+
+.cart-link{ min-height: 44px; transition: background 160ms ease; }
+.cart-link:active{ transform: translateY(1px); }
+.icon-btn{ min-height: 44px; }
+.icon-btn:active{ transform: translateY(1px) scale(0.98); }
+
+.mobile-menu a{
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border-bottom: 1px dashed color-mix(in oklab, var(--soil) 22%, transparent);
+}
+.mobile-menu a:active{ background: color-mix(in oklab, var(--green) 16%, transparent); }
+.mobile-menu a.donate-btn{ border-bottom: none; justify-content: center; }
+
+/* ----------------------------------------------------------
+   7. REVEAL - stagger grid children so rows plant in sequence
+---------------------------------------------------------- */
+.grid > .reveal:nth-child(2){ transition-delay: 90ms; }
+.grid > .reveal:nth-child(3){ transition-delay: 180ms; }
+.grid > .reveal:nth-child(4){ transition-delay: 270ms; }
+.grid > .reveal:nth-child(5){ transition-delay: 360ms; }
+.grid > .reveal:nth-child(6){ transition-delay: 450ms; }
+
+/* ----------------------------------------------------------
+   8. SECTION HEADINGS - a short furrow rule under the h2
+---------------------------------------------------------- */
+.section > .container > h2{ margin-bottom: 10px; }
+.section > .container > h2::after{
+  content: "";
+  display: block;
+  width: 96px;
+  height: 9px;
+  margin-top: 14px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 8' preserveAspectRatio='none'%3E%3Cpath d='M2 5 C 20 1, 34 8, 52 4 S 76 2, 82 5' fill='none' stroke='%237A5233' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left center / 96px 9px;
+  opacity: 0.7;
+}
+.cta-band h2::after,
+.hero h2::after{ display: none; }
+
+/* ----------------------------------------------------------
+   9. NOTICE + CTA BAND - warmer, less "banner ad"
+---------------------------------------------------------- */
+.notice{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  border-left: 5px solid var(--harvest);
+}
+.notice a{
+  font-weight: 800;
+  color: var(--soil);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+:root[data-theme="dark"] .notice a{ color: var(--sun); }
+.notice a:hover{ color: var(--greenDark); }
+:root[data-theme="dark"] .notice a:hover{ color: var(--green); }
+
+.cta-band{
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(152deg,
+      color-mix(in oklab, var(--soil) 80%, var(--harvest)) 0%,
+      color-mix(in oklab, var(--harvest) 82%, var(--soil)) 52%,
+      color-mix(in oklab, var(--sun) 46%, var(--harvest)) 100%);
+  padding: 64px 0;
+}
+/* faint plowed rows across the band */
+.cta-band::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.09;
+  background: repeating-linear-gradient(
+    104deg,
+    rgba(48, 26, 6, 0.6) 0 3px,
+    transparent 3px 44px);
+}
+.cta-band .container{ position: relative; z-index: 1; }
+.cta-band h2{ text-shadow: 0 2px 14px rgba(60, 32, 8, 0.28); }
+
+/* ----------------------------------------------------------
+   10. FOOTER - link affordance, tappable socials
+---------------------------------------------------------- */
+.footer a{
+  display: inline-block;
+  padding: 4px 0;
+  background-image: linear-gradient(var(--sun), var(--sun));
+  background-repeat: no-repeat;
+  background-position: left 92%;
+  background-size: 0% 2px;
+  transition: background-size 220ms cubic-bezier(.2,.9,.2,1), color 160ms ease;
+}
+.footer p a{ text-decoration: none; }
+.footer a:hover,
+.footer a:focus-visible{ background-size: 100% 2px; }
+.footer-socials a{ padding: 8px 4px; }
+.footer a:focus-visible{ outline-offset: 2px; }
+
+/* ----------------------------------------------------------
+   11. MOBILE RHYTHM
+---------------------------------------------------------- */
+@media (max-width: 760px){
+  .section{ padding: 58px 0; }
+  .cta-band{ padding: 48px 0; }
+  .hero .hero-container{ padding-top: 56px; padding-bottom: clamp(90px, 14vh, 130px); }
+  .hero-cta{ gap: 12px; }
+  .hero-cta .btn,
+  .cta-band-actions .btn,
+  .grid > .card > div:last-child > .btn{ width: 100%; }
+  .cta-band-actions{ width: 100%; }
+  .card-icon{ width: 46px; height: 46px; top: 16px; right: 16px; }
+  .card-icon svg{ width: 26px; height: 26px; }
+  .card:has(.card-icon) h3{ padding-right: 54px; }
+}
+/* ----------------------------------------------------------
+   12. REDUCED MOTION
+---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce){
+  .btn:hover,
+  .btn:active,
+  .grid > .card:hover,
+  .grid > .card:active,
+  .donate-btn:hover,
+  .donate-btn:active,
+  .icon-btn:active,
+  .cart-link:active{ transform: none; }
+  .card:hover .card-icon{ transform: none; }
+  .nav-links a::after{ transition: none; }
+  .footer a{ transition: none; }
+  .grid > .reveal{ transition-delay: 0ms !important; }
+}
+
+
+/* ==========================================================
+   SEED CATALOG LAYER - the site's visual identity
+   Appended last. Applies to every page, no markup required
+   except the components rendered from config.js.
+========================================================== */
+
+/* ----------------------------------------------------------
+   A. Ambient: selection, caret, scrollbar, type behaviour
+---------------------------------------------------------- */
+::selection{
+  background: color-mix(in oklab, var(--sun) 62%, transparent);
+  color: #241C0C;
+}
+:root[data-theme="dark"] ::selection{
+  background: color-mix(in oklab, var(--green) 55%, transparent);
+  color: #F4F1E3;
+}
+html{
+  caret-color: var(--green);
+  scrollbar-color: color-mix(in oklab, var(--soil) 45%, transparent) transparent;
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar{ width: 12px; height: 12px; }
+::-webkit-scrollbar-track{ background: color-mix(in oklab, var(--soil) 8%, var(--bg)); }
+::-webkit-scrollbar-thumb{
+  background: color-mix(in oklab, var(--soil) 42%, transparent);
+  border: 3px solid var(--bg);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover{ background: color-mix(in oklab, var(--soil) 60%, transparent); }
+
+/* Fraunces has soft/wonk axes. Using them is what stops the headings
+   reading like a default serif and starts them reading like a seed catalog. */
+h1, h2, .brand > div, .impact-amount, .stat .num, .footer h3{
+  font-variation-settings: "SOFT" 40, "WONK" 1, "opsz" 90;
+}
+h1, h2, h3{ text-wrap: balance; }
+p{ text-wrap: pretty; }
+
+/* The paragraph immediately under a kicker is the page's lead line. */
+.kicker + h1 + p,
+.kicker + h2 + p,
+.container > h2 + p{
+  font-size: clamp(17px, 1.35vw, 19.5px);
+  color: color-mix(in oklab, var(--text) 72%, transparent);
+  max-width: 74ch;
+}
+
+/* Inline links in copy: an ochre marker sweep rather than a plain underline */
+p a:not(.btn){
+  text-decoration: none;
+  background-image: linear-gradient(color-mix(in oklab, var(--sun) 70%, transparent), color-mix(in oklab, var(--sun) 70%, transparent));
+  background-repeat: no-repeat;
+  background-position: left 88%;
+  background-size: 100% 0.14em;
+  transition: background-size 200ms cubic-bezier(.2,.9,.2,1), color 160ms ease;
+  padding: 0 1px;
+}
+p a:not(.btn):hover,
+p a:not(.btn):focus-visible{
+  background-size: 100% 0.85em;
+  opacity: 1;
+  color: #2A1F0C;
+}
+:root[data-theme="dark"] p a:not(.btn):hover{ color: #1B1A12; }
+
+/* ----------------------------------------------------------
+   B. Interior page headers
+   Only index.html has a hero. Every other page opened cold on a
+   flat background. This gives them all a header band with no markup:
+   a fixed-height wash at the top of the first section plus a sprig.
+---------------------------------------------------------- */
+#siteHeader + .section,
+body > .section:first-of-type{
+  position: relative;
+  background-image: linear-gradient(180deg,
+    color-mix(in oklab, var(--sun) 26%, var(--bg)) 0px,
+    color-mix(in oklab, var(--sun) 9%, var(--bg)) 150px,
+    transparent 300px);
+  padding-top: 66px;
+}
+#siteHeader + .section.alt,
+body > .section.alt:first-of-type{
+  background-image: linear-gradient(180deg,
+    color-mix(in oklab, var(--sun) 26%, var(--bg2)) 0px,
+    transparent 300px);
+}
+#siteHeader + .section::after,
+body > .section:first-of-type::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  right: max(12px, calc(50vw - 640px));
+  width: 150px;
+  height: 260px;
+  pointer-events: none;
+  opacity: 0.30;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300' fill='none'%3E %3Cg stroke='%233E7C4B' stroke-width='2.4' stroke-linecap='round' fill='none'%3E %3Cpath d='M182 6 C 168 52 152 96 142 142 C 133 186 128 232 126 288'/%3E %3Cpath d='M162 62 C 140 58 126 44 124 22 C 148 26 162 40 162 62Z'/%3E %3Cpath d='M158 92 C 178 86 190 70 190 48 C 168 54 156 70 158 92Z'/%3E %3Cpath d='M146 132 C 122 130 106 116 102 92 C 128 94 144 108 146 132Z'/%3E %3Cpath d='M140 172 C 162 168 176 152 178 128 C 154 132 140 148 140 172Z'/%3E %3Cpath d='M133 214 C 109 214 92 200 87 176 C 113 177 130 190 133 214Z'/%3E %3Cpath d='M129 254 C 150 250 163 234 165 211 C 142 215 128 231 129 254Z'/%3E %3C/g%3E %3Cg fill='%23C3752B'%3E %3Ccircle cx='152' cy='112' r='4'/%3E %3Ccircle cx='138' cy='196' r='3.4'/%3E %3C/g%3E %3C/svg%3E") no-repeat top right / contain;
+}
+:root[data-theme="dark"] #siteHeader + .section::after,
+:root[data-theme="dark"] body > .section:first-of-type::after{ opacity: 0.24; }
+@media (max-width: 1080px){
+  #siteHeader + .section::after,
+  body > .section:first-of-type::after{ opacity: 0.16; width: 108px; height: 190px; }
+}
+@media (max-width: 700px){
+  #siteHeader + .section::after,
+  body > .section:first-of-type::after{ display: none; }
+}
+
+/* ----------------------------------------------------------
+   C. Paper: kraft fibre on the alternating bands, wheat in the corner
+---------------------------------------------------------- */
+.section.alt{
+  position: relative;
+  /* faint ledger ruling, the way an old planting journal is lined */
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0 28px,
+    color-mix(in oklab, var(--soil) 8%, transparent) 28px 29px);
+}
+:root[data-theme="dark"] .section.alt{
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0 28px,
+    color-mix(in oklab, var(--sun) 6%, transparent) 28px 29px);
+}
+.section.alt > .container{ position: relative; z-index: 1; }
+.section.alt::after{
+  content: "";
+  position: absolute;
+  right: max(10px, calc(50vw - 660px));
+  bottom: 26px;
+  width: 120px;
+  height: 180px;
+  pointer-events: none;
+  opacity: 0.20;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 260' fill='none'%3E %3Cg stroke='%237A5233' stroke-width='2.2' stroke-linecap='round'%3E %3Cpath d='M40 254 C 52 196 62 140 66 84 C 68 54 68 30 66 8'/%3E %3Cpath d='M66 40 C 48 36 38 24 38 6 C 56 10 66 22 66 40Z'/%3E %3Cpath d='M66 40 C 84 36 94 24 94 6 C 76 10 66 22 66 40Z'/%3E %3Cpath d='M64 78 C 46 74 36 62 36 44 C 54 48 64 60 64 78Z'/%3E %3Cpath d='M64 78 C 82 74 92 62 92 44 C 74 48 64 60 64 78Z'/%3E %3Cpath d='M60 116 C 42 112 32 100 32 82 C 50 86 60 98 60 116Z'/%3E %3Cpath d='M60 116 C 78 112 88 100 88 82 C 70 86 60 98 60 116Z'/%3E %3Cpath d='M18 250 C 40 226 60 214 86 208'/%3E %3C/g%3E %3C/svg%3E") no-repeat bottom right / contain;
+}
+:root[data-theme="dark"] .section.alt::after{ opacity: 0.26; }
+@media (max-width: 980px){ .section.alt::after{ display: none; } }
+
+/* ----------------------------------------------------------
+   D. Cards read as seed packets: tear strip, hairline plate border
+---------------------------------------------------------- */
+.card{
+  overflow: hidden;
+  padding-top: 26px;
+}
+.card::before{
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 14px;
+  right: 14px;
+  height: 4px;
+  pointer-events: none;
+  opacity: 0.34;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 4' width='16' height='4'%3E %3Ccircle cx='8' cy='2' r='1.35' fill='%237A5233'/%3E %3C/svg%3E") repeat-x left center / 16px 4px;
+}
+.grid > .card:hover::before{ opacity: 0.6; }
+.card > .card-icon{ top: 24px; }
+
+/* the double-rule plate edge you get on old catalogue pages */
+.notice,
+.rulebox,
+.trust-panel,
+.founder-note{ position: relative; }
+
+/* ----------------------------------------------------------
+   E. Header condenses on scroll (script.js adds .is-scrolled)
+---------------------------------------------------------- */
+.navbar{
+  transition: padding 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+.navbar .nav-inner{ transition: padding 220ms ease; }
+.brand-badge{ transition: width 220ms ease, height 220ms ease, border-radius 220ms ease; }
+.navbar.is-scrolled{
+  box-shadow: 0 10px 26px rgba(74, 58, 34, 0.14);
+  background: color-mix(in oklab, var(--bg) 95%, transparent);
+}
+:root[data-theme="dark"] .navbar.is-scrolled{ box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.navbar.is-scrolled .nav-inner{ padding: 7px 0; }
+.navbar.is-scrolled .brand-badge{ width: 38px; height: 38px; border-radius: 10px; }
+
+/* ----------------------------------------------------------
+   F. Stats: catalogue numerals over a wheat rule
+---------------------------------------------------------- */
+.stat{
+  position: relative;
+  padding-top: 34px;
+  background: linear-gradient(158deg, color-mix(in oklab, var(--sun) 10%, var(--card)) 0%, var(--card) 48%);
+  border: 1.5px solid color-mix(in oklab, var(--soil) 30%, transparent) !important;
+  transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms ease;
+}
+.stat::before{
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 16px;
+  opacity: 0.75;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 16' fill='none'%3E %3Cg stroke='%233E7C4B' stroke-width='1.8' stroke-linecap='round'%3E %3Cpath d='M2 14 H 26'/%3E %3Cpath d='M14 14 V 7'/%3E %3Cpath d='M14 9.5 C 10.2 9.2 8 7 7.8 3.2 C 11.6 3.5 13.8 5.7 14 9.5Z'/%3E %3Cpath d='M14 9.5 C 17.8 9.2 20 7 20.2 3.2 C 16.4 3.5 14.2 5.7 14 9.5Z'/%3E %3C/g%3E %3C/svg%3E") no-repeat center / contain;
+}
+.stat:hover{ transform: translateY(-3px); box-shadow: var(--lift); }
+.stat .num{
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--greenDark);
+  letter-spacing: -0.02em;
+}
+:root[data-theme="dark"] .stat .num{ color: var(--green); }
+.stat .label{
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.stat-footnote{
+  margin-top: 14px;
+  max-width: 62ch;
+  font-style: italic;
+  color: color-mix(in oklab, var(--text) 62%, transparent);
+}
+
+/* ----------------------------------------------------------
+   Founding season goal meters: soil rows filling with green.
+   Mobile-first single column; data comes from seasonGoals in
+   config.js. Fill animates on scroll-into-view via .grown.
+----------------------------------------------------------- */
+#impactStats.is-goals .stats.goal-list{
+  grid-template-columns: 1fr;
+  gap: 14px;
+  max-width: 780px;
+}
+.goal-meter{
+  background: linear-gradient(158deg, color-mix(in oklab, var(--sun) 8%, var(--card)) 0%, var(--card) 55%);
+  border: 1.5px solid color-mix(in oklab, var(--soil) 30%, transparent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px 18px;
+}
+.goal-head{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2px 14px;
+  margin-bottom: 10px;
+}
+.goal-label{
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--text);
+}
+.goal-readout{
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--greenDark);
+  white-space: nowrap;
+}
+:root[data-theme="dark"] .goal-readout{ color: var(--green); }
+.goal-track{
+  position: relative;
+  height: 16px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px dashed color-mix(in oklab, var(--soil) 45%, transparent);
+  background:
+    repeating-linear-gradient(90deg,
+      color-mix(in oklab, var(--soil) 26%, transparent) 0 2px,
+      transparent 2px 11px),
+    color-mix(in oklab, var(--soil) 12%, var(--bg2));
+}
+.goal-fill{
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--greenDark), var(--green));
+  transition: width 1100ms cubic-bezier(.22, .9, .28, 1);
+}
+.goal-meter.grown .goal-fill{ width: var(--goal-fill, 0%); }
+.goal-cap{
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--sun) 65%, #FFFDF6);
+  opacity: 0.9;
+}
+@media (prefers-reduced-motion: reduce){
+  .goal-fill{ transition: none; }
+}
+
+/* ----------------------------------------------------------
+   G. Founding progress rail: a stem that grows down the page
+---------------------------------------------------------- */
+.progress-rail{
+  list-style: none;
+  margin: 30px 0 0;
+  padding: 0 0 0 34px;
+  position: relative;
+  max-width: 840px;
+}
+.progress-rail::before{
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 6px;
+  bottom: 22px;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg,
+    var(--green) 0%,
+    var(--green) 42%,
+    color-mix(in oklab, var(--soil) 45%, transparent) 62%,
+    color-mix(in oklab, var(--soil) 20%, transparent) 100%);
+}
+.progress-row{
+  position: relative;
+  padding: 0 0 22px;
+}
+.progress-row:last-child{ padding-bottom: 0; }
+.progress-marker{
+  position: absolute;
+  left: -34px;
+  top: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 3px solid color-mix(in oklab, var(--soil) 40%, transparent);
+  display: grid;
+  place-items: center;
+}
+.progress-row.is-done .progress-marker{
+  background: var(--greenDark);
+  border-color: var(--greenDark);
+}
+.progress-row.is-done .progress-marker::after{
+  content: "";
+  width: 9px;
+  height: 5px;
+  margin-top: -2px;
+  border-left: 2.4px solid #FFFDF6;
+  border-bottom: 2.4px solid #FFFDF6;
+  transform: rotate(-45deg);
+}
+.progress-row.is-active .progress-marker{
+  border-color: var(--harvest);
+  background: color-mix(in oklab, var(--harvest) 20%, var(--card));
+}
+.progress-row.is-active .progress-marker::after{
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--harvest);
+}
+@media (prefers-reduced-motion: no-preference){
+  .progress-row.is-active .progress-marker::after{ animation: seedPulse 2.4s ease-in-out infinite; }
+}
+@keyframes seedPulse{
+  0%, 100%{ transform: scale(1); opacity: 1; }
+  50%{ transform: scale(1.35); opacity: 0.72; }
+}
+.progress-head{
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.progress-row h3{
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 20px;
+}
+.progress-row.is-next h3{ color: color-mix(in oklab, var(--text) 66%, transparent); }
+.progress-status{
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1.5px solid transparent;
+}
+.is-done .progress-status{
+  color: var(--greenDark);
+  background: color-mix(in oklab, var(--green) 16%, var(--card));
+  border-color: color-mix(in oklab, var(--green) 34%, transparent);
+}
+:root[data-theme="dark"] .is-done .progress-status{ color: var(--green); }
+.is-active .progress-status{
+  color: #7A4310;
+  background: color-mix(in oklab, var(--harvest) 26%, var(--card));
+  border-color: color-mix(in oklab, var(--harvest) 46%, transparent);
+}
+:root[data-theme="dark"] .is-active .progress-status{ color: var(--sun); }
+.is-next .progress-status{
+  color: var(--muted);
+  background: transparent;
+  border-color: color-mix(in oklab, var(--soil) 34%, transparent);
+  border-style: dashed;
+}
+.progress-row p{ margin-top: 4px; max-width: 62ch; }
+
+/* ----------------------------------------------------------
+   H. Trust band: founder note + where the money goes
+---------------------------------------------------------- */
+.trust-grid{
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 20px;
+  align-items: stretch;
+}
+@media (max-width: 900px){ .trust-grid{ grid-template-columns: 1fr; } }
+
+.founder-note{
+  margin: 0;
+  padding: 26px 24px 24px;
+}
+.founder-photo{
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 50% 50% 50% 14px;
+  border: 3px solid color-mix(in oklab, var(--green) 42%, transparent);
+  box-shadow: 0 8px 20px rgba(74, 58, 34, 0.18);
+  margin-bottom: 16px;
+}
+.founder-note blockquote{
+  font-family: var(--display);
+  font-size: clamp(18px, 1.7vw, 22px);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.42;
+  color: var(--text);
+  position: relative;
+}
+.founder-note blockquote::before{
+  content: "\201C";
+  position: absolute;
+  left: -0.42em;
+  top: -0.12em;
+  font-size: 2.4em;
+  line-height: 1;
+  color: color-mix(in oklab, var(--harvest) 55%, transparent);
+}
+.founder-note figcaption{
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1.5px dashed color-mix(in oklab, var(--soil) 36%, transparent);
+  display: grid;
+  gap: 2px;
+}
+.founder-note figcaption strong{ font-size: 16px; }
+
+.trust-panel{ padding: 26px 24px 22px; }
+.trust-badges{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.fact-chip{
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--greenDark);
+  background: color-mix(in oklab, var(--green) 14%, var(--card));
+  border: 1.5px solid color-mix(in oklab, var(--green) 32%, transparent);
+  border-radius: 999px;
+  padding: 6px 13px;
+}
+:root[data-theme="dark"] .fact-chip{ color: var(--green); }
+.fact-list{ list-style: none; margin: 0 0 20px; padding: 0; display: grid; gap: 10px; }
+.fact-list li{
+  position: relative;
+  padding-left: 26px;
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.fact-list li::before{
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 7px;
+  width: 10px;
+  height: 6px;
+  border-left: 2.4px solid var(--green);
+  border-bottom: 2.4px solid var(--green);
+  transform: rotate(-45deg);
+}
+
+.alloc{
+  border-top: 1.5px dashed color-mix(in oklab, var(--soil) 36%, transparent);
+  padding-top: 16px;
+}
+.alloc h3{ font-family: var(--display); font-weight: 600; font-size: 19px; margin-bottom: 12px; }
+.alloc-row + .alloc-row{ margin-top: 12px; }
+.alloc-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14.5px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+.alloc-bar{
+  height: 12px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--soil) 16%, var(--card));
+  border: 1px solid color-mix(in oklab, var(--soil) 26%, transparent);
+  overflow: hidden;
+}
+.alloc-bar > span{
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--greenDark), var(--green));
+}
+.alloc-pending p{ max-width: 56ch; }
+.trust-fineprint{
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in oklab, var(--soil) 20%, transparent);
+  color: color-mix(in oklab, var(--text) 58%, transparent);
+}
+
+/* ----------------------------------------------------------
+   I. Footer: soil under the field, plus a wheat rule
+---------------------------------------------------------- */
+.footer-grid{ position: relative; }
+.footer h3{
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+  border-bottom: 1.5px dashed rgba(243, 212, 138, 0.28);
+}
+
+/* ----------------------------------------------------------
+   J. Reduced motion
+---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce){
+  .stat:hover{ transform: none; }
+  .navbar, .navbar .nav-inner, .brand-badge{ transition: none; }
+  p a:not(.btn){ transition: none; }
+}
+
+/* Reveal is decoration, never the reason content is missing */
+@media (prefers-reduced-motion: reduce){
+  .reveal{ opacity: 1; transform: none; filter: none; transition: none; }
+}
+@media print{
+  .reveal{ opacity: 1; transform: none; filter: none; }
+  .navbar, .cta-band, .footer-actions{ display: none; }
+}
+
+/* ----------------------------------------------------------
+   K. Corrections against the rules above
+---------------------------------------------------------- */
+
+/* Keep the header sprig behind the page's own artwork and copy */
+#siteHeader + .section::after,
+body > .section:first-of-type::after{ z-index: 0; }
+#siteHeader + .section > .container,
+body > .section:first-of-type > .container{ position: relative; z-index: 1; }
+
+/* The lead-paragraph rule must not repaint copy that sits on a dark band */
+.hero p,
+.hero .kicker + h1 + p{
+  color: rgba(253, 250, 240, 0.94);
+  font-size: clamp(17px, 1.35vw, 19.5px);
+}
+.cta-band p,
+.cta-band .kicker + h2 + p{
+  color: #FFF7E7;
+  font-size: clamp(16.5px, 1.3vw, 19px);
+}
+.footer p,
+.footer .kicker + h2 + p{ color: rgba(239, 234, 216, 0.85); }
+
+/* Founder card and trust panel share a baseline */
+.founder-note,
+.trust-panel{ height: 100%; }
+
+/* ----------------------------------------------------------
+   L. Request List rework (services banner + request form)
+---------------------------------------------------------- */
+
+/* "Everything here is free" strip on services.html: kraft-paper tag look */
+.free-banner{
+  display: inline-block;
+  margin: 14px 0 4px;
+  padding: 12px 18px;
+  font-weight: 800;
+  font-size: clamp(16px, 1.4vw, 18px);
+  color: var(--greenDark);
+  background: color-mix(in oklab, var(--green) 12%, var(--card));
+  border: 1px solid color-mix(in oklab, var(--green) 45%, transparent);
+  border-left: 6px solid var(--green);
+  border-radius: 10px 16px 10px 16px;
+}
+:root[data-theme="dark"] .free-banner{
+  color: var(--sun);
+  background: color-mix(in oklab, var(--green) 16%, var(--card));
+  border-color: color-mix(in oklab, var(--green) 55%, transparent);
+  border-left-color: var(--green);
+}
+
+/* Delivery / pickup choice pills on cart.html */
+.choice-fieldset{
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.choice-fieldset legend{
+  padding: 0;
+  margin-bottom: 6px;
+  font-size: var(--small);
+  color: var(--muted);
+  font-weight: 700;
+}
+.choice-row{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.choice-pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 18px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.choice-pill:hover{
+  border-color: color-mix(in oklab, var(--green) 60%, var(--border));
+}
+.choice-pill input[type="radio"]{
+  width: 1.1em;
+  height: 1.1em;
+  padding: 0;
+  margin: 0;
+  accent-color: var(--green);
+  border-radius: 50%;
+}
+.choice-pill:focus-within{
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--green) 22%, transparent);
+}
+.choice-pill:has(input:checked){
+  background: color-mix(in oklab, var(--green) 14%, var(--card));
+  border-color: var(--green);
+  font-weight: 700;
+}
+@media (prefers-reduced-motion: reduce){
+  .choice-pill{ transition: none; }
+}
+
+/* ----------------------------------------------------------
+   H. Freshly planted timeline: three stops along a run of twine.
+   Mobile-first: a vertical rail with big icon markers; turns
+   horizontal above 760px. Sequence cue: the twine runs solid
+   leaf-green out of the "now" stop, loosens toward soil, then
+   turns to dashes for the rows not yet sown. Distinct from the
+   founding progress rail (thin stem, small plain dots).
+---------------------------------------------------------- */
+.fp-timeline{
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.fp-stop{
+  position: relative;
+  padding-left: 72px;
+}
+
+/* Markers: the same hand-cut badge shape as .card-icon, promoted
+   to timeline stops. Decorative only (aria-hidden in markup). */
+.fp-marker{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50% 50% 50% 12px;
+  color: var(--greenDark);
+  background: color-mix(in oklab, var(--green) 14%, var(--card));
+  border: 1.5px solid color-mix(in oklab, var(--green) 34%, transparent);
+  box-shadow: 0 6px 16px rgba(74, 58, 34, 0.12);
+  z-index: 1;
+}
+.fp-marker svg{ width: 30px; height: 30px; display: block; }
+:root[data-theme="dark"] .fp-marker{
+  color: var(--green);
+  background: color-mix(in oklab, var(--green) 18%, var(--card));
+  box-shadow: none;
+}
+/* "now": the crate is already on the stand, so the badge is filled */
+.fp-now .fp-marker{
+  background: var(--greenDark);
+  border-color: var(--greenDark);
+  color: #FFFDF6;
+}
+:root[data-theme="dark"] .fp-now .fp-marker{
+  background: var(--green);
+  border-color: var(--green);
+  color: #14170F;
+}
+/* "coming up": warming toward harvest */
+.fp-next .fp-marker{
+  color: color-mix(in oklab, var(--harvest) 70%, var(--text));
+  background: color-mix(in oklab, var(--harvest) 16%, var(--card));
+  border-color: color-mix(in oklab, var(--harvest) 42%, transparent);
+}
+/* "help us grow": still soil, dashed edge like a planting plan */
+.fp-later .fp-marker{
+  color: color-mix(in oklab, var(--soil) 75%, var(--text));
+  background: color-mix(in oklab, var(--soil) 12%, var(--card));
+  border-style: dashed;
+  border-color: color-mix(in oklab, var(--soil) 48%, transparent);
+}
+
+/* Connector twine: each stop except the last runs a segment to the
+   next marker. Solid-to-faded after "now", dashed after "coming up". */
+.fp-stop:not(:last-child)::before{
+  content: "";
+  position: absolute;
+  left: 25.5px;
+  top: 60px;
+  bottom: -24px;
+  width: 3px;
+  border-radius: 3px;
+}
+.fp-now:not(:last-child)::before{
+  background: linear-gradient(180deg,
+    var(--green) 0%,
+    color-mix(in oklab, var(--green) 65%, var(--soil)) 55%,
+    color-mix(in oklab, var(--soil) 55%, transparent) 100%);
+}
+.fp-next:not(:last-child)::before{
+  background: repeating-linear-gradient(180deg,
+    color-mix(in oklab, var(--soil) 55%, transparent) 0 9px,
+    transparent 9px 17px);
+}
+
+/* Stop cards: keep the paper-card language, buttons on one baseline */
+.fp-stop-card{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.fp-stop-card > .pill{ align-self: flex-start; }
+.fp-stop-card > div:last-child:has(> .btn){ margin-top: auto !important; padding-top: 16px; }
+
+/* Stagger the stops like the card grids do */
+.fp-timeline > .reveal:nth-child(2){ transition-delay: 90ms; }
+.fp-timeline > .reveal:nth-child(3){ transition-delay: 180ms; }
+
+/* Small phones: slimmer marker column so text keeps room at 320px */
+@media (max-width: 420px){
+  .fp-stop{ padding-left: 60px; }
+  .fp-marker{ width: 46px; height: 46px; }
+  .fp-marker svg{ width: 26px; height: 26px; }
+  .fp-stop:not(:last-child)::before{ left: 21.5px; top: 52px; }
+}
+@media (max-width: 760px){
+  .fp-stop-card > div:last-child > .btn{ width: 100%; }
+}
+
+/* Wide screens: the twine lies flat, three stops left to right */
+@media (min-width: 761px){
+  .fp-timeline{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 26px;
+    align-items: stretch;
+  }
+  .fp-stop{
+    padding-left: 0;
+    padding-top: 72px;
+  }
+  .fp-marker{ left: 6px; }
+  .fp-stop:not(:last-child)::before{
+    left: 68px;
+    right: -26px;
+    top: 25.5px;
+    bottom: auto;
+    width: auto;
+    height: 3px;
+  }
+  .fp-now:not(:last-child)::before{
+    background: linear-gradient(90deg,
+      var(--green) 0%,
+      color-mix(in oklab, var(--green) 65%, var(--soil)) 55%,
+      color-mix(in oklab, var(--soil) 55%, transparent) 100%);
+  }
+  .fp-next:not(:last-child)::before{
+    background: repeating-linear-gradient(90deg,
+      color-mix(in oklab, var(--soil) 55%, transparent) 0 9px,
+      transparent 9px 17px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .fp-timeline > .reveal{ transition-delay: 0ms !important; }
+}
+
+/* ==========================================================
+   HOMEPAGE GROW SECTION - grow widget mount + collapsed
+   planting calendar (index.html #growNow)
+========================================================== */
+
+/* Collapsed planting calendar shelf */
+.pcal-details{
+  margin-top: 26px;
+  border: 1.5px solid color-mix(in oklab, var(--soil) 30%, transparent);
+  border-radius: 16px 20px 14px 20px;
+  background: var(--card);
+  box-shadow: 0 10px 26px rgba(74, 58, 34, 0.10);
+}
+:root[data-theme="dark"] .pcal-details{
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+}
+.pcal-details summary{
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 15.5px;
+  color: var(--text);
+  padding: 15px 18px;
+  min-height: 48px;
+  border-radius: inherit;
+  list-style-position: inside;
+}
+.pcal-details summary::marker{ color: var(--green); }
+.pcal-details summary:hover{ color: var(--green); }
+.pcal-details[open] summary{
+  border-bottom: 1px dashed color-mix(in oklab, var(--soil) 35%, transparent);
+  border-radius: 16px 20px 0 0;
+}
+.pcal-details-body{ padding: 14px 12px 18px; }
+@media (min-width: 760px){
+  .pcal-details-body{ padding: 18px 18px 22px; }
+}
+
+/* ==========================================================
+   "WHAT WE DO" CARDS - botanical illustration backdrops.
+   Decorative only: low opacity, behind the text, no pointer
+   events, so card text keeps its AA contrast in both themes.
+========================================================== */
+.card-illus{ isolation: isolate; }
+.card-illus::after{
+  content: "";
+  position: absolute;
+  right: -18px;
+  bottom: -20px;
+  width: 148px;
+  height: 148px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 0.09;
+  transform: rotate(-7deg);
+  pointer-events: none;
+  z-index: -1;
+}
+.card-illus-education::after{ background-image: url("illustrations/education.svg"); }
+.card-illus-access::after{ background-image: url("illustrations/access.svg"); }
+.card-illus-stewardship::after{ background-image: url("illustrations/stewardship.svg"); }
+/* The artwork is inked in the light palette's dark moss; flip it
+   light for the dark theme so it stays a faint backdrop there too. */
+:root[data-theme="dark"] .card-illus::after{
+  filter: invert(1) hue-rotate(180deg);
+  opacity: 0.12;
+}
+
+/* ==========================================================
+   B4a. HERO SEEDLING UNFURL - decorative inline seedling in
+   the hero (index.html). Static fully drawn art is the base
+   state; the ~800ms draw-on unfurl exists ONLY inside the
+   no-preference motion query, so reduced motion (and no-CSS-
+   animation browsers) get the finished drawing with zero
+   movement.
+========================================================== */
+.hero-seedling{
+  position: absolute;
+  right: clamp(16px, 5vw, 76px);
+  bottom: clamp(6px, 1.2vw, 16px);
+  width: clamp(84px, 10vw, 132px);
+  z-index: 3;
+  pointer-events: none;
+  /* faint parchment halo so the ink reads over the photo band */
+  filter: drop-shadow(0 1px 5px rgba(253, 250, 240, 0.30));
+}
+.hero-seedling svg{ width: 100%; height: auto; display: block; }
+/* dark theme: lift the inked strokes so they read on the night field */
+:root[data-theme="dark"] .hero-seedling{
+  filter: drop-shadow(0 1px 5px rgba(0, 0, 0, 0.35));
+}
+:root[data-theme="dark"] .hero-seedling #seedling-ground{ stroke: var(--soil); }
+:root[data-theme="dark"] .hero-seedling #seedling-stem,
+:root[data-theme="dark"] .hero-seedling #seedling-tip{ stroke: var(--greenDark); }
+:root[data-theme="dark"] .hero-seedling #seedling-leaf-left,
+:root[data-theme="dark"] .hero-seedling #seedling-leaf-right,
+:root[data-theme="dark"] .hero-seedling .seedling-vein{ stroke: var(--green); }
+
+@media (prefers-reduced-motion: no-preference){
+  /* draw-on: every stroke path carries pathLength="1" */
+  .hero-seedling .sdl-draw{
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: fsSdlDraw var(--sdl-d, 300ms) cubic-bezier(0.33, 0, 0.2, 1) var(--sdl-dl, 0ms) forwards;
+  }
+  /* cotyledons also unfurl: gentle scale + rotate from the stem joint */
+  .hero-seedling .sdl-leaf{
+    transform-box: fill-box;
+    transform-origin: var(--sdl-org, 100% 100%);
+    animation:
+      fsSdlDraw var(--sdl-d, 300ms) cubic-bezier(0.33, 0, 0.2, 1) var(--sdl-dl, 0ms) forwards,
+      fsSdlUnfurl 380ms cubic-bezier(0.34, 1.3, 0.64, 1) var(--sdl-dl, 0ms) both;
+  }
+  /* ~800ms total: soil, then stem, then tip and leaves, veins last */
+  .hero-seedling #seedling-ground{ --sdl-d: 260ms; --sdl-dl: 0ms; }
+  .hero-seedling #seedling-stem{ --sdl-d: 360ms; --sdl-dl: 120ms; }
+  .hero-seedling #seedling-tip{ --sdl-d: 200ms; --sdl-dl: 440ms; }
+  .hero-seedling #seedling-leaf-left{ --sdl-d: 300ms; --sdl-dl: 380ms; --sdl-rot: -10deg; --sdl-org: 100% 100%; }
+  .hero-seedling #seedling-leaf-right{ --sdl-d: 300ms; --sdl-dl: 440ms; --sdl-rot: 10deg; --sdl-org: 0% 100%; }
+  .hero-seedling .seedling-vein{ --sdl-d: 180ms; --sdl-dl: 620ms; }
+
+  /* keep the hero calm while the seedling unfurls: the drifting
+     seed particles fade in only after the ~800ms draw finishes */
+  .hero .seed-layer{ animation: fsSdlFadeIn 600ms ease-out 850ms both; }
+}
+@keyframes fsSdlDraw{ to{ stroke-dashoffset: 0; } }
+@keyframes fsSdlUnfurl{ from{ transform: scale(0.55) rotate(var(--sdl-rot, -10deg)); } }
+@keyframes fsSdlFadeIn{ from{ opacity: 0; } }
+
+/* ==========================================================
+   B4b. STICKY MOBILE ACTION BAR - single "Request supplies"
+   action, small viewports only. script.js (initMobileCtaBar)
+   toggles .show after the hero leaves the viewport and hides
+   it again when the footer (theme controls) comes into view.
+========================================================== */
+.mobile-cta-bar{ display: none; }
+
+@media (max-width: 760px){
+  .mobile-cta-bar{
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900; /* under the sticky header (1200), over page content */
+    background: var(--card);
+    border-top: 1.5px solid color-mix(in oklab, var(--soil) 35%, transparent);
+    box-shadow: 0 -10px 26px rgba(41, 50, 31, 0.16);
+    padding: 10px max(16px, env(safe-area-inset-right))
+             calc(10px + env(safe-area-inset-bottom))
+             max(16px, env(safe-area-inset-left));
+    /* hidden state: off screen AND unfocusable */
+    transform: translateY(105%);
+    visibility: hidden;
+  }
+  .mobile-cta-bar.show{
+    transform: translateY(0);
+    visibility: visible;
+  }
+  .mobile-cta-bar .btn{
+    width: 100%;
+    min-height: 50px;
+  }
+  .mobile-cta-bar .btn.primary:focus-visible{
+    outline: 3px solid var(--harvest);
+    outline-offset: 3px;
+  }
+}
+:root[data-theme="dark"] .mobile-cta-bar{
+  box-shadow: 0 -10px 26px rgba(0, 0, 0, 0.55);
+}
+/* dark theme: the sitewide greenDark button is decorative-adjacent
+   elsewhere, but this bar is a primary action, so use the brighter
+   leaf green with near-black ink for AA contrast (about 7:1) */
+:root[data-theme="dark"] .mobile-cta-bar .btn.primary{
+  background: var(--green);
+  border-color: var(--green);
+  color: #10150B;
+  box-shadow: 0 2px 0 color-mix(in oklab, var(--green) 55%, black);
+}
+/* slide transition only when motion is welcome; reduced motion
+   gets an instant show/hide (no transition declared at all) */
+@media (prefers-reduced-motion: no-preference){
+  .mobile-cta-bar{
+    transition: transform 240ms cubic-bezier(0.2, 0.9, 0.2, 1),
+                visibility 0s linear 240ms;
+  }
+  .mobile-cta-bar.show{
+    transition: transform 240ms cubic-bezier(0.2, 0.9, 0.2, 1),
+                visibility 0s;
+  }
 }

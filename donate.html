@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Donate — Help Plant Our First Season | FutureSprouts</title>
+  <title>Donate: Help Plant Our First Season | FutureSprouts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Support youth farming education. $10 puts seed packs in students' hands; $25 funds a starter garden kit. Tax-deductible 501(c)(3)." />
   <link rel="canonical" href="https://futuresprouts.org/donate.html" />
-  <meta property="og:title" content="Donate — Help Plant Our First Season | FutureSprouts" />
+  <meta property="og:title" content="Donate: Help Plant Our First Season | FutureSprouts" />
   <meta property="og:description" content="Support youth farming education. $10 puts seed packs in students' hands; $25 funds a starter garden kit. Tax-deductible 501(c)(3)." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://futuresprouts.org/donate.html" />
@@ -16,6 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="donate-slider.css" />
   <script src="config.js"></script>
   <script src="https://www.paypal.com/sdk/js?client-id=AfmvNxs63TkNmqoftm8qwg91SvUnQtLqlloZdaHx-Eni8IRZxtuUF9BJSfDiPeE2u_m8JyAZ0x6tW-Eh&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
   <script type="application/ld+json">
@@ -130,7 +131,7 @@
             <button class="amount-chip" data-plan="P-85X48833091729338NGOIE2Q">🌻 $25/mo</button>
             <button class="amount-chip" data-plan="P-3SX05852LF679813WNGOIFJI">🌳 $50/mo</button>
           </div>
-          <p class="small tier-caption" id="tierCaption" aria-live="polite">$5/month keeps a student growing all year — seeds and starter supplies, every month.</p>
+          <p class="small tier-caption" id="tierCaption" aria-live="polite">$5/month keeps a student growing all year, seeds and starter supplies, every month.</p>
           <div id="paypal-button-container"></div>
           <details class="cancel-details">
             <summary>How to cancel your subscription</summary>
@@ -155,7 +156,7 @@
         <div class="grid cols-3" style="margin-top:16px;">
           <div class="card impact-card reveal">
             <div class="impact-amount">$10</div>
-            <p class="small">Puts roughly <strong>8 seed packs</strong> in students' hands — enough for a classroom windowsill garden.</p>
+            <p class="small">Puts roughly <strong>8 seed packs</strong> in students' hands, enough for a classroom windowsill garden.</p>
           </div>
           <div class="card impact-card reveal">
             <div class="impact-amount">$25</div>
@@ -166,7 +167,60 @@
             <p class="small">Helps build a <strong>raised garden bed</strong> with soil and seedlings for a school or community space.</p>
           </div>
         </div>
-        <p class="small reveal" style="margin-top:10px;">Equivalents are approximate, based on our actual supply costs — every gift goes into the same program fund.</p>
+
+        <!-- Donation impact slider (illustrative only) -->
+        <div class="card impact-slider-card reveal" style="margin-top:16px;">
+          <div class="pill">Try it yourself</div>
+          <div class="impact-slider">
+            <div class="impact-figure" id="impactFigure" aria-hidden="true">
+              <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                <!-- soil mound -->
+                <path d="M18 142 Q 80 118 142 142 L 142 160 L 18 160 Z" fill="var(--soil)" opacity="0.55"/>
+                <!-- stage 1: seedling -->
+                <g class="impact-stage" data-stage="1">
+                  <path d="M80 140 L 80 118" fill="none" stroke="var(--green)" stroke-width="6" stroke-linecap="round"/>
+                  <path d="M79 122 C 66 118, 58 108, 57 94 C 71 98, 79 108, 79 120 Z" fill="var(--green)"/>
+                  <path d="M81 122 C 94 118, 102 108, 103 94 C 89 98, 81 108, 81 120 Z" fill="var(--green)"/>
+                </g>
+                <!-- stage 2: leafy sprout -->
+                <g class="impact-stage" data-stage="2">
+                  <path d="M80 120 L 80 88" fill="none" stroke="var(--green)" stroke-width="5.5" stroke-linecap="round"/>
+                  <path d="M79 100 C 62 95, 51 82, 50 64 C 68 69, 79 82, 79 98 Z" fill="var(--greenDark)"/>
+                  <path d="M81 100 C 98 95, 109 82, 110 64 C 92 69, 81 82, 81 98 Z" fill="var(--greenDark)"/>
+                </g>
+                <!-- stage 3: full plant -->
+                <g class="impact-stage" data-stage="3">
+                  <path d="M80 90 L 80 58" fill="none" stroke="var(--green)" stroke-width="5" stroke-linecap="round"/>
+                  <path d="M79 74 C 64 70, 55 59, 54 44 C 69 48, 79 59, 79 72 Z" fill="var(--green)"/>
+                  <path d="M81 74 C 96 70, 105 59, 106 44 C 91 48, 81 59, 81 72 Z" fill="var(--green)"/>
+                </g>
+                <!-- stage 4: bloom -->
+                <g class="impact-stage" data-stage="4">
+                  <g fill="var(--sun)" stroke="var(--harvest)" stroke-width="2.5">
+                    <ellipse cx="80" cy="30" rx="8" ry="12"/>
+                    <ellipse cx="64" cy="42" rx="12" ry="8"/>
+                    <ellipse cx="96" cy="42" rx="12" ry="8"/>
+                    <ellipse cx="69" cy="58" rx="9" ry="11" transform="rotate(35 69 58)"/>
+                    <ellipse cx="91" cy="58" rx="9" ry="11" transform="rotate(-35 91 58)"/>
+                  </g>
+                  <circle cx="80" cy="45" r="9" fill="var(--harvest)"/>
+                </g>
+              </svg>
+            </div>
+            <div>
+              <label class="impact-slider-label" for="impactRange">Slide to see what a gift this size grows</label>
+              <div class="impact-readout" id="impactReadout">$25</div>
+              <input type="range" class="impact-range" id="impactRange" min="5" max="100" step="5" value="25" />
+              <div class="impact-scale" aria-hidden="true">
+                <span>$5</span><span>$25</span><span>$50</span><span>$100</span>
+              </div>
+              <p class="impact-line" id="impactLine" aria-live="polite"></p>
+              <p class="small" style="margin-top:6px;">This slider is just for exploring. It does not change any donation amount.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="small reveal" style="margin-top:10px;">Equivalents are approximate, based on our actual supply costs, every gift goes into the same program fund.</p>
       </div>
 
       <!-- Testimonials (auto-hidden until config.js has entries) -->
@@ -183,8 +237,8 @@
           <div>
             <div class="pill">Why we started</div>
             <h3>From a family produce stand to your community.</h3>
-            <p class="small" style="margin-top:8px;">FutureSprouts was founded by Brady Yarnall, a Chester County student who grew up on a working family farm — goats, chickens, and six years behind the family produce stand. Growing food teaches things a textbook can't: patience, responsibility, and where dinner actually comes from. FutureSprouts exists to hand that experience to kids who don't have a farm out the back door.</p>
-            <p class="small" style="margin-top:8px;">We're youth-led and all-volunteer. Nobody here draws a salary — your donation buys seeds, soil, tools, and teaching materials, not overhead.</p>
+            <p class="small" style="margin-top:8px;">FutureSprouts was founded by Brady Yarnall, a Chester County student who grew up on a working family farm, goats, chickens, and six years behind the family produce stand. Growing food teaches things a textbook can't: patience, responsibility, and where dinner actually comes from. FutureSprouts exists to hand that experience to kids who don't have a farm out the back door.</p>
+            <p class="small" style="margin-top:8px;">We're youth-led and all-volunteer. Nobody here draws a salary, your donation buys seeds, soil, tools, and teaching materials, not overhead.</p>
           </div>
         </div>
       </div>
@@ -193,18 +247,18 @@
       <div class="card reveal" style="margin-top: 20px;">
         <div class="pill">Our promise to donors</div>
         <h3>You'll see where it went.</h3>
-        <p class="small" style="margin-top: 8px;">After every program and event, we document what was distributed and who it reached — photos, counts, and partner confirmations. We'll publish our impact on this site after each season, and our financials are available to any donor on request. If you give to FutureSprouts, you'll be able to point at something growing because of it.</p>
+        <p class="small" style="margin-top: 8px;">After every program and event, we document what was distributed and who it reached, photos, counts, and partner confirmations. We'll publish our impact on this site after each season, and our financials are available to any donor on request. If you give to FutureSprouts, you'll be able to point at something growing because of it.</p>
       </div>
 
       <!-- Donor FAQ -->
       <div class="card reveal" style="margin-top: 20px;">
         <div class="pill">Questions</div>
         <h3>Donor FAQ</h3>
-        <details class="faq-item"><summary>Is my donation tax-deductible?</summary><p class="small">Yes. FutureSprouts is a 501(c)(3) tax-exempt organization (EIN: 41-3415589), and no goods or services are provided in exchange for donations. PayPal emails your receipt automatically — keep it for tax time.</p></details>
+        <details class="faq-item"><summary>Is my donation tax-deductible?</summary><p class="small">Yes. FutureSprouts is a 501(c)(3) tax-exempt organization (EIN: 41-3415589), and no goods or services are provided in exchange for donations. PayPal emails your receipt automatically, keep it for tax time.</p></details>
         <details class="faq-item"><summary>Where does the money actually go?</summary><p class="small">Seeds, soil, garden tools, raised-bed materials, and printed educational guides. We're all-volunteer with no paid staff, so program supplies are essentially our only cost.</p></details>
         <details class="faq-item"><summary>Can I cancel a monthly donation?</summary><p class="small">Anytime, in about 30 seconds: log into PayPal → profile icon → Settings → Payments → Manage automatic payments → FutureSprouts → Stop.</p></details>
-        <details class="faq-item"><summary>Can I give supplies instead of money?</summary><p class="small">Absolutely — seeds, tools, gloves, and soil are just as valuable to us. Ship directly from our <a href="wishlist.html">wishlist</a> or use the materials form on <a href="get-involved.html">Get Involved</a> for local drop-off.</p></details>
-        <details class="faq-item"><summary>Does my employer match donations?</summary><p class="small">Many do! Search your company's giving portal for "FutureSprouts" or EIN 41-3415589, or ask HR — matching can double your gift at no cost to you.</p></details>
+        <details class="faq-item"><summary>Can I give supplies instead of money?</summary><p class="small">Absolutely, seeds, tools, gloves, and soil are just as valuable to us. Ship directly from our <a href="wishlist.html">wishlist</a> or use the materials form on <a href="get-involved.html">Get Involved</a> for local drop-off.</p></details>
+        <details class="faq-item"><summary>Does my employer match donations?</summary><p class="small">Many do! Search your company's giving portal for "FutureSprouts" or EIN 41-3415589, or ask HR, matching can double your gift at no cost to you.</p></details>
       </div>
 
       <div id="donationLegalNote" class="notice reveal" style="margin-top: 18px;">
@@ -216,14 +270,15 @@
   <!-- Injected footer -->
   <div id="siteFooter"></div>
   <script src="script.js"></script>
+  <script src="donate-slider.js"></script>
   <script>
     let activePlan = 'P-2M927126G2694500NNGOIDHI';
 
     const tierCaptions = {
-      'P-2M927126G2694500NNGOIDHI': '$5/month keeps a student growing all year — seeds and starter supplies, every month.',
+      'P-2M927126G2694500NNGOIDHI': '$5/month keeps a student growing all year, seeds and starter supplies, every month.',
       'P-6DK91425HV724361DNGOIEDQ': '$10/month supplies a classroom with fresh seed packs every single month.',
       'P-85X48833091729338NGOIE2Q': '$25/month funds a complete starter garden kit for a new family or class each month.',
-      'P-3SX05852LF679813WNGOIFJI': '$50/month builds a school raised bed — with soil and seedlings — every semester.'
+      'P-3SX05852LF679813WNGOIFJI': '$50/month builds a school raised bed, with soil and seedlings, every semester.'
     };
 
     document.querySelectorAll('.amount-chip').forEach(chip => {

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grow Widget Demo (standalone)</title>
+  <link rel="stylesheet" href="grow-widget.css">
+  <style>
+    /* Demo page chrome only. The widget's own styles all live in
+       grow-widget.css, scoped under .fs-grow. */
+    body {
+      margin: 0;
+      padding: 24px 16px 64px;
+      background: #F8F3E7;
+      color: #29321F;
+      font-family: "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.6;
+    }
+    .demo-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .demo-wrap > h1 {
+      font-family: "Fraunces", Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 5vw, 40px);
+      letter-spacing: -0.02em;
+      margin: 0 0 8px;
+    }
+    .demo-note {
+      background: #FFFDF6;
+      border: 1.5px dashed rgba(74, 58, 34, 0.35);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 14.5px;
+      color: #5D6450;
+      margin: 0 0 24px;
+    }
+    .demo-note strong { color: #29321F; }
+  </style>
+</head>
+<body>
+  <div class="demo-wrap">
+    <h1>Grow Widget Demo</h1>
+    <p class="demo-note">
+      <strong>Standalone demo.</strong> This page is opened straight from the
+      filesystem without the FutureSprouts site scripts, so
+      <strong>window.FS_CART is not present</strong>. That means the
+      "Add to Request List" buttons render in a disabled state on purpose,
+      and the widget logs a console note explaining why. On the live site,
+      where script.js defines FS_CART, the same buttons add the matching
+      seed pack to the visitor's Request List. Include order on a real page:
+      grow-widget.css, then grow-data.js, then grow-widget.js, then call
+      initGrowWidget with a mount element or its id.
+    </p>
+
+    <div id="grow-widget-mount"></div>
+  </div>
+
+  <script src="grow-data.js"></script>
+  <script src="grow-widget.js"></script>
+  <script>
+    initGrowWidget("grow-widget-mount");
+  </script>
+</body>
+</html>

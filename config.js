@@ -21,23 +21,151 @@ logoPath: "/images/leaf-spring-icon_24911-115668.png",
 
 
   // =========================================================
-  // IMPACT STATS — leave empty until numbers are real.
+  // IMPACT STATS - leave empty until numbers are real.
   // Animated counters appear on the homepage and Impact page
   // automatically once this has entries. Example:
   // { value: 500, suffix: "+", label: "Seed packets distributed" }
+  //
+  // While this is empty the same section shows the FOUNDING
+  // SEASON GOALS meters below instead. The moment you add a
+  // real entry here it takes over.
   // =========================================================
   impactStats: [],
 
   // =========================================================
-  // DELIVERY MAP PINS — where kits have taken root.
+  // FOUNDING SEASON GOALS - hand-edit this block.
+  // Rendered as progress meters on the homepage while impactStats
+  // above is empty. Each entry has:
+  //   label   - short text shown above the meter
+  //   current - where we are today. HONESTY RULE: this number must
+  //             be true today and evidenced, or 0. Never a guess.
+  //   goal    - the first-season target we are growing toward
+  //   unit    - optional word for the readout, e.g. "varieties"
+  //   auto    - optional self-counting mode so the meter can never
+  //             drift from this file. Set to "seeds", "supplies",
+  //             or "education" to count that catalog category live,
+  //             or "milestones" to count done rows in
+  //             foundingProgress (goal becomes the row total).
+  //             With auto set, current/goal are fallbacks only.
+  // A meter sitting at 0 is fine. A made-up number is not.
+  // =========================================================
+  seasonGoals: [
+    { label: "Seed varieties stocked", auto: "seeds", current: 35, goal: 40, unit: "varieties" },
+    { label: "Garden supplies listed", auto: "supplies", current: 12, goal: 20, unit: "items" },
+    { label: "Free classroom resources published", auto: "education", current: 10, goal: 12, unit: "resources" },
+    { label: "Founding milestones completed", auto: "milestones", current: 3, goal: 7, unit: "milestones" },
+    { label: "Seed packs distributed", current: 0, goal: 100, unit: "packs" }
+  ],
+
+  // Set false to hide the goals meters entirely until launch.
+  showSeasonGoals: true,
+
+  // =========================================================
+  // FOUNDING SEASON PROGRESS - honest status, no invented data.
+  // Renders the milestone rail on the homepage. Every row needs a
+  // `status` of "done", "active", or "next". Update as things land.
+  // Delete a row rather than leave it inaccurate.
+  // =========================================================
+  foundingProgress: [
+    {
+      status: "done",
+      title: "501(c)(3) status approved",
+      detail: "Federally recognized tax-exempt nonprofit, EIN 41-3415589. Donations are deductible."
+    },
+    {
+      status: "done",
+      title: "Board seated",
+      detail: "Three directors serving as President, Treasurer, and Secretary."
+    },
+    {
+      status: "done",
+      title: "Catalog open for requests",
+      detail: "Seeds, supplies, and classroom resources are listed and free to request."
+    },
+    {
+      status: "active",
+      title: "First seed packs and garden kits assembled",
+      detail: "Packing our first batches now so requests ship as soon as they come in."
+    },
+    {
+      status: "active",
+      title: "First community events taking shape",
+      detail: "A cleanup and a seed swap are being scheduled in Chester County."
+    },
+    {
+      status: "next",
+      title: "First classroom partnerships",
+      detail: "Talking with local teachers about pilot lessons for the 2026 school year."
+    },
+    {
+      status: "next",
+      title: "First distribution numbers published",
+      detail: "Once materials are in students' hands we report the counts here, with photos."
+    }
+  ],
+
+  // =========================================================
+  // WHERE THE MONEY GOES - leave the percentages empty until a
+  // real budget has been approved by the board. Publishing a
+  // guess here is worse than publishing nothing. When you fill
+  // it, the numbers must add to 100. Example:
+  // { label: "Seeds and supplies", percent: 78 },
+  // { label: "Educational materials", percent: 14 },
+  // { label: "Operating costs", percent: 8 }
+  // =========================================================
+  fundAllocation: [],
+
+  // =========================================================
+  // TRANSPARENCY FACTS - only statements you can evidence.
+  // Renders as the trust panel beside the donate call to action.
+  // =========================================================
+  transparency: {
+    ein: "41-3415589",
+    statusLine: "501(c)(3) tax-exempt organization",
+    facts: [
+      "Every program, seed pack, and resource is free to the people who request it.",
+      "Volunteer-run and youth-led. Nobody on the team draws a salary.",
+      "PayPal emails a receipt for every gift, and we keep records of what each season distributed."
+    ],
+    // Optional: link to a posted Form 990 or annual report once one exists.
+    reportUrl: "",
+    reportLabel: "Read our annual report"
+  },
+
+  // =========================================================
+  // FOUNDER NOTE - the face behind "youth-led".
+  // Set photo to "" to render the note without a portrait.
+  // =========================================================
+  founder: {
+    name: "Brady Yarnall",
+    role: "President and Founder",
+    photo: "images/brady-yarnall.jpg",
+    quote: "I grew up on a working family farm in Chester County. FutureSprouts is my attempt to hand that same start to kids who never get near a garden.",
+    location: "Chester County, Pennsylvania"
+  },
+
+  // =========================================================
+  // HERO VIDEO - drop a short, silent loop of your own work here
+  // and it replaces the stock photo automatically. Record 3 to 4
+  // seconds landscape, export under 2 MB, save as
+  // images/hero-loop.mp4, then set:
+  //   heroVideo: "images/hero-loop.mp4"
+  // The poster falls back to the current hero photo, and the video
+  // is skipped entirely under prefers-reduced-motion.
+  // =========================================================
+  heroVideo: "",
+  heroPoster: "images/hybrid-storytellers-qHD4Yj8E6WQ-unsplash.jpg",
+
+  // =========================================================
+  // DELIVERY MAP PINS - where kits have taken root.
   // Pins appear on the Chester County map on the Donate page.
   // x/y are percentages of the map area (0-100). Example:
-  // { x: 55, y: 62, label: "West Chester — 3 classroom kits" }
+  // { x: 55, y: 62, label: "West Chester - 3 classroom kits" }
   // =========================================================
   deliveryPins: [],
 
   // =========================================================
-  // FARM ANIMALS — the 'Meet the farm' strip on the About page.
+  // FARM ANIMALS - the 'Meet the farm' strip on the About page.
   // Appears automatically once populated. Example:
   // { name: "Clover", type: "Goat", photo: "images/animals/clover.jpg",
   //   fact: "Head of security. Accepts bribes in apple slices." }
@@ -45,7 +173,7 @@ logoPath: "/images/leaf-spring-icon_24911-115668.png",
   farmAnimals: [],
 
   // =========================================================
-  // TESTIMONIALS — leave empty until you have real quotes.
+  // TESTIMONIALS - leave empty until you have real quotes.
   // Sections on the Donate page and homepage stay hidden while
   // this array is empty. To publish one, copy the example:
   // {
@@ -59,13 +187,13 @@ logoPath: "/images/leaf-spring-icon_24911-115668.png",
   testimonials: [],
 
   // =========================================================
-  // PHOTO GALLERY — leave empty until you have event photos.
+  // PHOTO GALLERY - leave empty until you have event photos.
   // The gallery section on the Events page stays hidden while
   // this array is empty. Example entry:
   // {
   //   src: "images/gallery/cleanup-2026-1.jpg",
   //   alt: "Volunteers bagging litter at the Chester County cleanup",
-  //   caption: "Community Cleanup — Spring 2026"
+  //   caption: "Community Cleanup - Spring 2026"
   // }
   // Reminder: photos showing identifiable minors require a
   // signed parent/guardian media release before publishing.

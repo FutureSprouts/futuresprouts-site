@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Event Updates | FutureSprouts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Sign up for FutureSprouts event updates — community cleanups, seed swaps, and more in Chester County, PA." />
+  <meta name="description" content="Sign up for FutureSprouts event updates, community cleanups, seed swaps, and more in Chester County, PA." />
   <link rel="canonical" href="https://futuresprouts.org/rsvp.html" />
   <meta property="og:title" content="Event Updates | FutureSprouts" />
   <meta property="og:description" content="Stay informed about upcoming FutureSprouts events." />
@@ -13,6 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="swap-map.css" />
   <script src="config.js"></script>
 </head>
 <body>
@@ -77,7 +78,79 @@
     </div>
   </section>
 
+  <section class="section" id="swapMapSection" aria-labelledby="swapMapHeading">
+    <div class="container">
+      <div class="kicker reveal">Around The County</div>
+      <h2 class="reveal" id="swapMapHeading">Seed swaps and cleanups in Chester County</h2>
+      <p class="reveal">
+        Here's the kind of ground we cover. The pins below are sample spots only,
+        not confirmed venues. Exact locations and dates will go out by email once
+        they're finalized.
+      </p>
+
+      <div class="swapmap-frame reveal">
+        <div class="swapmap-canvas">
+          <svg viewBox="0 0 600 500" role="img" aria-label="Stylized hand-drawn outline map of Chester County, Pennsylvania, with reference towns West Chester, Downingtown, Coatesville, Kennett Square, Phoenixville, and Oxford." focusable="false">
+            <path class="swapmap-outline" d="M 168 62
+              Q 200 48 232 55 Q 268 40 300 46 Q 336 30 372 40 Q 404 28 436 38
+              L 468 66
+              Q 486 108 502 148 Q 512 190 528 228 Q 536 268 530 306 Q 540 344 524 380
+              Q 500 396 492 420
+              A 60 60 0 0 1 452 440
+              L 400 441 L 340 439 L 280 441 L 220 439 L 130 440
+              Q 140 380 146 320 Q 148 260 156 200 Q 158 140 168 62
+              Z" />
+            <path class="swapmap-sketch" d="M 180 74
+              Q 210 60 240 66 Q 274 52 304 58 Q 340 42 374 52 Q 402 42 430 50
+              L 456 74
+              Q 474 114 490 152 Q 500 194 516 230 Q 524 268 518 304 Q 528 342 512 374
+              Q 490 390 482 412
+              Q 468 426 448 428
+              L 280 429 L 142 428
+              Q 152 372 158 316 Q 160 258 168 202 Q 170 146 180 74
+              Z" />
+            <path class="swapmap-creek" d="M 350 60 Q 342 100 352 140 Q 360 180 348 220 Q 338 260 350 300 Q 360 340 348 380 Q 342 410 350 436" />
+            <g class="swapmap-compass-group" aria-hidden="true">
+              <text class="swapmap-compass" x="548" y="52" text-anchor="middle">N</text>
+              <path class="swapmap-compass-line" d="M 548 92 L 548 62 M 541 72 L 548 62 L 555 72" />
+            </g>
+            <text class="swapmap-map-title" x="352" y="482" aria-hidden="true">Chester County, PA</text>
+            <g aria-hidden="true">
+              <circle class="swapmap-town-dot" cx="378" cy="275" r="5" />
+              <text class="swapmap-town-label" x="390" y="282">West Chester</text>
+              <circle class="swapmap-town-dot" cx="288" cy="225" r="5" />
+              <text class="swapmap-town-label" x="296" y="250">Downingtown</text>
+              <circle class="swapmap-town-dot" cx="216" cy="235" r="5" />
+              <text class="swapmap-town-label" x="222" y="216" text-anchor="middle">Coatesville</text>
+              <circle class="swapmap-town-dot" cx="330" cy="410" r="5" />
+              <text class="swapmap-town-label" x="342" y="404">Kennett Square</text>
+              <circle class="swapmap-town-dot" cx="432" cy="110" r="5" />
+              <text class="swapmap-town-label" x="422" y="104" text-anchor="end">Phoenixville</text>
+              <circle class="swapmap-town-dot" cx="178" cy="408" r="5" />
+              <text class="swapmap-town-label" x="190" y="402">Oxford</text>
+            </g>
+          </svg>
+          <div class="swapmap-pins" id="swapMapPins"></div>
+        </div>
+        <div class="swapmap-legend" role="list" aria-label="Map legend">
+          <span class="swapmap-legend-item" role="listitem">
+            <span class="swapmap-legend-swatch seed-swap" aria-hidden="true"></span>
+            Seed swap
+          </span>
+          <span class="swapmap-legend-item" role="listitem">
+            <span class="swapmap-legend-swatch cleanup" aria-hidden="true"></span>
+            Cleanup
+          </span>
+        </div>
+        <p class="small swapmap-note">
+          Sample pins for illustration. Tap or focus a pin to see its label.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <div id="siteFooter"></div>
   <script src="script.js"></script>
+  <script src="swap-map.js"></script>
 </body>
 </html>

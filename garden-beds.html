@@ -28,7 +28,7 @@
     <div class="container">
       <div class="kicker reveal">Services • Garden Beds</div>
       <h2 class="reveal">Request raised garden beds.</h2>
-      <p class="reveal">Choose a size and add it to your cart.</p>
+      <p class="reveal">Choose a size and add it to your request list.</p>
 
       <div class="rulebox reveal">
         Abuse prevention rule: <strong>Max 4 total garden beds per order</strong> (any combination of sizes).
@@ -80,7 +80,7 @@
 
       <div class="cart-actions reveal">
         <a class="btn outline" href="services.html">Back to Services</a>
-        <a class="btn primary" href="cart.html">View Cart</a>
+        <a class="btn primary" href="cart.html">View Request List</a>
       </div>
     </div>
   </section>
@@ -118,11 +118,11 @@
       }
 
       function bind(){
-        document.querySelectorAll("[data-bed-inc='bed-2x4']").forEach(b => b.onclick = () => inc("bed-2x4","Garden Bed — 2×4"));
-        document.querySelectorAll("[data-bed-dec='bed-2x4']").forEach(b => b.onclick = () => dec("bed-2x4","Garden Bed — 2×4"));
+        document.querySelectorAll("[data-bed-inc='bed-2x4']").forEach(b => b.onclick = () => inc("bed-2x4","Garden Bed: 2×4"));
+        document.querySelectorAll("[data-bed-dec='bed-2x4']").forEach(b => b.onclick = () => dec("bed-2x4","Garden Bed: 2×4"));
 
-        document.querySelectorAll("[data-bed-inc='bed-4x4']").forEach(b => b.onclick = () => inc("bed-4x4","Garden Bed — 4×4"));
-        document.querySelectorAll("[data-bed-dec='bed-4x4']").forEach(b => b.onclick = () => dec("bed-4x4","Garden Bed — 4×4"));
+        document.querySelectorAll("[data-bed-inc='bed-4x4']").forEach(b => b.onclick = () => inc("bed-4x4","Garden Bed: 4×4"));
+        document.querySelectorAll("[data-bed-dec='bed-4x4']").forEach(b => b.onclick = () => dec("bed-4x4","Garden Bed: 4×4"));
 
         render();
       }

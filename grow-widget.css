@@ -1,0 +1,390 @@
+/* =========================================================
+   grow-widget.css  (FutureSprouts "What can I grow right now?")
+
+   Every rule is scoped under the .fs-grow root class so nothing
+   leaks into site styles. Colors read the site's CSS custom
+   properties with earth-tone fallbacks so the standalone demo
+   (no style.css) still renders correctly. Mobile-first.
+   ========================================================= */
+
+.fs-grow {
+  --fsg-bg: var(--bg2, #EFE6CF);
+  --fsg-card: var(--card, #FFFDF6);
+  --fsg-text: var(--text, #29321F);
+  --fsg-muted: var(--muted, #5D6450);
+  --fsg-border: var(--border, rgba(74, 58, 34, 0.20));
+  --fsg-green: var(--green, #3E7C4B);
+  --fsg-green-dark: var(--greenDark, #275634);
+  --fsg-soil: var(--soil, #7A5233);
+  --fsg-sun: var(--sun, #E7B75F);
+  --fsg-radius: var(--radius, 16px);
+
+  font-family: var(--font, "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
+  color: var(--fsg-text);
+  background: var(--fsg-bg);
+  border: 1px solid var(--fsg-border);
+  border-radius: var(--fsg-radius);
+  line-height: 1.55;
+}
+
+.fs-grow *,
+.fs-grow *::before,
+.fs-grow *::after {
+  box-sizing: border-box;
+}
+
+.fs-grow-inner {
+  padding: 22px 18px 26px;
+}
+
+.fs-grow-kicker {
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--fsg-soil);
+}
+
+.fs-grow-title {
+  margin: 0 0 8px;
+  font-family: var(--display, "Fraunces", Georgia, "Times New Roman", serif);
+  font-size: clamp(24px, 4.5vw, 32px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--fsg-text);
+}
+
+.fs-grow-sub {
+  margin: 0 0 18px;
+  font-size: 15.5px;
+  color: var(--fsg-muted);
+  max-width: 46ch;
+}
+
+/* ---------- controls ---------- */
+
+.fs-grow-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0 0 16px;
+}
+
+.fs-grow-field {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.fs-grow-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fsg-muted);
+  margin-bottom: 6px;
+  padding: 0;
+}
+
+.fs-grow-month {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  font-size: 16px;
+  color: var(--fsg-text);
+  background: var(--fsg-card);
+  border: 1.5px solid var(--fsg-border);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.fs-grow-month:focus-visible {
+  outline: 3px solid var(--fsg-green);
+  outline-offset: 2px;
+}
+
+.fs-grow-space-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fs-grow-space-option {
+  flex: 1 1 auto;
+  display: flex;
+}
+
+/* Radios stay in the accessibility tree but are visually replaced
+   by their styled labels. Arrow keys still move between them. */
+.fs-grow-space-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.fs-grow-space-option label {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 10px 16px;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--fsg-text);
+  background: var(--fsg-card);
+  border: 1.5px solid var(--fsg-border);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.fs-grow-space-option input:checked + label {
+  background: var(--fsg-green-dark);
+  border-color: var(--fsg-green-dark);
+  color: #FFFDF6;
+}
+
+.fs-grow-space-option input:focus-visible + label {
+  outline: 3px solid var(--fsg-green);
+  outline-offset: 2px;
+}
+
+/* ---------- status line ---------- */
+
+.fs-grow-status {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--fsg-green-dark);
+  min-height: 1.4em;
+}
+
+/* ---------- results ---------- */
+
+.fs-grow-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.fs-grow-card {
+  background: var(--fsg-card);
+  border: 1px solid var(--fsg-border);
+  border-left: 4px solid var(--fsg-green);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.fs-grow-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin-bottom: 10px;
+}
+
+.fs-grow-crop {
+  margin: 0;
+  font-family: var(--display, "Fraunces", Georgia, "Times New Roman", serif);
+  font-size: 19px;
+  letter-spacing: -0.01em;
+  color: var(--fsg-text);
+}
+
+.fs-grow-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+
+.fs-grow-badge-direct-sow {
+  color: var(--fsg-green-dark);
+}
+
+.fs-grow-badge-start-indoors,
+.fs-grow-badge-sow-indoors {
+  color: var(--fsg-soil);
+}
+
+.fs-grow-facts {
+  margin: 0 0 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+}
+
+.fs-grow-fact {
+  min-width: 0;
+}
+
+.fs-grow-fact dt {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fsg-muted);
+}
+
+.fs-grow-fact dd {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--fsg-text);
+}
+
+.fs-grow-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #FFFDF6;
+  background: var(--fsg-green-dark);
+  border: 1.5px solid var(--fsg-green-dark);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.fs-grow-add:hover:not(:disabled) {
+  background: var(--fsg-green);
+  border-color: var(--fsg-green);
+}
+
+.fs-grow-add:focus-visible {
+  outline: 3px solid var(--fsg-soil);
+  outline-offset: 2px;
+}
+
+.fs-grow-add:disabled {
+  background: transparent;
+  color: var(--fsg-muted);
+  border: 1.5px dashed var(--fsg-border);
+  cursor: not-allowed;
+}
+
+.fs-grow-add.is-added {
+  background: var(--fsg-soil);
+  border-color: var(--fsg-soil);
+}
+
+.fs-grow-nopack {
+  margin: 0;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--fsg-muted);
+}
+
+.fs-grow-empty {
+  background: var(--fsg-card);
+  border: 1.5px dashed var(--fsg-border);
+  border-radius: 12px;
+  padding: 20px 16px;
+  font-size: 15.5px;
+  color: var(--fsg-muted);
+}
+
+.fs-grow-error {
+  margin: 0;
+  padding: 14px;
+  font-size: 15px;
+  color: var(--fsg-text);
+}
+
+/* Screen-reader-only live region for cart confirmations. */
+.fs-grow-cart-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* ---------- motion (opt-in only) ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .fs-grow-month,
+  .fs-grow-space-option label,
+  .fs-grow-add {
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  }
+
+  .fs-grow-card {
+    animation: fs-grow-rise 240ms ease both;
+  }
+
+  @keyframes fs-grow-rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ---------- wider screens ---------- */
+
+@media (min-width: 640px) {
+  .fs-grow-inner {
+    padding: 30px 28px 34px;
+  }
+
+  .fs-grow-controls {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 18px;
+  }
+
+  .fs-grow-controls .fs-grow-field:first-child {
+    flex: 0 1 220px;
+  }
+
+  .fs-grow-spaces {
+    flex: 1 1 auto;
+  }
+
+  .fs-grow-space-option {
+    flex: 0 1 auto;
+  }
+
+  .fs-grow-space-option label {
+    min-width: 130px;
+  }
+
+  .fs-grow-results {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .fs-grow-add {
+    width: auto;
+  }
+}

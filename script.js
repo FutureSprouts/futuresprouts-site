@@ -1,4 +1,4 @@
-// script.js — FULL REPLACEMENT (STABLE + FIXED)
+// script.js - FULL REPLACEMENT (STABLE + FIXED)
 // - Single source of truth for Header/Footer injection
 // - Single theme system (system/light/dark)
 // - Footer theme dropdown (Light/Dark/System) styled as pill + caret (no bold text)
@@ -331,7 +331,7 @@
       <a href="contact.html">Contact</a>
 
       <div class="cart-wrap">
-        <a href="cart.html" class="cart-link" aria-label="View Request">
+        <a href="cart.html" class="cart-link" aria-label="View Request List">
           <span class="cart-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="20" height="20" role="img" focusable="false">
               <path d="M6.5 6.5h14l-1.2 7.2a2 2 0 0 1-2 1.7H9.1a2 2 0 0 1-2-1.6L5.2 3.8H2.8"
@@ -343,14 +343,14 @@
           <span class="cart-badge" id="cartBadge">0</span>
         </a>
 
-        <div class="mini-cart" id="miniCart" aria-label="Request preview">
+        <div class="mini-cart" id="miniCart" aria-label="Request list preview">
           <div class="mini-cart-header">
-            <strong>Request Preview</strong>
+            <strong>Request List</strong>
             <span class="small" id="miniCartCount">0 items</span>
           </div>
           <div class="mini-cart-items" id="miniCartItems"></div>
           <div class="mini-cart-footer">
-            <a class="btn primary mini-cart-btn" href="cart.html">View Request</a>
+            <a class="btn primary mini-cart-btn" href="cart.html">View Request List</a>
           </div>
         </div>
       </div>
@@ -365,8 +365,8 @@
     <a href="contact.html">Contact</a>
     <a href="donate.html" class="donate-btn">Donate</a>
 
-    <a href="cart.html" class="cart-link" aria-label="View Request">
-      <span style="font-weight:700;">Request</span>
+    <a href="cart.html" class="cart-link" aria-label="View Request List">
+      <span style="font-weight:700;">Request List</span>
       <span class="cart-badge" id="cartBadgeMobile">0</span>
     </a>
   </div>
@@ -402,7 +402,7 @@
     <div>
       <h3>Quick Links</h3>
       <p><a href="services.html">Services</a></p>
-      <p><a href="cart.html">Request</a></p>
+      <p><a href="cart.html">Request List</a></p>
       <p><a href="events.html">Events</a></p>
       <p><a href="donate.html">Donate</a></p>
       <p><a href="wishlist.html">Wishlist</a></p>
@@ -495,12 +495,16 @@
     const reveals = document.querySelectorAll(".reveal:not(.seed-card)");
     if (!reveals.length || !("IntersectionObserver" in window)) return;
 
+    // Reveal once and stop watching. The previous version removed .show on
+    // exit, so scrolling back up left the page blank, and a threshold of 0.18
+    // meant anything taller than the viewport never revealed at all.
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add("show");
-        else entry.target.classList.remove("show");
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("show");
+        obs.unobserve(entry.target);
       });
-    }, { threshold: 0.18 });
+    }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
 
     reveals.forEach(el => obs.observe(el));
   }
@@ -520,13 +524,20 @@
   // Impact count-up
   // ---------------------------
   function countUp(el, target) {
+    // data-suffix is authoritative. An exact catalogue count must not be
+    // dressed up as "35+" when there are exactly 35.
+    const suffix = el.getAttribute("data-suffix") ?? "+";
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.textContent = target.toLocaleString() + suffix;
+      return;
+    }
     const duration = 900;
     const start = performance.now();
 
     function step(now) {
       const p = Math.min((now - start) / duration, 1);
       const value = Math.floor(target * p);
-      el.textContent = value.toLocaleString() + "+";
+      el.textContent = value.toLocaleString() + suffix;
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -538,14 +549,14 @@
 
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
         const el = entry.target;
         const target = parseInt(el.getAttribute("data-count") || "0", 10);
+        obs.unobserve(el);
         if (!Number.isFinite(target) || target <= 0) return;
-
-        if (entry.isIntersecting) countUp(el, target);
-        else el.textContent = "0+";
+        countUp(el, target);
       });
-    }, { threshold: 0.45 });
+    }, { threshold: 0.35 });
 
     statNums.forEach(el => obs.observe(el));
   }
@@ -621,7 +632,7 @@
     miniCount.textContent = `${total} item${total === 1 ? "" : "s"}`;
 
     if (cart.length === 0) {
-      miniItems.innerHTML = `<div class="small">Your request is empty.</div>`;
+      miniItems.innerHTML = `<div class="small">Your request list is empty.</div>`;
       return;
     }
 
@@ -696,7 +707,7 @@
 
     if (constraints) {
       if (constraints.maxPerItem != null && nextQty > constraints.maxPerItem) {
-        showModal("Limit reached", `You can only request up to ${constraints.maxPerItem} of this item per order.`);
+        showModal("Limit reached", `You can only request up to ${constraints.maxPerItem} of this item per request.`);
         return false;
       }
       if (constraints.bedMaxTotal != null) {
@@ -706,7 +717,7 @@
           const totalBeds = cartBeds.reduce((s, x) => s + (x.qty || 0), 0);
           const nextTotalBeds = totalBeds - currentQty + nextQty;
           if (nextTotalBeds > constraints.bedMaxTotal) {
-            showModal("Garden bed limit", "To prevent abuse, a maximum of 4 total garden beds can be requested per order (any combination).");
+            showModal("Garden bed limit", "To prevent abuse, a maximum of 4 total garden beds can be requested per request list (any combination).");
             return false;
           }
         }
@@ -802,7 +813,7 @@ function renderSeedPackets() {
     const kind = String(kindRaw).toLowerCase();
     const name = item.name || item.title || item.key;
     const desc = item.desc || item.description || "";
-    const image = item.image || "images/placeholder.jpg";
+    const image = item.image || "images/placeholder.svg";
 
     const st = classifyInvStatus(item.key);
     const disabledAttr = st.out ? "disabled" : "";
@@ -829,7 +840,7 @@ function renderSeedPackets() {
           <div class="divider"></div>
 
           <button class="btn primary" type="button" data-add="${escapeHtml(item.key)}" ${disabledAttr}>
-            ${st.out ? "Out of stock" : "Add to cart"}
+            ${st.out ? "Out of stock" : "Add to request list"}
           </button>
         </div>
       </div>
@@ -912,7 +923,7 @@ function renderSeedPackets() {
       const kind = item ? (item.kind || item.type || "") : "";
 
       cartAddOrUpdate(key, name, { kind, baseId: key }, +1, null);
-      showModal("Added to cart", "Item added. Click the cart icon to review and submit your request.");
+      showModal("Added to request list", "Item added. Open the Request List in the top-right to review and submit.");
     });
   }
 
@@ -1052,16 +1063,6 @@ function renderSeedPackets() {
     localStorage.setItem(LOCKOUT_KEY, new Date(until).toISOString());
   }
 
-  function validateUSState(state) {
-    const st = String(state || "").trim().toUpperCase();
-    const states = new Set([
-      "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD",
-      "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC",
-      "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC"
-    ]);
-    return states.has(st);
-  }
-
   function validateZip(zip) {
     return /^\d{5}(-\d{4})?$/.test(String(zip || "").trim());
   }
@@ -1106,21 +1107,235 @@ function renderSeedPackets() {
   }
 
   // ---------------------------
-  // Impact stats (config-driven counters; hidden until real numbers exist)
+  // Impact stats section. Two modes, one renderer:
+  //   1. Real impact numbers from cfg.impactStats (animated counters).
+  //   2. While that array is empty: founding season goal meters from
+  //      cfg.seasonGoals (partial-toward-goal fills, no invented data).
   // ---------------------------
   function renderImpactStats() {
     const slot = document.getElementById("impactStats");
     if (!slot) return;
-    const items = (cfg.impactStats || []).filter(i => i && typeof i.value === "number" && i.label);
-    if (!items.length) { slot.style.display = "none"; return; }
+
+    const impact = (cfg.impactStats || []).filter(i => i && typeof i.value === "number" && i.label);
+
+    if (impact.length) {
+      slot.style.display = "";
+      const grid = slot.querySelector(".stats");
+      if (!grid) return;
+      grid.innerHTML = impact.map(i => `
+        <div class="stat reveal">
+          <div class="num" data-count="${i.value}" data-suffix="${escapeHtml(i.suffix != null ? i.suffix : "+")}">0</div>
+          <div class="label">${escapeHtml(i.label)}</div>
+        </div>`).join("");
+      return;
+    }
+
+    // Pre-launch: honest founding-season goal meters instead of impact.
+    const goals = seasonGoalMeters();
+    if (!goals.length || cfg.showSeasonGoals === false) { slot.style.display = "none"; return; }
     slot.style.display = "";
+    slot.classList.add("is-goals");
+
+    const kicker = slot.querySelector(".kicker");
+    const heading = slot.querySelector("h2");
+    if (kicker) kicker.textContent = "Founding season goals";
+    if (heading) heading.textContent = "Growing toward our first season";
+
     const grid = slot.querySelector(".stats");
     if (!grid) return;
-    grid.innerHTML = items.map(i => `
-      <div class="stat reveal">
-        <div class="num" data-count="${i.value}" data-suffix="${escapeHtml(i.suffix || "+")}">0</div>
-        <div class="label">${escapeHtml(i.label)}</div>
-      </div>`).join("");
+    grid.classList.add("goal-list");
+    grid.innerHTML = goals.map(g => {
+      const pct = Math.max(0, Math.min(100, Math.round((g.current / g.goal) * 100)));
+      const readout = `${g.current.toLocaleString()} of ${g.goal.toLocaleString()}${g.unit ? " " + g.unit : ""}`;
+      return `
+      <div class="goal-meter reveal">
+        <div class="goal-head">
+          <span class="goal-label">${escapeHtml(g.label)}</span>
+          <span class="goal-readout">${escapeHtml(readout)}</span>
+        </div>
+        <div class="goal-track" role="progressbar" aria-valuemin="0" aria-valuemax="${g.goal}" aria-valuenow="${g.current}" aria-valuetext="${escapeHtml(readout)}" aria-label="${escapeHtml(g.label)}">
+          <span class="goal-fill" style="--goal-fill:${pct}%">${pct > 0 ? '<span class="goal-cap" aria-hidden="true"></span>' : ""}</span>
+        </div>
+      </div>`;
+    }).join("");
+
+    const note = document.createElement("p");
+    note.className = "small stat-footnote reveal";
+    note.textContent = "These are readiness goals for our founding season, not distribution impact. Real distribution numbers replace this section once the first materials reach students.";
+    grid.insertAdjacentElement("afterend", note);
+
+    // Animate the fills the first time they scroll into view. Reduced
+    // motion (or no IntersectionObserver) gets the final fill instantly.
+    const meters = grid.querySelectorAll(".goal-meter");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || !("IntersectionObserver" in window)) {
+      meters.forEach(m => m.classList.add("grown"));
+    } else {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("grown");
+          obs.unobserve(entry.target);
+        });
+      }, { threshold: 0.35 });
+      meters.forEach(m => obs.observe(m));
+    }
+  }
+
+  // Resolve cfg.seasonGoals entries. Entries with `auto` count themselves
+  // live from the catalog / foundingProgress so they cannot drift; their
+  // hand-typed current/goal act as fallbacks only.
+  function seasonGoalMeters() {
+    const catalog = Array.isArray(cfg.catalog) ? cfg.catalog : [];
+    const countCat = c => catalog.filter(i => i && i.category === c).length;
+    const rows = (cfg.foundingProgress || []).filter(r => r && r.title);
+    return (cfg.seasonGoals || [])
+      .filter(g => g && g.label)
+      .map(g => {
+        let current = Number(g.current) || 0;
+        let goal = Number(g.goal) || 0;
+        if (g.auto === "seeds" || g.auto === "supplies" || g.auto === "education") {
+          const live = countCat(g.auto);
+          if (live) current = live;
+        } else if (g.auto === "milestones" && rows.length) {
+          current = rows.filter(r => r.status === "done").length;
+          goal = rows.length;
+        }
+        goal = Math.max(goal, current, 1);
+        return { label: g.label, unit: g.unit || "", current, goal };
+      });
+  }
+
+  // ---------------------------
+  // Founding season progress rail (honest status, no invented numbers)
+  // ---------------------------
+  const PROGRESS_LABEL = { done: "Done", active: "In progress", next: "Up next" };
+
+  function renderFoundingProgress() {
+    const slot = document.getElementById("foundingProgress");
+    if (!slot) return;
+    const rows = (cfg.foundingProgress || []).filter(r => r && r.title);
+    if (!rows.length) { slot.style.display = "none"; return; }
+    slot.style.display = "";
+    const rail = slot.querySelector(".progress-rail");
+    if (!rail) return;
+    rail.innerHTML = rows.map(r => {
+      const status = PROGRESS_LABEL[r.status] ? r.status : "next";
+      return `
+      <li class="progress-row is-${status}">
+        <span class="progress-marker" aria-hidden="true"></span>
+        <div class="progress-body">
+          <div class="progress-head">
+            <h3>${escapeHtml(r.title)}</h3>
+            <span class="progress-status">${PROGRESS_LABEL[status]}</span>
+          </div>
+          ${r.detail ? `<p class="small">${escapeHtml(r.detail)}</p>` : ""}
+        </div>
+      </li>`;
+    }).join("");
+  }
+
+  // ---------------------------
+  // Founder note + donor transparency panel
+  // ---------------------------
+  function renderTrustBand() {
+    const slot = document.getElementById("trustBand");
+    if (!slot) return;
+
+    const f = cfg.founder || {};
+    const t = cfg.transparency || {};
+    const facts = (t.facts || []).filter(Boolean);
+    const alloc = (cfg.fundAllocation || []).filter(a => a && a.label && typeof a.percent === "number");
+
+    const hasFounder = !!(f.name && f.quote);
+    const hasTrust = !!(t.ein || facts.length || alloc.length);
+    if (!hasFounder && !hasTrust) { slot.style.display = "none"; return; }
+    slot.style.display = "";
+
+    const note = document.getElementById("founderNote");
+    if (note) {
+      note.style.display = hasFounder ? "" : "none";
+      if (hasFounder) {
+        note.innerHTML = `
+          ${f.photo ? `<img class="founder-photo" loading="lazy" src="${escapeHtml(f.photo)}" alt="${escapeHtml(f.name)}, ${escapeHtml(f.role || "founder")} of FutureSprouts">` : ""}
+          <blockquote>${escapeHtml(f.quote)}</blockquote>
+          <figcaption>
+            <strong>${escapeHtml(f.name)}</strong>
+            <span class="small">${escapeHtml(f.role || "")}${f.location ? " &middot; " + escapeHtml(f.location) : ""}</span>
+          </figcaption>`;
+      }
+    }
+
+    const panel = document.getElementById("transparencyPanel");
+    if (panel) {
+      panel.style.display = hasTrust ? "" : "none";
+      if (hasTrust) {
+        const allocHtml = alloc.length
+          ? `<div class="alloc">
+               <h3>Where your money goes</h3>
+               ${alloc.map(a => `
+                 <div class="alloc-row">
+                   <div class="alloc-head"><span>${escapeHtml(a.label)}</span><strong>${a.percent}%</strong></div>
+                   <div class="alloc-bar"><span style="width:${Math.max(0, Math.min(100, a.percent))}%"></span></div>
+                 </div>`).join("")}
+             </div>`
+          : `<div class="alloc alloc-pending">
+               <h3>Where your money goes</h3>
+               <p class="small">Our first program budget is still being set by the board. Rather than publish a guess, we will post the real breakdown here once the first season closes.</p>
+             </div>`;
+
+        panel.innerHTML = `
+          <div class="trust-badges">
+            ${t.statusLine ? `<span class="fact-chip">${escapeHtml(t.statusLine)}</span>` : ""}
+            ${t.ein ? `<span class="fact-chip">EIN ${escapeHtml(t.ein)}</span>` : ""}
+          </div>
+          ${facts.length ? `<ul class="fact-list">${facts.map(x => `<li>${escapeHtml(x)}</li>`).join("")}</ul>` : ""}
+          ${allocHtml}
+          ${t.reportUrl ? `<p style="margin-top:14px;"><a class="btn outline" href="${escapeHtml(t.reportUrl)}">${escapeHtml(t.reportLabel || "Read our annual report")}</a></p>` : ""}
+          <p class="small trust-fineprint">Questions about our finances? Email <a href="mailto:${escapeHtml(cfg.contactEmail || "info@futuresprouts.org")}">${escapeHtml(cfg.contactEmail || "info@futuresprouts.org")}</a> and we will answer.</p>`;
+      }
+    }
+  }
+
+  // ---------------------------
+  // Hero video (activates the moment config.js points at a file)
+  // ---------------------------
+  function initHeroVideo() {
+    const hero = document.querySelector(".hero");
+    if (!hero || !cfg.heroVideo) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (hero.querySelector(".hero-video")) return;
+    const v = document.createElement("video");
+    v.className = "hero-video";
+    v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true;
+    v.setAttribute("playsinline", "");
+    v.setAttribute("aria-hidden", "true");
+    if (cfg.heroPoster) v.poster = cfg.heroPoster;
+    const src = document.createElement("source");
+    src.src = cfg.heroVideo;
+    src.type = "video/mp4";
+    v.appendChild(src);
+    hero.insertBefore(v, hero.firstChild);
+    hero.classList.add("has-video");
+  }
+
+  // ---------------------------
+  // Condense the sticky header once the page scrolls
+  // ---------------------------
+  function initStickyNav() {
+    const nav = document.querySelector(".navbar");
+    if (!nav) return;
+    let ticking = false;
+    const apply = () => {
+      nav.classList.toggle("is-scrolled", window.scrollY > 24);
+      ticking = false;
+    };
+    apply();
+    window.addEventListener("scroll", () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(apply);
+    }, { passive: true });
   }
 
   // ---------------------------
@@ -1185,6 +1400,38 @@ function renderSeedPackets() {
   }
 
   // ---------------------------
+  // Sticky mobile action bar (index.html only; markup lives there).
+  // Shows after the hero scrolls out of view, hides again while the
+  // footer is on screen so it never covers the theme controls.
+  // Visibility above 760px is killed in CSS; show/hide transition is
+  // CSS-only and gated behind prefers-reduced-motion there.
+  // ---------------------------
+  function initMobileCtaBar() {
+    const bar = document.getElementById("mobileCtaBar");
+    const hero = document.querySelector(".hero");
+    const footerSlot = document.getElementById("siteFooter");
+    if (!bar || !hero || !("IntersectionObserver" in window)) return;
+
+    let heroGone = false;
+    let footerVisible = false;
+    const update = () => bar.classList.toggle("show", heroGone && !footerVisible);
+
+    const heroObs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { heroGone = !e.isIntersecting; });
+      update();
+    }, { threshold: 0 });
+    heroObs.observe(hero);
+
+    if (footerSlot) {
+      const footObs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { footerVisible = e.isIntersecting; });
+        update();
+      }, { threshold: 0 });
+      footObs.observe(footerSlot);
+    }
+  }
+
+  // ---------------------------
   // Scroll-growth plant (Donate page)
   // ---------------------------
   function initScrollGrowth() {
@@ -1246,12 +1493,17 @@ function renderSeedPackets() {
     // Config-driven content (render BEFORE observers so injected
     // .reveal and [data-count] nodes get picked up)
     initSeason();
+    initStickyNav();
+    initHeroVideo();
     renderImpactStats();
+    renderFoundingProgress();
+    renderTrustBand();
     renderMapPins();
     renderFarmAnimals();
     renderTestimonials();
     renderGallery();
     initHeroSeeds();
+    initMobileCtaBar();
     initScrollGrowth();
 
     // Page features
@@ -1301,7 +1553,7 @@ function renderSeedPackets() {
 
         const cart = loadCart();
         if (cart.length === 0) {
-          showModal("Cart empty", "Add services first, then submit your request.");
+          showModal("Request list empty", "Add services first, then submit your request.");
           return;
         }
 
@@ -1312,29 +1564,35 @@ function renderSeedPackets() {
           return;
         }
 
-        const state = String(formData.get("state") || "").trim();
+        const requesterType = String(formData.get("requester_type") || "").trim();
+        const headcount = parseInt(String(formData.get("headcount") || "").trim(), 10);
         const zip = String(formData.get("zip") || "").trim();
+        const fulfillment = String(formData.get("fulfillment") || "").trim();
 
-        if (!validateUSState(state)) {
-          showModal("Check state", "Please enter a valid US state abbreviation (ex: PA).");
+        if (!requesterType) {
+          showModal("Choose requester type", "Please tell us if you are a teacher, family, community group, or other.");
+          return;
+        }
+        if (!Number.isFinite(headcount) || headcount < 1) {
+          showModal("Check headcount", "Please enter a rough headcount of at least 1.");
           return;
         }
         if (!validateZip(zip)) {
           showModal("Check ZIP", "Please enter a valid ZIP code (ex: 19382).");
           return;
         }
+        if (fulfillment !== "Delivery" && fulfillment !== "Pickup") {
+          showModal("Delivery or pickup", "Please choose delivery or pickup.");
+          return;
+        }
 
         const payload = {
           email,
           name: formData.get("name") || "",
-          organization: formData.get("organization") || "",
-          address1: formData.get("address1") || "",
-          city: formData.get("city") || "",
-          state: state.toUpperCase(),
+          requester_type: requesterType,
+          headcount,
           zip,
-          location: `${formData.get("address1") || ""}, ${formData.get("city") || ""}, ${state} ${zip}`
-            .replace(/\s+/g, " ")
-            .trim(),
+          fulfillment,
           notes: formData.get("notes") || "",
           order_summary: cartToText(cart)
         };
@@ -1348,14 +1606,16 @@ function renderSeedPackets() {
             body: JSON.stringify({
               email: payload.email,
               message:
-`SERVICE REQUEST (FutureSprouts)
+`SUPPLY REQUEST (FutureSprouts, all items free)
 
 Name: ${payload.name}
 Email: ${payload.email}
-Organization: ${payload.organization}
-Address: ${payload.location}
+Requesting as: ${payload.requester_type}
+Rough headcount: ${payload.headcount}
+ZIP code: ${payload.zip}
+Preference: ${payload.fulfillment}
 
-Order:
+Request list:
 ${payload.order_summary}
 
 Notes:

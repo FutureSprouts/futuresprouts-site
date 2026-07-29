@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Your Request | FutureSprouts</title>
+  <title>Your Request List | FutureSprouts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Review and submit your free supplies request." />
   <link rel="canonical" href="https://futuresprouts.org/cart.html" />
-  <meta property="og:title" content="Your Request | FutureSprouts" />
+  <meta property="og:title" content="Your Request List | FutureSprouts" />
   <meta property="og:description" content="Review and submit your free supplies request." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://futuresprouts.org/cart.html" />
@@ -26,13 +26,13 @@
 
   <section class="section">
     <div class="container">
-      <div class="kicker reveal">Services • Request</div>
-      <h2 class="reveal">Review your request</h2>
-      <p class="reveal small">You can edit the number of services or remove items before submitting.</p>
+      <div class="kicker reveal">Services • Request List</div>
+      <h2 class="reveal">Review your request list</h2>
+      <p class="reveal small">You can edit the number of services or remove items before submitting. Everything is free.</p>
 
       <div class="card reveal" style="margin-top:18px;">
         <div id="cartEmpty" class="small" style="display:none;">
-          Your request is empty. Go to <a href="services.html"><strong>Services</strong></a>.
+          Your request list is empty. Go to <a href="services.html"><strong>Services</strong></a>.
         </div>
         <div id="cartList"></div>
       </div>
@@ -45,45 +45,51 @@
           <div class="form-grid cols-2">
             <div>
               <label for="name">Name</label>
-              <input id="name" name="name" placeholder="Your name" />
+              <input id="name" name="name" placeholder="Your name" autocomplete="name" />
             </div>
             <div>
               <label for="email">Email *</label>
-              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+              <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
             </div>
           </div>
 
           <div class="form-grid cols-2" style="margin-top:10px;">
             <div>
-              <label for="organization">Organization / School</label>
-              <input id="organization" name="organization" placeholder="School / organization (optional)" />
+              <label for="requesterType">I am requesting as a *</label>
+              <select id="requesterType" name="requester_type" required>
+                <option value="" selected disabled>Choose one</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Family">Family</option>
+                <option value="Community group">Community group</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
             <div>
-              <label for="address1">Street Address *</label>
-              <input id="address1" name="address1" placeholder="123 Main St" autocomplete="street-address" required />
-            </div>
-          </div>
-
-          <div class="form-grid cols-2" style="margin-top:10px;">
-            <div>
-              <label for="city">City *</label>
-              <input id="city" name="city" placeholder="West Chester" autocomplete="address-level2" required />
-            </div>
-            <div>
-              <label for="state">State *</label>
-              <input id="state" name="state" placeholder="PA" maxlength="2" autocomplete="address-level1" required />
+              <label for="headcount">Rough headcount *</label>
+              <input id="headcount" name="headcount" type="number" inputmode="numeric" min="1" max="10000" placeholder="How many people will use this? (e.g. 25)" required />
             </div>
           </div>
 
           <div class="form-grid cols-2" style="margin-top:10px;">
             <div>
-              <label for="zip">ZIP *</label>
+              <label for="zip">ZIP code *</label>
               <input id="zip" name="zip" placeholder="19382" autocomplete="postal-code" required />
             </div>
             <div>
-  <label for="country">Country</label>
-  <input id="country" name="country" placeholder="United States" autocomplete="country-name" />
-</div>
+              <fieldset class="choice-fieldset">
+                <legend>Delivery or pickup? *</legend>
+                <div class="choice-row">
+                  <label class="choice-pill">
+                    <input type="radio" name="fulfillment" value="Delivery" required />
+                    <span>Delivery</span>
+                  </label>
+                  <label class="choice-pill">
+                    <input type="radio" name="fulfillment" value="Pickup" required />
+                    <span>Pickup</span>
+                  </label>
+                </div>
+              </fieldset>
+            </div>
           </div>
 
           <div style="margin-top:10px;">

@@ -48,7 +48,7 @@
       <div class="grid cols-3" id="suppliesGrid"></div>
 
       <div class="notice reveal">
-        After adding items, click the cart icon in the top-right and submit your request.
+        After adding items, open the Request List in the top-right and submit your request.
       </div>
     </div>
   </section>
@@ -115,7 +115,7 @@
           const tags = Array.isArray(item.tags) ? item.tags.join(" ") : "";
           const name = item.name || item.title || item.key;
           const desc = item.desc || item.description || "";
-          const image = item.image || "images/placeholder.jpg";
+          const image = item.image || "images/placeholder.svg";
 
           const st = classifyInvStatus(item.key);
           const disabledAttr = st.out ? "disabled" : "";
@@ -139,7 +139,7 @@
                 <div class="divider"></div>
 
                 <button class="btn primary" type="button" data-add="${escapeHtml(item.key)}" ${disabledAttr}>
-                  ${st.out ? "Out of stock" : "Add to cart"}
+                  ${st.out ? "Out of stock" : "Add to request list"}
                 </button>
               </div>
             </div>
@@ -220,7 +220,7 @@
 
           if (window.FS_CART && window.FS_CART.cartAddOrUpdate) {
             window.FS_CART.cartAddOrUpdate(key, name, { kind, baseId: key }, +1, null);
-            window.FS_CART.showModal("Added to cart", "Item added. Click the cart icon to review and submit your request.");
+            window.FS_CART.showModal("Added to request list", "Item added. Open the Request List in the top-right to review and submit.");
           }
         });
       }
