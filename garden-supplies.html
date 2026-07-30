@@ -19,14 +19,17 @@
   <script src="config.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Injected header -->
   <div id="siteHeader"></div>
 
+  <main id="main">
+
   <section class="section">
     <div class="container">
       <div class="kicker reveal">Services • Garden Supplies</div>
-      <h2 class="reveal">Tools and supplies for your garden.</h2>
+      <h1 class="reveal">Tools and supplies for your garden.</h1>
       <p class="reveal">
         Browse available garden tools and supplies. Request what you need to get started or expand your garden.
       </p>
@@ -54,6 +57,8 @@
   </section>
 
   <!-- Injected footer -->
+  </main>
+
   <div id="siteFooter"></div>
 
   <!-- Core site script -->
@@ -133,7 +138,7 @@
                   <span class="badge ${st.tone}" id="badge-${escapeHtml(item.key)}">${escapeHtml(st.label)}</span>
                 </div>
 
-                <h3 style="margin-top:10px;">${escapeHtml(name)}</h3>
+                <h2 style="margin-top:10px;">${escapeHtml(name)}</h2>
                 <p class="small">${escapeHtml(desc)}</p>
 
                 <div class="divider"></div>

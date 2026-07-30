@@ -20,15 +20,18 @@
   <script src="config.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Injected header (from script.js) -->
   <div id="siteHeader"></div>
+
+  <main id="main">
 
   <!-- HERO (tighter bottom padding to reduce the big gap) -->
   <section class="section section-tight">
     <div class="container">
       <div class="kicker reveal">Get involved</div>
-      <h2 class="reveal">Help grow FutureSprouts by volunteering, partnering with us, requesting materials, or joining our community.</h2>
+      <h1 class="reveal">Help grow FutureSprouts by volunteering, partnering with us, requesting materials, or joining our community.</h1>
       <p class="reveal">
         For quick questions, contact <a href="mailto:info@futuresprouts.org">info@futuresprouts.org</a>.
         For requests, please use the forms below.
@@ -43,7 +46,7 @@
         <!-- VOLUNTEER SIGNUP -->
         <div class="card reveal">
           <div class="pill">Volunteer</div>
-          <h3>Volunteer signup</h3>
+          <h2>Volunteer signup</h2>
           <p class="small">Cleanups, seed packing, school demos, event help.</p>
 
           <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
@@ -64,7 +67,7 @@
         <!-- SCHOOL PARTNERSHIP -->
         <div class="card reveal">
           <div class="pill">Schools</div>
-          <h3>School partnership request</h3>
+          <h2>School partnership request</h2>
           <p class="small">Request a demo, seed kits, or a sustainability day.</p>
 
           <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
@@ -85,7 +88,7 @@
         <!-- MATERIAL REQUEST / DONATION -->
         <div class="card reveal">
           <div class="pill">Materials</div>
-          <h3>Materials request / offer</h3>
+          <h2>Materials request / offer</h2>
           <p class="small">Seeds, tools, gloves, bags, soil, lumber, etc.</p>
 
           <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
@@ -95,7 +98,7 @@
               <input class="input" type="email" name="email" placeholder="Email" required>
             </div>
             <div class="form-row">
-              <select name="type" class="input" required>
+              <select name="type" class="input" required aria-label="What would you like to do">
                 <option value="">I want to…</option>
                 <option>Offer materials</option>
                 <option>Request materials</option>
@@ -110,7 +113,7 @@
         <!-- NEWSLETTER -->
         <div class="card reveal">
           <div class="pill">Newsletter</div>
-          <h3>Newsletter signup</h3>
+          <h2>Newsletter signup</h2>
           <p class="small">Monthly updates: events, impact, ways to help. Unsubscribe anytime.</p>
 
           <form class="form" action="https://formspree.io/f/mdakervk" method="POST">
@@ -128,6 +131,8 @@
   </section>
 
   <!-- Injected footer (from script.js) -->
+  </main>
+
   <div id="siteFooter"></div>
 
   <script src="script.js"></script>

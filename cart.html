@@ -19,15 +19,18 @@
   <script src="config.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Injected header (from script.js) -->
   <div id="siteHeader"></div>
+
+  <main id="main">
 
 
   <section class="section">
     <div class="container">
       <div class="kicker reveal">Services • Request List</div>
-      <h2 class="reveal">Review your request list</h2>
+      <h1 class="reveal">Review your request list</h1>
       <p class="reveal small">You can edit the number of services or remove items before submitting. Everything is free.</p>
 
       <div class="card reveal" style="margin-top:18px;">
@@ -38,7 +41,7 @@
       </div>
 
       <div class="card reveal" style="margin-top:18px;">
-        <h3>Submit your request</h3>
+        <h2>Submit your request</h2>
         <p class="small">We’ll email you to confirm details and logistics.</p>
 
         <form id="cartForm" style="margin-top:12px;">
@@ -111,6 +114,8 @@
   </section>
 
   <!-- Injected footer (from script.js) -->
+  </main>
+
   <div id="siteFooter"></div>
 
   <script src="script.js"></script>

@@ -738,7 +738,7 @@ textarea{ min-height: 140px; resize: vertical; }
   grid-template-columns: 1.5fr 1fr 1fr;
 }
 
-.footer h3{
+.footer h3, .footer h2{
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -1826,7 +1826,7 @@ input:focus, textarea:focus, select:focus{
 :root[data-theme="dark"] .footer::before{
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 12 Q 15 2 30 8 T 60 7 T 90 9 T 120 6 V 12 Z' fill='%23141A0F'/%3E%3C/svg%3E");
 }
-.footer h3{
+.footer h3, .footer h2{
   font-family: var(--display);
   font-weight: 560;
   color: #F8F4E4;
@@ -2634,7 +2634,7 @@ html{
 
 /* Fraunces has soft/wonk axes. Using them is what stops the headings
    reading like a default serif and starts them reading like a seed catalog. */
-h1, h2, .brand > div, .impact-amount, .stat .num, .footer h3{
+h1, h2, .brand > div, .impact-amount, .stat .num, .footer h3, .footer h2{
   font-variation-settings: "SOFT" 40, "WONK" 1, "opsz" 90;
 }
 h1, h2, h3{ text-wrap: balance; }
@@ -3139,7 +3139,7 @@ body > .section:first-of-type::after{
    I. Footer: soil under the field, plus a wheat rule
 ---------------------------------------------------------- */
 .footer-grid{ position: relative; }
-.footer h3{
+.footer h3, .footer h2{
   font-size: 15px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -3603,3 +3603,81 @@ body > .section:first-of-type > .container{ position: relative; z-index: 1; }
   .jump-link:hover svg{ transform: none; }
 }
 
+
+/* ----------------------------------------------------------
+   Accessibility corrections from an axe-core audit
+---------------------------------------------------------- */
+
+/* Primary buttons in dark mode were white on #55925f, 3.7:1, under the
+   4.5:1 AA floor. Dark ink on the same green clears it comfortably. */
+:root[data-theme="dark"] .btn.primary,
+:root[data-theme="dark"] .btn.primary:hover,
+:root[data-theme="dark"] .donate-btn,
+:root[data-theme="dark"] .donate-btn:hover{ color: #0C1608; }
+
+/* 10px bold badges on the donate page: 4.11:1 and 3.34:1 */
+.donate-pill{ color: var(--greenDark); }
+:root[data-theme="dark"] .donate-pill{ color: #0C1608; background: color-mix(in oklab, var(--green) 34%, transparent); }
+.featured-star{ color: #0C1608; }
+
+/* Pages now open with an h1 instead of an h2. Keep the page-title h1
+   at the h2 scale so nothing changes visually; the hero h1 on the
+   homepage keeps the display size. */
+#siteHeader + .section h1,
+body > .section:first-of-type h1,
+main > .section:first-of-type h1{
+  font-size: var(--h2);
+  line-height: 1.18;
+}
+.hero h1{ font-size: var(--h1); line-height: 1.06; }
+
+/* Promoted card headings: these were h3 and became h2 to keep heading
+   levels from skipping. Render them at the old h3 scale and body font so
+   nothing shifts visually. */
+.card h2,
+.shop-body h2,
+.donate-card h2,
+.trust-panel h2,
+.founder-note h2{
+  font-family: var(--font);
+  font-size: var(--h3);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  font-variation-settings: normal;
+}
+
+/* .btn.secondary was defined globally as white on translucent white, which
+   only reads on the hero and the CTA band. On any light surface it was
+   effectively invisible. Give it a light-surface default and scope the
+   white treatment to the hero. */
+.btn.secondary{
+  background: var(--card);
+  border: 1.5px solid color-mix(in oklab, var(--soil) 42%, transparent);
+  color: var(--text);
+}
+.btn.secondary:hover{
+  background: color-mix(in oklab, var(--sun) 16%, var(--card));
+  border-color: color-mix(in oklab, var(--soil) 62%, transparent);
+}
+.hero .btn.secondary{
+  background: rgba(255, 255, 255, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+}
+.hero .btn.secondary:hover{ background: rgba(255, 255, 255, 0.24); }
+
+/* The dark-theme pill mixed green with transparent, so it composited over
+   whichever card it sat on: fine on the featured card, too dark on the
+   others. An opaque green makes the dark ink safe on both. */
+:root[data-theme="dark"] .donate-pill{
+  color: #0C1608;
+  background: var(--green);
+  border-color: transparent;
+}
+/* Footer section headings are h2 now, keep the small uppercase look */
+.footer h2{
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}

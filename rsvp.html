@@ -17,12 +17,15 @@
   <script src="config.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <div id="siteHeader"></div>
+
+  <main id="main">
 
   <section class="section section-tight">
     <div class="container">
       <div class="kicker reveal">Events</div>
-      <h2 class="reveal">Stay in the loop.</h2>
+      <h1 class="reveal">Stay in the loop.</h1>
       <p class="reveal">
         Dates and locations for our upcoming events are still being finalized.
         Fill out the form below and we'll reach out as soon as details are confirmed.
@@ -37,7 +40,7 @@
       <div class="grid cols-2" style="margin-top: 0;">
         <div class="card reveal" style="grid-column: 1 / -1; margin-top: 0;">
           <div class="pill">Get Notified</div>
-          <h3>Sign up for event updates</h3>
+          <h2>Sign up for event updates</h2>
           <p class="small">
             We'll email you when times, dates, and locations are confirmed for
             our Community Cleanup, Seed Swap, and any future events.
@@ -52,7 +55,7 @@
             </div>
 
             <div class="form-row">
-              <select class="input" name="event-interest" required style="cursor: pointer;">
+              <select class="input" name="event-interest" required aria-label="Which events would you like updates on" style="cursor: pointer;">
                 <option value="" disabled selected>Which event(s) would you like updates on?</option>
                 <option value="Community Cleanup">Community Cleanup</option>
                 <option value="Seed Swap">Seed Swap &amp; Workshop</option>
@@ -148,6 +151,8 @@
       </div>
     </div>
   </section>
+
+  </main>
 
   <div id="siteFooter"></div>
   <script src="script.js"></script>

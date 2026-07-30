@@ -69,6 +69,7 @@
 </script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- Injected header -->
   <!-- Scroll-growth plant: grows as the visitor reads down the page -->
   <div class="growth-track" aria-hidden="true">
@@ -103,10 +104,12 @@
 
   <div id="siteHeader"></div>
 
+  <main id="main">
+
   <section class="section">
     <div class="container">
       <div class="kicker reveal">Donate</div>
-      <h2 class="reveal">Support farming and environmental education.</h2>
+      <h1 class="reveal">Support farming and environmental education.</h1>
       <p class="reveal">Choose a method below.</p>
 
       <div class="donate-cards">
@@ -114,7 +117,7 @@
         <!-- PayPal: One-Time -->
         <div class="donate-card reveal">
           <div class="donate-pill">PayPal</div>
-          <h3>One-Time Gift</h3>
+          <h2>One-Time Gift</h2>
           <p class="card-desc">Secure checkout via PayPal or Venmo. Your gift funds seeds, tools, and hands-on education.</p>
           <a class="btn primary" href="paypal-donate.html">Donate via PayPal</a>
         </div>
@@ -123,7 +126,7 @@
         <div class="donate-card featured reveal">
           <div class="featured-star">Most Impactful</div>
           <div class="donate-pill">Monthly Donation</div>
-          <h3>Become a Monthly Supporter</h3>
+          <h2>Become a Monthly Supporter</h2>
           <p class="card-desc">Sustain our programs year-round. Cancel anytime.</p>
           <div class="amount-options">
             <button class="amount-chip active" data-plan="P-2M927126G2694500NNGOIDHI">🌱 $5/mo</button>
@@ -142,7 +145,7 @@
         <!-- In-Kind -->
         <div class="donate-card reveal">
           <div class="donate-pill">In-Kind</div>
-          <h3>Donate Materials</h3>
+          <h2>Donate Materials</h2>
           <p class="card-desc">Seeds, gloves, bags, and tools. View our Amazon wishlist to ship directly.</p>
           <a class="btn primary" href="wishlist.html">View Wishlist</a>
         </div>
@@ -152,7 +155,7 @@
       <!-- What your gift grows -->
       <div style="margin-top:34px;">
         <div class="kicker reveal">What your gift grows</div>
-        <h3 class="reveal" style="margin-top:10px;">Small gifts, real dirt under them.</h3>
+        <h2 class="reveal" style="margin-top:10px;">Small gifts, real dirt under them.</h2>
         <div class="grid cols-3" style="margin-top:16px;">
           <div class="card impact-card reveal">
             <div class="impact-amount">$10</div>
@@ -226,7 +229,7 @@
       <!-- Testimonials (auto-hidden until config.js has entries) -->
       <div id="testimonials" style="display:none; margin-top:34px;">
         <div class="kicker reveal">In their words</div>
-        <h3 class="reveal" style="margin-top:10px;">What teachers and families say</h3>
+        <h2 class="reveal" style="margin-top:10px;">What teachers and families say</h2>
         <div class="grid cols-3 testimonial-grid" style="margin-top:16px;"></div>
       </div>
 
@@ -236,7 +239,7 @@
           <img loading="lazy" src="images/brady-yarnall.jpg" alt="Brady Yarnall, founder of FutureSprouts, on his family farm" class="story-photo">
           <div>
             <div class="pill">Why we started</div>
-            <h3>From a family produce stand to your community.</h3>
+            <h2>From a family produce stand to your community.</h2>
             <p class="small" style="margin-top:8px;">FutureSprouts was founded by Brady Yarnall, a Chester County student who grew up on a working family farm, goats, chickens, and six years behind the family produce stand. Growing food teaches things a textbook can't: patience, responsibility, and where dinner actually comes from. FutureSprouts exists to hand that experience to kids who don't have a farm out the back door.</p>
             <p class="small" style="margin-top:8px;">We're youth-led and all-volunteer. Nobody here draws a salary, your donation buys seeds, soil, tools, and teaching materials, not overhead.</p>
           </div>
@@ -246,15 +249,15 @@
       <!-- Transparency promise -->
       <div class="card reveal" style="margin-top: 20px;">
         <div class="pill">Our promise to donors</div>
-        <h3>You'll see where it went.</h3>
+        <h2>You'll see where it went.</h2>
         <p class="small" style="margin-top: 8px;">After every program and event, we document what was distributed and who it reached, photos, counts, and partner confirmations. We'll publish our impact on this site after each season, and our financials are available to any donor on request. If you give to FutureSprouts, you'll be able to point at something growing because of it.</p>
       </div>
 
       <!-- Donor FAQ -->
       <div class="card reveal" style="margin-top: 20px;">
         <div class="pill">Questions</div>
-        <h3>Donor FAQ</h3>
-        <details class="faq-item"><summary>Is my donation tax-deductible?</summary><p class="small">Yes. FutureSprouts is a 501(c)(3) tax-exempt organization (EIN: 41-3415589), and no goods or services are provided in exchange for donations. PayPal emails your receipt automatically, keep it for tax time.</p></details>
+        <h2>Donor FAQ</h2>
+        <details class="faq-item"><summary>Is my donation tax-deductible?</summary><p class="small">Yes. FutureSprouts is a 501(c)(3) tax-exempt organization (EIN: 41-3415589), and no goods or services are provided in exchange for donations. PayPal emails your receipt automatically, keep it for tax time. For a single gift of $250 or more the IRS requires a written acknowledgment from us, so email us and we will send one for your records.</p></details>
         <details class="faq-item"><summary>Where does the money actually go?</summary><p class="small">Seeds, soil, garden tools, raised-bed materials, and printed educational guides. We're all-volunteer with no paid staff, so program supplies are essentially our only cost.</p></details>
         <details class="faq-item"><summary>Can I cancel a monthly donation?</summary><p class="small">Anytime, in about 30 seconds: log into PayPal → profile icon → Settings → Payments → Manage automatic payments → FutureSprouts → Stop.</p></details>
         <details class="faq-item"><summary>Can I give supplies instead of money?</summary><p class="small">Absolutely, seeds, tools, gloves, and soil are just as valuable to us. Ship directly from our <a href="wishlist.html">wishlist</a> or use the materials form on <a href="get-involved.html">Get Involved</a> for local drop-off.</p></details>
@@ -268,6 +271,8 @@
   </section>
 
   <!-- Injected footer -->
+  </main>
+
   <div id="siteFooter"></div>
   <script src="script.js"></script>
   <script src="donate-slider.js"></script>

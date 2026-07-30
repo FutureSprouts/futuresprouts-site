@@ -19,14 +19,17 @@
   <script src="config.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Injected header -->
   <div id="siteHeader"></div>
 
+  <main id="main">
+
   <section class="section">
     <div class="container">
       <div class="kicker reveal">Services • Educational Resources</div>
-      <h2 class="reveal">Guides, brochures, and learning materials.</h2>
+      <h1 class="reveal">Guides, brochures, and learning materials.</h1>
       <p class="reveal">
         Download or request printable educational materials for classrooms, community gardens, and workshops.
       </p>
@@ -52,6 +55,8 @@
   </section>
 
   <!-- Injected footer -->
+  </main>
+
   <div id="siteFooter"></div>
 
   <!-- Core site script -->
@@ -140,7 +145,7 @@
                   <span class="badge ${st.tone}" id="badge-${escapeHtml(item.key)}">${escapeHtml(st.label)}</span>
                 </div>
 
-                <h3 style="margin-top:10px;">${escapeHtml(name)}</h3>
+                <h2 style="margin-top:10px;">${escapeHtml(name)}</h2>
                 <p class="small">${escapeHtml(desc)}</p>
 
                 <div class="divider"></div>

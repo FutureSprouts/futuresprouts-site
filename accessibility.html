@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Accessibility | FutureSprouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="How FutureSprouts approaches website accessibility, what we have tested, what we know is imperfect, and how to tell us about a barrier." />
+  <link rel="canonical" href="https://futuresprouts.org/accessibility.html" />
+  <meta property="og:title" content="Accessibility | FutureSprouts" />
+  <meta property="og:description" content="Our accessibility commitment, conformance status, and how to report a barrier." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://futuresprouts.org/accessibility.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Injected header (from script.js) -->
+  <div id="siteHeader"></div>
+
+  <main id="main">
+
+  <section class="section">
+    <div class="container">
+      <div class="kicker reveal">Accessibility</div>
+      <h1 class="reveal">Everyone should be able to request seeds.</h1>
+      <p class="reveal" style="max-width: 760px;">
+        Our programs go to classrooms and community groups, so this site has to work for teachers,
+        parents, and students using screen readers, keyboards, magnification, and older phones.
+        This page says plainly where we stand and how to tell us when we have got it wrong.
+      </p>
+
+      <div class="card reveal" style="margin-top:20px;">
+        <h2 style="margin-top:0;">Conformance status</h2>
+        <p class="small">
+          We aim to meet <strong>WCAG 2.1 Level AA</strong>. We are <strong>partially conformant</strong>,
+          which means most of the site meets that standard and some parts do not yet. We do not claim
+          full conformance, because we have not had an independent audit.
+        </p>
+      </div>
+
+      <div class="card reveal" style="margin-top:14px;">
+        <h2 style="margin-top:0;">What we have done</h2>
+        <ul class="fact-list" style="margin-top:12px; margin-bottom:0;">
+          <li>Every page has a main landmark, a skip-to-content link, and one page heading.</li>
+          <li>All interactive controls are reachable and operable by keyboard, with a visible focus ring.</li>
+          <li>Text and interface colours are checked against WCAG contrast thresholds in both the light and dark themes.</li>
+          <li>Animation is disabled for visitors whose device asks for reduced motion.</li>
+          <li>Layouts are tested down to a 320 pixel wide screen without sideways scrolling.</li>
+          <li>Form fields have programmatic labels, and status messages are announced to screen readers.</li>
+          <li>Pages are tested with the axe accessibility engine in both themes.</li>
+        </ul>
+      </div>
+
+      <div class="card reveal" style="margin-top:14px;">
+        <h2 style="margin-top:0;">Known limitations</h2>
+        <p class="small">We would rather list these than pretend they are not there.</p>
+        <ul class="fact-list" style="margin-top:12px; margin-bottom:0;">
+          <li>Some forms use placeholder text where a visible label would be clearer. We are moving to visible labels.</li>
+          <li>Our donation checkout is handled by PayPal, and we do not control its accessibility.</li>
+          <li>Testing so far has been automated plus manual keyboard checks, not testing with assistive technology users.</li>
+          <li>Some decorative illustrations carry no text alternative by design, since describing them would add noise.</li>
+        </ul>
+      </div>
+
+      <div class="card reveal" style="margin-top:14px;">
+        <h2 style="margin-top:0;">Tell us about a barrier</h2>
+        <p class="small">
+          If any part of this site blocks you, email
+          <a href="mailto:info@futuresprouts.org">info@futuresprouts.org</a> with the page address and
+          what happened. We aim to reply within five business days. If a barrier stops you from
+          requesting supplies, say so in the message and we will take the request by email instead so
+          you are not left waiting on a fix.
+        </p>
+      </div>
+
+      <div class="notice reveal">
+        Assessment date: this statement reflects the site as most recently reviewed. It is updated when
+        we change the site or learn about a barrier.
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- Injected footer (from script.js) -->
+  <div id="siteFooter"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

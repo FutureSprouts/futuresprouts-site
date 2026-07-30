@@ -116,6 +116,14 @@ logoPath: "/images/leaf-spring-icon_24911-115668.png",
   fundAllocation: [],
 
   // =========================================================
+  // MAILING ADDRESS - fill this in. It is required in every
+  // promotional email you send under CAN-SPAM, and donors
+  // vetting a small charity look for a real address. A PO box
+  // is fine. Leave empty and nothing renders.
+  // =========================================================
+  mailingAddress: "",
+
+  // =========================================================
   // TRANSPARENCY FACTS - only statements you can evidence.
   // Renders as the trust panel beside the donate call to action.
   // =========================================================

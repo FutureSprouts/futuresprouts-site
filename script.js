@@ -394,13 +394,14 @@
 <footer class="footer">
   <div class="container footer-grid">
     <div>
-      <h3>${site}</h3>
+      <h2>${site}</h2>
       <p>Inspiring the next generation to grow food, communities, and a greener future.</p>
       <p style="margin-top:10px;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
+      ${cfg.mailingAddress ? `<p class="small" style="margin-top:8px;">${escapeHtml(cfg.mailingAddress)}</p>` : ""}
     </div>
 
     <div>
-      <h3>Quick Links</h3>
+      <h2>Quick Links</h2>
       <p><a href="services.html">Services</a></p>
       <p><a href="cart.html">Request List</a></p>
       <p><a href="events.html">Events</a></p>
@@ -409,9 +410,10 @@
     </div>
 
     <div>
-      <h3>Legal</h3>
+      <h2>Legal</h2>
       <p><a href="privacy.html">Privacy Policy</a></p>
       <p><a href="terms.html">Terms of Service</a></p>
+      <p><a href="accessibility.html">Accessibility</a></p>
       <p style="margin-top:10px;"><a href="contact.html">Contact</a></p>
     </div>
   </div>
@@ -832,7 +834,7 @@ function renderSeedPackets() {
             <span class="badge ${st.tone}" id="badge-${escapeHtml(item.key)}">${escapeHtml(st.label)}</span>
           </div>
 
-          <h3 style="margin-top:10px;">${escapeHtml(name)}</h3>
+          <h2 style="margin-top:10px;">${escapeHtml(name)}</h2>
           <p class="small" id="desc-${escapeHtml(item.key)}" data-base="${escapeHtml(desc)}">
             ${escapeHtml(desc)}
           </p>
