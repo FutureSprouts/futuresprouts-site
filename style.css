@@ -2610,13 +2610,18 @@ summary:focus-visible,
 /* ----------------------------------------------------------
    A. Ambient: selection, caret, scrollbar, type behaviour
 ---------------------------------------------------------- */
+/* Opaque on purpose. A translucent highlight composites with whatever is
+   behind it, which turned muddy on the dark green footer and left the text
+   unreadable. One opaque pair reads on every surface in both themes. */
 ::selection{
-  background: color-mix(in oklab, var(--sun) 62%, transparent);
+  background: #E7B75F;
   color: #241C0C;
+  text-shadow: none;
 }
-:root[data-theme="dark"] ::selection{
-  background: color-mix(in oklab, var(--green) 55%, transparent);
-  color: #F4F1E3;
+::-moz-selection{
+  background: #E7B75F;
+  color: #241C0C;
+  text-shadow: none;
 }
 html{
   caret-color: var(--green);
@@ -3680,4 +3685,40 @@ main > .section:first-of-type h1{
   font-size: 15px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+/* ----------------------------------------------------------
+   Hover motion is a click affordance, so only spend it on
+   things that are actually clickable
+---------------------------------------------------------- */
+
+/* A plain content card is not a link. Lifting it under the cursor promises
+   a click target that is not there. Cards that ARE links (a.card on the
+   services page) keep the lift, because there it tells the truth. */
+.grid > .card:not(a):hover,
+.grid > .card:not(a):active{
+  transform: none;
+  box-shadow: 0 10px 26px rgba(74, 58, 34, 0.10);
+  border-color: color-mix(in oklab, var(--soil) 30%, transparent) !important;
+}
+:root[data-theme="dark"] .grid > .card:not(a):hover,
+:root[data-theme="dark"] .grid > .card:not(a):active{
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+}
+.card:not(a):hover .card-icon{
+  transform: none;
+  background: color-mix(in oklab, var(--green) 14%, var(--card));
+}
+:root[data-theme="dark"] .card:not(a):hover .card-icon{
+  background: color-mix(in oklab, var(--green) 18%, var(--card));
+}
+.grid > .card:not(a):hover::before{ opacity: 0.34; }
+
+/* Stat tiles are readouts, not controls */
+.stat:hover{ transform: none; box-shadow: var(--shadow); }
+
+/* Keyboard focus still needs to show, since a card can contain a link */
+.card:focus-within{
+  border-color: color-mix(in oklab, var(--harvest) 65%, transparent) !important;
+  box-shadow: var(--lift);
 }
