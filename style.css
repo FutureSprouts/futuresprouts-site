@@ -3793,3 +3793,11 @@ main > .section:first-of-type h1{
   .brand > div{ font-size: 19px; }
   .brand{ gap: 9px; }
 }
+
+/* Service cards lead with a photo rather than an icon tile. The card has a
+   soft border radius and clips its children, so the image only needs to fill
+   the top and hold its aspect on every breakpoint. */
+.shop-card .shop-img{
+  height: clamp(150px, 17vw, 200px);
+  border-bottom: 1.5px solid color-mix(in oklab, var(--soil) 22%, transparent);
+}
