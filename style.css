@@ -3765,3 +3765,31 @@ main > .section:first-of-type h1{
   height: 100%;
   object-fit: contain;
 }
+
+/* ----------------------------------------------------------
+   Brand lockup
+---------------------------------------------------------- */
+
+/* The badge had a green drop shadow but no background of its own. CSS clips
+   an outer shadow out of the element's box, so the 50px rounded square stayed
+   un-shadowed while everything around it darkened, which read as a pale
+   rounded border around the logo. The mark carries its own shape, so drop it. */
+.brand-badge{
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+.navbar.is-scrolled .brand-badge{ border-radius: 0; }
+
+/* 16px wordmark next to a 50px mark read as an afterthought */
+.brand > div{
+  font-size: clamp(20px, 1.5vw, 23px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+}
+.brand{ gap: 12px; }
+@media (max-width: 420px){
+  .brand > div{ font-size: 19px; }
+  .brand{ gap: 9px; }
+}
