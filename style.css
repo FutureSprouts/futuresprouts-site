@@ -3757,3 +3757,11 @@ main > .section:first-of-type h1{
 .cancel-details p{ color: #A3B5A3; }
 .cancel-details summary{ color: rgba(255, 255, 255, 0.72); }
 .cancel-details strong{ color: rgba(255, 255, 255, 0.92); }
+/* The badge is a fixed 50px grid cell, so max-height:100% has no definite
+   basis to resolve against and the img height attribute wins. Size the
+   image explicitly instead. */
+.brand-badge img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

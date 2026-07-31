@@ -313,7 +313,7 @@
   <div class="container nav-inner">
     <a class="brand" href="index.html" aria-label="${escapeHtml(name)} Home">
       <div class="brand-badge">
-        <img src="images/logo-mark.svg" alt="${escapeHtml(name)} logo">
+        <img src="images/logo-mark.png" width="512" height="512" alt="${escapeHtml(name)} logo">
       </div>
       <div>${escapeHtml(name)}</div>
     </a>

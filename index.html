@@ -20,7 +20,9 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" sizes="48x48" href="/favicon.ico">
   <!-- Open Graph -->
-  <meta property="og:title" content="FutureSprouts" />
+  <meta property="og:site_name" content="FutureSprouts" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="FutureSprouts | Youth-Led Farming Nonprofit in Chester County, PA" />
   <meta property="og:description" content="Youth-led sustainable farming education, seed sharing, and environmental action." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://futuresprouts.org/" />
@@ -29,7 +31,7 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="FutureSprouts" />
+  <meta name="twitter:title" content="FutureSprouts | Youth-Led Farming Nonprofit in Chester County, PA" />
   <meta name="twitter:description" content="Youth-led sustainable farming education, seed sharing, and environmental action." />
   <meta name="twitter:image" content="https://futuresprouts.org/images/og-image.png" />
 
@@ -54,11 +56,20 @@
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "NGO",
+        "@type": ["NGO", "EducationalOrganization"],
         "@id": "https://futuresprouts.org/#organization",
         "name": "FutureSprouts",
+        "alternateName": ["Future Sprouts", "Future Sprouts PA", "FutureSprouts Chester County", "Future Sprouts Chester County"],
+        "legalName": "FutureSprouts",
         "url": "https://futuresprouts.org/",
-        "logo": "https://futuresprouts.org/images/logo-mark.svg",
+        "slogan": "Growing our future, one seed at a time.",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://futuresprouts.org/images/logo-mark.png",
+          "width": 512,
+          "height": 512
+        },
+        "image": "https://futuresprouts.org/images/og-image.png",
         "description": "FutureSprouts is a youth-led 501(c)(3) nonprofit organization providing hands-on sustainable farming education, seed sharing, and environmental stewardship projects.",
         "email": "info@futuresprouts.org",
         "taxID": "41-3415589",
@@ -103,6 +114,8 @@
         "@id": "https://futuresprouts.org/#website",
         "url": "https://futuresprouts.org/",
         "name": "FutureSprouts",
+        "alternateName": ["Future Sprouts", "futuresprouts.org"],
+        "inLanguage": "en-US",
         "publisher": { "@id": "https://futuresprouts.org/#organization" }
       },
       {

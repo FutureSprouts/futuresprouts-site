@@ -17,7 +17,7 @@ window.FS_CONFIG = {
   },
   canonicalBase: "https://futuresprouts.org",
 siteUrl: "https://futuresprouts.org",
-logoPath: "/images/leaf-spring-icon_24911-115668.png",
+logoPath: "/images/logo-mark.png",
 
 
   // =========================================================
