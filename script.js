@@ -826,7 +826,7 @@ function renderSeedPackets() {
         data-tags="${escapeHtml(tags)}"
         id="card-${escapeHtml(item.key)}">
 
-        <img class="shop-img" src="${escapeHtml(image)}" alt="${escapeHtml(name)}">
+        <img class="shop-img" loading="lazy" decoding="async" src="${escapeHtml(image)}" alt="${escapeHtml(name)}">
 
         <div class="shop-body">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">

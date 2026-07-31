@@ -3722,3 +3722,38 @@ main > .section:first-of-type h1{
   border-color: color-mix(in oklab, var(--harvest) 65%, transparent) !important;
   box-shadow: var(--lift);
 }
+
+/* ----------------------------------------------------------
+   Second audit pass: desktop nav contrast and keyboard focus
+---------------------------------------------------------- */
+
+/* The nav Donate button was white on harvest at 3.55:1, under the 4.5:1
+   floor. It only shows above 760px, which is why a mobile-width audit
+   missed it. Dark ink keeps the ochre and clears the threshold in both
+   themes: 5.32:1 on light harvest, 7.83:1 on dark. */
+.donate-btn,
+.donate-btn:hover,
+.mobile-menu a.donate-btn{ color: #1A0E03 !important; }
+
+/* .theme-item explicitly set outline: none and relied on a 10 percent
+   background wash, which is not a visible focus indicator. */
+.theme-item:focus-visible{
+  outline: 3px solid var(--harvest);
+  outline-offset: -3px;
+  background: color-mix(in oklab, var(--green) 14%, transparent);
+}
+/* The monthly amount chips on the donate page had no focus style at all */
+.amount-chip:focus-visible{
+  outline: 3px solid var(--sun);
+  outline-offset: 2px;
+}
+/* transition: all was animating the focus outline in over 150ms. Focus
+   should appear at once; keep the fade for the decorative properties. */
+.amount-chip{
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+/* The PayPal cancellation instructions inside the featured card measured
+   4.28:1 at 12px, just under the 4.5:1 AA floor. */
+.cancel-details p{ color: #A3B5A3; }
+.cancel-details summary{ color: rgba(255, 255, 255, 0.72); }
+.cancel-details strong{ color: rgba(255, 255, 255, 0.92); }
